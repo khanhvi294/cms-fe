@@ -109,7 +109,79 @@ function App() {
               )}
             </div>
 
-            <p className="text-gray-500">36 Người tham gia</p>
+            <p className="text-gray-500 flex gap-1 items-center hover:underline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                id="List"
+                width={24}
+              >
+                <g
+                  data-name="Layer 2"
+                  fill="#a4a7a8"
+                  className="color000000 svgShape"
+                >
+                  <g
+                    data-name="list"
+                    fill="#a4a7a8"
+                    className="color000000 svgShape"
+                  >
+                    <circle
+                      cx="4"
+                      cy="7"
+                      r="1"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></circle>
+                    <circle
+                      cx="4"
+                      cy="12"
+                      r="1"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></circle>
+                    <circle
+                      cx="4"
+                      cy="17"
+                      r="1"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></circle>
+                    <rect
+                      width="14"
+                      height="2"
+                      x="7"
+                      y="11"
+                      rx=".94"
+                      ry=".94"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></rect>
+                    <rect
+                      width="14"
+                      height="2"
+                      x="7"
+                      y="16"
+                      rx=".94"
+                      ry=".94"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></rect>
+                    <rect
+                      width="14"
+                      height="2"
+                      x="7"
+                      y="6"
+                      rx=".94"
+                      ry=".94"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></rect>
+                  </g>
+                </g>
+              </svg>
+              <span>36 Người tham gia</span>
+            </p>
             <p className="text-xs uppercase font-medium ">Thời gian</p>
             <p>{cuocThi.time}</p>
             <p>{cuocThi.address}</p>
