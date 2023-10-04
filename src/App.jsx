@@ -1,6 +1,12 @@
-import { Avatar, Button, Menu, MenuItem, Popover } from "@mui/material";
+import { Avatar, Button, Chip, Menu, MenuItem, Popover } from "@mui/material";
 import { useState } from "react";
 
+const cuocThi = {
+  name: "Lập trình web",
+  status: 2,
+  time: "20-10-2021",
+  address: "B201",
+};
 function App() {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -59,7 +65,7 @@ function App() {
       <div className="flex-1 overflow-scroll">
         <div className="bg-white h-14 drop-shadow-md ">
           <div className="w-[1289px] m-auto">
-            <ul className="flex h-full">
+            <ul className="flex h-full hover:cursor-pointer">
               <li
                 className="px-3 py-4  hover:bg-slate-300"
                 style={{ paddingTop: "auto", paddingBottom: "auto" }}
@@ -71,7 +77,44 @@ function App() {
             </ul>
           </div>
         </div>
-        <div className="w-[1289px] m-auto  h-[1000px]"></div>
+        <div className="w-[1289px] m-auto  h-[1000px]  py-5">
+          <div className="bg-white w-[594px] h-[380px] p-6 flex flex-col gap-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-semibold mb-3">{cuocThi.name}</p>
+                {cuocThi.status === 0 && (
+                  <Chip
+                    label="Sắp diễn ra"
+                    className="!bg-[#ddf3f9] !text-[#38c0e6] !font-medium"
+                  />
+                )}
+                {cuocThi.status === 1 && (
+                  <Chip
+                    label="Đang diễn ra"
+                    className="!bg-[#ddf7ed] !text-[#28f2a5] !font-medium"
+                  />
+                )}
+                {cuocThi.status === 2 && (
+                  <Chip
+                    label="Kết thúc"
+                    className="!bg-[#f6b2a6] !text-[#f54323] !font-medium"
+                  />
+                )}
+              </div>
+              {cuocThi.status === 0 && (
+                <Button className="!bg-[#44badc] !text-white">Đăng ký</Button>
+              )}
+              {cuocThi.status === 2 && (
+                <Button className="!bg-[#ec4848] !text-white">Kết quả</Button>
+              )}
+            </div>
+
+            <p className="text-gray-500">36 Người tham gia</p>
+            <p className="text-xs uppercase font-medium ">Thời gian</p>
+            <p>{cuocThi.time}</p>
+            <p>{cuocThi.address}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
