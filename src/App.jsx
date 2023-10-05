@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Checkbox,
   Chip,
@@ -9,6 +10,7 @@ import {
   InputLabel,
   Menu,
   MenuItem,
+  Modal,
   OutlinedInput,
   Popover,
   Table,
@@ -17,6 +19,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import Input from "@mui/material/Input";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -41,8 +44,8 @@ function App() {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  //const open = Boolean(anchorEl);
+  //const id = open ? "simple-popover" : undefined;
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -82,6 +85,20 @@ function App() {
     event.preventDefault();
   };
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose2 = () => setOpen(false);
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <div className="flex flex-col h-screen bg-slate-100">
       {/* <div className=" h-[70px] sticky top-0 bg-[#313a46]">
@@ -231,7 +248,12 @@ function App() {
                     <Checkbox {...label} size="small" />
                     <p className="ml-[2px] text-xs">Remember me</p>
                   </div>
-                  <p className=" text-xs hover:underline">Forget password?</p>
+                  <p
+                    className=" text-xs hover:underline cursor-pointer"
+                    onClick={handleOpen}
+                  >
+                    Forgot password?
+                  </p>
                 </div>
 
                 <Button
@@ -242,6 +264,49 @@ function App() {
                 </Button>
               </div>
             </div>
+            <Modal
+              open={open}
+              onClose={handleClose2}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={style}
+                className="rounded-md flex flex-col justify-center items-stretch gap-5"
+              >
+                <div className="border-2 border-amber-400 rounded-full self-center w-12 h-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 32 32"
+                    id="mail"
+                    width={35}
+                  >
+                    <path
+                      fill="#231f20"
+                      d="M16,14.81,28.78,6.6A3,3,0,0,0,27,6H5a3,3,0,0,0-1.78.6Z"
+                    ></path>
+                    <path
+                      fill="#231f20"
+                      d="M16.54,16.84h0l-.17.08-.08,0A1,1,0,0,1,16,17h0a1,1,0,0,1-.25,0l-.08,0-.17-.08h0L2.1,8.26A3,3,0,0,0,2,9V23a3,3,0,0,0,3,3H27a3,3,0,0,0,3-3V9a3,3,0,0,0-.1-.74Z"
+                    ></path>
+                  </svg>
+                </div>
+                <p className="text-sm">
+                  Enter the email address associated with your account, we will
+                  send a verification code to your email
+                </p>
+                <input
+                  className="border focus-visible:outline-none h-12 px-4 rounded-md"
+                  placeholder="exam@gmail.com"
+                />
+                <Button
+                  variant="contained"
+                  className="!bg-[#ffca18] !font-medium"
+                >
+                  Send code
+                </Button>
+              </Box>
+            </Modal>
           </div>
           {/* xếp hạng */}
           {/* <div>
