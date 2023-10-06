@@ -8,6 +8,10 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   Menu,
   MenuItem,
   Modal,
@@ -101,6 +105,26 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen bg-slate-100">
+      {/* admin */}
+      <div className="flex h-full">
+        <div className="w-[280px] h-full bg-[#0f172a] text-white ">
+          <div className="h-[100px] bg-white"></div>
+          <List>
+            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+              <ListItem key={text} disablePadding className="m-auto !w-[94%]">
+                <ListItemButton className=" hover:!bg-[#404552] !rounded-md ">
+                  <ListItemText primary={text} className=" font-semibold" />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+        <div className="flex-1">
+          <div className="h-16 bg-white "></div>
+        </div>
+      </div>
+
+      {/* user */}
       {/* <div className=" h-[70px] sticky top-0 bg-[#313a46]">
         <div className="w-[1289px] m-auto flex justify-end h-full">
           <Button
@@ -158,7 +182,7 @@ function App() {
         </div> */}
         <div className="w-[1289px] m-auto  h-[1000px]  py-5">
           {/* đăng nhập */}
-          <div className="my-[80px] flex rounded-[20px] overflow-hidden">
+          {/* <div className="my-[80px] flex rounded-[20px] overflow-hidden">
             <div className="bg-[#ffca18] flex-1 min-h-[520px]"></div>
             <div className="min-w-[400px] min-h-[520px] border m-auto px-6 py-8 bg-white">
               <div className="flex flex-col  gap-5 items-stretch">
@@ -272,6 +296,9 @@ function App() {
             >
               <Box
                 sx={style}
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                closeAfterTransition
                 className="rounded-md flex flex-col justify-center items-stretch gap-5"
               >
                 <div className="border-2 border-amber-400 rounded-full self-center w-12 h-12 flex items-center justify-center">
@@ -307,7 +334,7 @@ function App() {
                 </Button>
               </Box>
             </Modal>
-          </div>
+          </div> */}
           {/* xếp hạng */}
           {/* <div>
             <p className="font-semibold text-xl">Cuộc thi</p>
