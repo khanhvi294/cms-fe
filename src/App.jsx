@@ -1,4 +1,5 @@
 import Login from "./features/login/Login";
+import UserLayout from "./layouts/UserLayout";
 import Header from "./layouts/user/components/Header";
 import HeaderMenu from "./layouts/user/components/HeaderMenu";
 
@@ -75,23 +76,14 @@ function App() {
   //   </div>
   // </div>
   return (
-    <div className="flex flex-col h-screen bg-slate-100">
-      {/* user */}
-      <Header />
-      <div className="flex-1 overflow-scroll">
-        <div className="bg-white h-14 drop-shadow-md ">
-          <HeaderMenu />
-        </div>
-        <div className="w-[1289px] m-auto  h-[1000px]  py-5">
-          {/* đăng nhập */}
-          <Login />
-          {/* xếp hạng */}
-          {/* <Competition /> */}
-          {/* base ex */}
-          {/* <CompetitionListFetch /> */}
-        </div>
-      </div>
-    </div>
+    <UserLayout>
+      {/* đăng nhập */}
+      <Login />
+      {/* xếp hạng */}
+      {/* <Competition /> */}
+      {/* base ex */}
+      {/* <CompetitionListFetch /> */}
+    </UserLayout>
   );
 }
 
