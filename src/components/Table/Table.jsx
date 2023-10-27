@@ -1,3 +1,4 @@
+import { IconButton } from "@mui/material";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -32,8 +33,8 @@ const Table = ({ rows, columnss }) => {
   ];
   return (
     <div className="flex justify-center w-full">
-      <div className="w-[1350px] bg-white mt-7">
-        <div style={{ height: 614, width: "100%" }}>
+      <div className=" bg-white mt-7">
+        <div style={{ minHeight: 614, width: "100%" }}>
           <DataGrid
             rows={tableData}
             columns={columns}

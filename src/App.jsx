@@ -18,7 +18,15 @@ const cuocThi = {
   time: "20-10-2021",
   address: "B201",
 };
+
 function App() {
+  // const router = createBrowserRouter([
+  //   {
+  //     path: "/",
+  //     element: <LoginPage />,
+  //   },
+  // ]);
+
   //admin
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -31,7 +39,8 @@ function App() {
 
   return (
     /* admin */
-    <div className="flex flex-col h-screen bg-slate-100">
+
+    <div className="flex flex-col overflow-hidden h-screen bg-slate-100">
       <div className="flex h-full">
         <div className="w-[280px] h-full bg-[#0f172a] text-white">
           <div className="h-[100px] bg-white"> </div>
