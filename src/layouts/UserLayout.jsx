@@ -1,7 +1,8 @@
+import { Outlet } from "react-router-dom";
 import Header from "./user/components/Header";
 import HeaderMenu from "./user/components/HeaderMenu";
 
-const UserLayout = ({ children }) => {
+const UserLayout = () => {
   return (
     <div className="flex flex-col h-screen bg-slate-100">
       {/* user */}
@@ -10,7 +11,9 @@ const UserLayout = ({ children }) => {
         <div className="bg-white h-14 drop-shadow-md ">
           <HeaderMenu />
         </div>
-        <div className="w-[1289px] m-auto  h-[1000px]  py-5">{children}</div>
+        <div className="w-[1289px] m-auto  h-[1000px]  py-5">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
