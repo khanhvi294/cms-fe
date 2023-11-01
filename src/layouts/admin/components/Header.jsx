@@ -1,15 +1,5 @@
+import { Avatar, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
-import {
-  Avatar,
-  Button,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);

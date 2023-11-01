@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Table from "../../components/Table/Table";
 import Navbar from "../../layouts/admin/components/Navbar";
 import Header from "../../layouts/admin/components/Header";
