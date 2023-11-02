@@ -1,9 +1,11 @@
 import { Route, Routes, createBrowserRouter } from "react-router-dom";
 import LoginPage from "../pages/login/login";
-import CompetitionListFetch from "../features/compatition/compatitionListFetch/CompetitionListFetch";
+import CompetitionListFetch from "../features/user/competitionListFetch/CompetitionListFetch";
 import Temp from "../features/admin/temp";
 import App from "../App";
 import UserLayout from "../layouts/user/UserLayout";
+import CompetitionPage from "../pages/competition/CompetitionPage";
+import CompetitionListPage from "../pages/competition/CompetitionListPage";
 
 // export const router = createBrowserRouter([
 //   {
@@ -28,12 +30,11 @@ export const listRouter = [
 export const AppRouter = () => {
   return (
     <Routes>
-      {listRouter.map((item, index) => (
-        <Route key={index} path={item?.path} element={item.element}></Route>
-      ))}
-      {/* <Route element={<UserLayout />}>
-        <Route path="/" element={<LoginPage />} />
-      </Route> */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<UserLayout />}>
+        <Route path="/" element={<CompetitionPage />} />
+        <Route path="/list" element={<CompetitionListPage />} />
+      </Route>
     </Routes>
   );
 };
