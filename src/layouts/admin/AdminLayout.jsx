@@ -1,7 +1,8 @@
+import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 
-const AdminLayout = ({ Children }) => {
+const AdminLayout = () => {
   return (
     <div className="flex flex-col overflow-hidden h-screen bg-slate-100">
       <div className="flex h-full">
@@ -11,7 +12,7 @@ const AdminLayout = ({ Children }) => {
           <div className="h-16 bg-white px-5 border shadow-sm">
             <Header />
           </div>
-          {Children}
+          <Outlet />
         </div>
       </div>
     </div>
