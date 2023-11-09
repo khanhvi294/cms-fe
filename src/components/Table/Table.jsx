@@ -12,9 +12,9 @@ const VISIBLE_FIELDS = ["name", "rating", "country", "dateCreated", "isAdmin"];
 
 function CustomToolbar() {
   return (
-    <GridToolbarContainer>
-      <GridToolbarFilterButton />
-      <GridToolbarExport />
+    <GridToolbarContainer className=" mr-3 justify-end">
+      <GridToolbarFilterButton className="!text-black" />
+      <GridToolbarExport className="!text-black" />
     </GridToolbarContainer>
   );
 }
@@ -33,9 +33,10 @@ const Table = ({ rows, columnss }) => {
   ];
   return (
     <div className="w-full">
-      <div className=" bg-white mt-7 w-full">
+      <div className=" bg-white mt-7 w-full ">
         <div style={{ minHeight: 614, width: "100%" }}>
           <DataGrid
+            className="!rounded-3xl "
             rows={tableData}
             columns={columns}
             pageSize={12}
