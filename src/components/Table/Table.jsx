@@ -32,8 +32,8 @@ const Table = ({ rows, columnss }) => {
     { field: "body", headerName: "Body", width: 600 },
   ];
   return (
-    <div className="flex justify-center w-full">
-      <div className=" bg-white mt-7">
+    <div className="w-full">
+      <div className=" bg-white mt-7 w-full">
         <div style={{ minHeight: 614, width: "100%" }}>
           <DataGrid
             rows={tableData}

@@ -1,6 +1,5 @@
+import { Button } from "@mui/material";
 import Table from "../../components/Table/Table";
-import Navbar from "../../layouts/admin/components/Navbar";
-import Header from "../../layouts/admin/components/Header";
 
 const Temp = () => {
   //admin
@@ -8,6 +7,9 @@ const Temp = () => {
   return (
     /* admin */
     <>
+      <div className="flex gap-2  justify-end">
+        <Button variant="contained flex-end">Add</Button>
+      </div>
       <Table />
     </>
   );
