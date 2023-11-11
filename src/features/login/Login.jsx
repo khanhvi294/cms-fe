@@ -13,6 +13,8 @@ import Input from "@mui/material/Input";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { login } from "../../services/authApi";
+import { useDispatch } from "react-redux";
+import { setAccessToken } from "../../redux/slices/userSlice";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
@@ -37,11 +39,12 @@ const Login = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const dispatch = useDispatch();
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
-      //     dispatch(addComment(data));
-      console.log(data);
+      if (!data.data.token) return;
+      dispatch(setAccessToken(data.data.token));
     },
   });
   const handleLogin = (account) => {
@@ -145,7 +148,6 @@ const Login = () => {
             variant="contained"
             className="w-[200px] self-center !bg-[#ffca18] hover:bg-[#5d85d4]"
             onClick={() => {
-              console.log("click");
               handleLogin({ email: email, password: password });
             }}
           >
