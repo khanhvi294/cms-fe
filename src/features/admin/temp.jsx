@@ -9,7 +9,7 @@ const Temp = () => {
     <>
       <div className="flex gap-2 justify-between items-center">
         <span className="text-2xl font-semibold">Account</span>
-        <Button variant="contained flex-end !bg-[#000] !text-white">
+        <Button variant="contained flex-end !bg-[#000] !text-white !rounded-md">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
