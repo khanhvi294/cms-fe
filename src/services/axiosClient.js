@@ -1,4 +1,4 @@
-import { appRoutes } from "../routes/AppRoutes";
+// import { appRoutes } from "../routes/AppRoutes";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { logout } from "../redux/slices/userSlice";
@@ -38,7 +38,7 @@ axiosClientPrivate.interceptors.request.use(
       const today = new Date();
       if (decodeToken.exp < today.getTime() / 1000) {
         store.dispatch(logout());
-        window.location.href = appRoutes.AUTH_LOGIN;
+        // window.location.href = appRoutes.AUTH_LOGIN;
       }
     }
 

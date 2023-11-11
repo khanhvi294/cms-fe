@@ -11,9 +11,13 @@ import {
 } from "@mui/material";
 import Input from "@mui/material/Input";
 import { useState } from "react";
+import { useMutation } from "react-query";
+import { login } from "../../services/authApi";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -34,6 +38,15 @@ const Login = () => {
     event.preventDefault();
   };
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  const loginMutation = useMutation(login, {
+    onSuccess: (data) => {
+      //     dispatch(addComment(data));
+      console.log(data);
+    },
+  });
+  const handleLogin = (account) => {
+    loginMutation.mutate(account);
+  };
   return (
     <div className="my-[80px] flex rounded-[20px] overflow-hidden">
       <div className="bg-[#ffca18] flex-1 min-h-[520px]"></div>
@@ -52,6 +65,8 @@ const Login = () => {
             size="small"
             variant="standard"
             className="bg-white"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -66,6 +81,7 @@ const Login = () => {
               <Input
                 id="standard-adornment-password"
                 type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -128,6 +144,10 @@ const Login = () => {
           <Button
             variant="contained"
             className="w-[200px] self-center !bg-[#ffca18] hover:bg-[#5d85d4]"
+            onClick={() => {
+              console.log("click");
+              handleLogin({ email: email, password: password });
+            }}
           >
             Sign in
           </Button>

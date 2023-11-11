@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import { AppRouter } from "./routes";
 
 const cuocThi = {
   name: "Lập trình web",
