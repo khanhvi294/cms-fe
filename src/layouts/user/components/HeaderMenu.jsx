@@ -20,7 +20,7 @@ const HeaderMenu = () => {
                   className="color000000 svgShape"
                 ></path>
               </svg>
-              <p>Trang chủ</p>
+              <p>Home</p>
             </div>
           </Link>
         </li>
@@ -64,7 +64,7 @@ const HeaderMenu = () => {
                   className="color000000 svgShape"
                 ></path>
               </svg>
-              <p>Cuộc thi</p>
+              <p>Competition</p>
             </div>
           </Link>
         </li>
@@ -99,7 +99,7 @@ const HeaderMenu = () => {
                   ></path>
                 </g>
               </svg>
-              Lớp học của tôi
+              My classes
             </div>
           </Link>
         </li>

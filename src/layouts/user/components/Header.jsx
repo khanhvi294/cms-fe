@@ -25,8 +25,8 @@ const Header = () => {
         >
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
           <div>
-            <p>Tài khoản</p>
-            <p>Đăng nhập</p>
+            <p className="!normal-case">Account</p>
+            <p className="!uppercase !text-xs">Log in</p>
           </div>
         </Button>
         <Popover

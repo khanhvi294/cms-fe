@@ -3,10 +3,8 @@ import CompetitionListFetch from "../../features/user/competitionListFetch/Compe
 const HomePage = () => {
   return (
     <div>
-      <h1 className="font-semibold text-[#f9bd28] text-2xl">
-        Cuộc thi lập trình
-      </h1>
-      <p className="mb-10">
+      <h1 className="font-semibold text-[#f9bd28] text-2xl">Competition</h1>
+      <p className="mb-10 mt-6">
         Hệ thống được xây dựng để giúp tổ chức các cuộc thi lập trình trực
         tuyến, dành cho sinh viên, nhà phát triển và các chuyên gia trên khắp
         thế giới. Các cuộc thi của chúng tôi tập trung vào giải quyết vấn đề, tư
@@ -34,7 +32,7 @@ const HomePage = () => {
             className="color000000 svgShape"
           ></path>
         </svg>
-        <h1 className="font-semibold  text-xl">Danh sách cuộc thi</h1>
+        <h1 className="font-semibold  text-xl">List Competition</h1>
       </div>
       <CompetitionListFetch />
     </div>
