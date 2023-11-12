@@ -11,6 +11,7 @@ import LoginPage from "../pages/login/login";
 import AdminLayout from "../layouts/admin/AdminLayout";
 import Temp from "../features/admin/temp";
 import ClassListPage from "../pages/class/ClassListPage";
+import HomePage from "../pages/home/HomePage";
 
 export const listRouter = [
   {
@@ -25,9 +26,10 @@ export const AppRouter = () => {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route element={<UserLayout />}>
-        <Route path="/" element={<CompetitionPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/competitions" element={<CompetitionListPage />} />
         <Route path="/classes" element={<ClassListPage />} />
+        <Route path="/detail" element={<CompetitionPage />} />
       </Route>
       <Route element={<AdminLayout />}>
         <Route path="/admin" element={<Temp />} />
