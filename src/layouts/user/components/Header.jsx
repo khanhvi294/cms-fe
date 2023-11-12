@@ -15,13 +15,13 @@ const Header = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
-    <div className=" h-[70px] sticky top-0 bg-[#313a46]">
+    <div className=" h-[70px] sticky top-0 bg-[#000]">
       <div className="w-[1289px] m-auto flex justify-end h-full">
         <Button
           aria-describedby={id}
           variant="contained"
           onClick={handleClick}
-          className="!bg-[#3c4655] flex gap-2"
+          className="!bg-[#393938] flex gap-2"
         >
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
           <div>

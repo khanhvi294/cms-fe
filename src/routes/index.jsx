@@ -1,4 +1,9 @@
-import { Route, Routes, createBrowserRouter } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  createBrowserRouter,
+  useLocation,
+} from "react-router-dom";
 import UserLayout from "../layouts/user/UserLayout";
 import CompetitionListPage from "../pages/competition/CompetitionListPage";
 import CompetitionPage from "../pages/competition/CompetitionPage";
@@ -13,7 +18,9 @@ export const listRouter = [
     children: [{ path: "/", element: <LoginPage /> }],
   },
 ];
+
 export const AppRouter = () => {
+  const { pathname } = useLocation();
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
