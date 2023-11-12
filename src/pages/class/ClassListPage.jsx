@@ -1,4 +1,4 @@
-import ClassListFetch from "../../features/user/ClassListFetch/ClassListFetch";
+import ClassListFetch from "../../features/user/Class/ClassListFetch";
 
 const ClassListPage = () => {
   return (

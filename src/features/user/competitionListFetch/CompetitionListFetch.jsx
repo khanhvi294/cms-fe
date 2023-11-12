@@ -161,9 +161,12 @@ const CompetitionListFetch = () => {
               <span>{cuocThi.people} participants</span>
             </p>
             <p className="text-xs uppercase font-medium ">DURATION</p>
-            <div className="flex w-[80%] justify-between">
-              <p>{cuocThi.timeStart}</p>
-              <p>{cuocThi.timeEnd}</p>
+            <div>
+              <div className="flex w-[95%] justify-between mb-2">
+                <p>{cuocThi.timeStart}</p>
+                <p>{cuocThi.timeEnd}</p>
+              </div>
+              <div className="w-[95%] h-[6px] bg-slate-400 rounded-3xl"></div>
             </div>
 
             <p>{cuocThi.soVong} rounds</p>
