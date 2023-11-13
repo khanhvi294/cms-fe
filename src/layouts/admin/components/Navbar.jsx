@@ -1,23 +1,30 @@
 import { Button } from "@mui/material";
 import { NavLink, matchPath, useLocation } from "react-router-dom";
 import logo from "../../../assets/logo.png";
+import { appRoutes } from "../../../routes/approuter";
 
 const Navbar = () => {
   const { pathname } = useLocation();
 
   const navbarItems = [
     {
-      title: "Home",
+      title: "Classes",
       icon: <i className="fa-light fa-house"></i>,
       iconActive: <i className="fa-solid fa-house"></i>,
-      path: "/admin/classes",
+      path: appRoutes.ACLASSES,
     },
 
     {
-      title: "Bookmark",
+      title: "Employees",
       icon: <i className="fa-light fa-bookmark"></i>,
       iconActive: <i className="fa-solid fa-bookmark"></i>,
-      path: "/classes",
+      path: appRoutes.AEMPLOYEES,
+    },
+    {
+      title: "Students",
+      icon: <i className="fa-light fa-bookmark"></i>,
+      iconActive: <i className="fa-solid fa-bookmark"></i>,
+      path: appRoutes.ASTUDENTS,
     },
     // {
     //   title: "Stories",
@@ -37,7 +44,7 @@ const Navbar = () => {
       <div>
         <img src={logo} alt="logo" className="" />
       </div>
-      <div className="flex w-full flex-col  text-center mt-1">
+      <div className="flex w-full flex-col gap-2 text-center mt-2">
         {navbarItems.map((item) => {
           const isActive = matchPath(item.path, pathname);
 
@@ -48,7 +55,7 @@ const Navbar = () => {
               className="active text-white"
             >
               <Button
-                className={`!text-white rounded-md hover:!bg-slate-500 w-[96%] ${
+                className={`!text-white rounded-md hover:!bg-slate-500 w-[96%]  !capitalize ${
                   isActive ? "!bg-slate-500" : ""
                 }`}
                 size="medium"

@@ -15,6 +15,7 @@ import HomePage from "../pages/home/HomePage";
 import Employees from "../features/admin/Employees/Employees";
 import Students from "../features/admin/Student/Students";
 import Classes from "../features/admin/Classes/Classes";
+import { appRoutes } from "./approuter";
 
 export const listRouter = [
   {
@@ -24,20 +25,22 @@ export const listRouter = [
 ];
 
 export const AppRouter = () => {
-  const { pathname } = useLocation();
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path={appRoutes.LOGIN} element={<LoginPage />} />
       <Route element={<UserLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/competitions" element={<CompetitionListPage />} />
-        <Route path="/classes" element={<ClassListPage />} />
+        <Route path={appRoutes.HOME} element={<HomePage />} />
+        <Route
+          path={appRoutes.COMPETITIONS}
+          element={<CompetitionListPage />}
+        />
+        <Route path={appRoutes.CLASSES} element={<ClassListPage />} />
         <Route path="/detail" element={<CompetitionPage />} />
       </Route>
       <Route element={<AdminLayout />}>
-        <Route path="/admin/students" element={<Students />} />
-        <Route path="/admin/employees" element={<Employees />} />
-        <Route path="/admin/classes" element={<Classes />} />
+        <Route path={appRoutes.ASTUDENTS} element={<Students />} />
+        <Route path={appRoutes.AEMPLOYEES} element={<Employees />} />
+        <Route path={appRoutes.ACLASSES} element={<Classes />} />
       </Route>
     </Routes>
   );

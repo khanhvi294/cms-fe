@@ -71,5 +71,5 @@ button:focus-visible {
   } */
 
   .MuiButton-root {
-    text-transform: lowercase !important;
+    text-transform: none !important;
   }
