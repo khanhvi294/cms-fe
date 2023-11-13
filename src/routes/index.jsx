@@ -12,9 +12,9 @@ import AdminLayout from "../layouts/admin/AdminLayout";
 
 import ClassListPage from "../pages/class/ClassListPage";
 import HomePage from "../pages/home/HomePage";
-import Account from "../features/admin/Account/Account";
 import Employees from "../features/admin/Employees/Employees";
-import Students from "../features/admin/Student/Student";
+import Students from "../features/admin/Student/Students";
+import Classes from "../features/admin/Classes/Classes";
 
 export const listRouter = [
   {
@@ -35,8 +35,9 @@ export const AppRouter = () => {
         <Route path="/detail" element={<CompetitionPage />} />
       </Route>
       <Route element={<AdminLayout />}>
-        <Route path="/students" element={<Students />} />
-        <Route path="/employees" element={<Employees />} />
+        <Route path="/admin/students" element={<Students />} />
+        <Route path="/admin/employees" element={<Employees />} />
+        <Route path="/admin/classes" element={<Classes />} />
       </Route>
     </Routes>
   );

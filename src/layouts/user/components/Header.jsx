@@ -23,10 +23,10 @@ const Header = () => {
           onClick={handleClick}
           className="!bg-[#393938] flex gap-2"
         >
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          <Avatar alt="Hemy Sharp" src="/static/images/avatar/1.jpg" />
           <div>
-            <p className="!normal-case">Account</p>
-            <p className="!uppercase !text-xs">Log in</p>
+            <p className="!normal-case">Thúy Hạnh</p>
+            <p className="!uppercase !text-xs">Student</p>
           </div>
         </Button>
         <Popover

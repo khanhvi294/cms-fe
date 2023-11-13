@@ -51,12 +51,14 @@ const Login = () => {
     loginMutation.mutate(account);
   };
   return (
-    <div className="my-[80px] flex rounded-[20px] overflow-hidden">
+    <div className="my-[80px] flex rounded-[20px] overflow-hidden shadow-md">
       <div className="bg-[#ffca18] flex-1 min-h-[520px]"></div>
       <div className="min-w-[400px] min-h-[520px] border m-auto px-6 py-8 bg-white">
         <div className="flex flex-col  gap-5 items-stretch">
           <div className="flex flex-col items-center">
-            <p className="font-medium text-2xl mb-3">Welcome to VV</p>
+            <p className="font-medium text-2xl mb-3">
+              Welcome to <p className="text-[#ffca18]">CODEGYM</p>
+            </p>
             <p className="font-medium text-zinc-500 text-base">
               Log in Your Account
             </p>

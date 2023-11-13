@@ -1,40 +1,21 @@
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Chip } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
-import { useState } from "react";
 
-const Employees = () => {
-  const [age, setAge] = useState("");
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
+const Classes = () => {
   const columns = [
     {
       field: "id",
       headerName: "ID",
-      width: 80,
+      width: 100,
     },
-    { field: "accountid", headerName: "accountid", width: 150 },
-    { field: "email", headerName: "email", width: 200 },
-    { field: "role", headerName: "role", width: 100 },
-    { field: "fullname", headerName: "fullname", width: 200 },
-    { field: "cccd", headerName: "CCCD", width: 150 },
+
+    { field: "courseid", headerName: "courseid", width: 200 },
+    { field: "name", headerName: "fullname", width: 250 },
     {
       field: "active",
       headerName: "Active",
-      width: 100,
+      width: 200,
       renderCell: (params) => {
         return params.row.active ? (
           <Chip
@@ -96,34 +77,24 @@ const Employees = () => {
   const rows = [
     {
       id: "1",
-      role: "admin",
-      email: "admin@gmail.com",
+      accountid: "4",
+      email: "sv01@gmail.com",
       active: 1,
-      fullname: "Nguyễn Thúy An",
-      accountid: "1",
-      cccd: 1765873678,
+      fullname: "Nguyễn Thúy Hạnh",
     },
     {
       id: "2",
-      role: "employee",
-      email: "teacher@gmail.com",
+      email: "sv02@gmail.com",
+      accountid: "6",
       active: 1,
       fullname: "Trần Thiên Bảo",
-      accountid: 2,
-      cccd: 2674563789,
     },
   ];
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
-        <span className="text-2xl font-semibold">Employees</span>
-        <Button
-          variant="contained flex-end !bg-[#000] !text-white !rounded-md"
-          onClick={handleOpen}
-        >
+        <span className="text-2xl font-semibold">Classes</span>
+        <Button variant="contained flex-end !bg-[#000] !text-white !rounded-md">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -161,64 +132,8 @@ const Employees = () => {
         </Button>
       </div>
       <Table columns={columns} rows={rows} />
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="flex items-center justify-center "
-      >
-        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl flex flex-col p-4 gap-5">
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            className="font-bold "
-          >
-            Add user
-          </Typography>
-          <div className="flex flex-col !justify-center !items-center gap-4">
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="FullName"
-              variant="outlined"
-              className="w-full"
-            />
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="Email"
-              variant="outlined"
-              className="w-full"
-            />
-            <FormControl className="w-full" size="small">
-              <InputLabel id="demo-select-small-label">Age</InputLabel>
-              <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                value={age}
-                label="Age"
-                onChange={handleChange}
-                size="small"
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-
-          <Button
-            variant="contained"
-            className="self-end !normal-case !rounded-lg !bg-black"
-          >
-            Save
-          </Button>
-        </Box>
-      </Modal>
     </>
   );
 };
 
-export default Employees;
+export default Classes;
