@@ -1,8 +1,12 @@
-import { Button, Chip } from "@mui/material";
+import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
+import { useState } from "react";
 
 const Students = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const columns = [
     {
       field: "id",
@@ -94,7 +98,10 @@ const Students = () => {
     <>
       <div className="flex gap-2 justify-between items-center">
         <span className="text-2xl font-semibold">Students</span>
-        <Button variant="contained flex-end !bg-[#000] !text-white !rounded-md">
+        <Button
+          variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+          onClick={handleOpen}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -132,6 +139,47 @@ const Students = () => {
         </Button>
       </div>
       <Table columns={columns} rows={rows} />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        className="flex items-center justify-center "
+      >
+        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl flex flex-col p-4 gap-5">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            className="font-bold "
+          >
+            Add Student
+          </Typography>
+          <div className="flex flex-col !justify-center !items-center gap-4">
+            <TextField
+              id="outlined-basic"
+              size="small"
+              label="FullName"
+              variant="outlined"
+              className="w-full"
+            />
+            <TextField
+              id="outlined-basic"
+              size="small"
+              label="Email"
+              variant="outlined"
+              className="w-full"
+            />
+          </div>
+
+          <Button
+            variant="contained"
+            className="self-end !normal-case !rounded-lg !bg-black"
+          >
+            Save
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 };

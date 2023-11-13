@@ -175,7 +175,7 @@ const Employees = () => {
             component="h2"
             className="font-bold "
           >
-            Add user
+            Add Employee
           </Typography>
           <div className="flex flex-col !justify-center !items-center gap-4">
             <TextField
