@@ -13,6 +13,7 @@ import AdminLayout from "../layouts/admin/AdminLayout";
 import ClassListPage from "../pages/class/ClassListPage";
 import HomePage from "../pages/home/HomePage";
 import Account from "../features/admin/Account/Account";
+import Employees from "../features/admin/Employees/Employees";
 
 export const listRouter = [
   {
@@ -33,7 +34,8 @@ export const AppRouter = () => {
         <Route path="/detail" element={<CompetitionPage />} />
       </Route>
       <Route element={<AdminLayout />}>
-        <Route path="/admin" element={<Account />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/employees" element={<Employees />} />
       </Route>
     </Routes>
   );
