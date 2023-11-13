@@ -9,9 +9,10 @@ import CompetitionListPage from "../pages/competition/CompetitionListPage";
 import CompetitionPage from "../pages/competition/CompetitionPage";
 import LoginPage from "../pages/login/login";
 import AdminLayout from "../layouts/admin/AdminLayout";
-import Temp from "../features/admin/temp";
+
 import ClassListPage from "../pages/class/ClassListPage";
 import HomePage from "../pages/home/HomePage";
+import Account from "../features/admin/Account/Account";
 
 export const listRouter = [
   {
@@ -32,7 +33,7 @@ export const AppRouter = () => {
         <Route path="/detail" element={<CompetitionPage />} />
       </Route>
       <Route element={<AdminLayout />}>
-        <Route path="/admin" element={<Temp />} />
+        <Route path="/admin" element={<Account />} />
       </Route>
     </Routes>
   );

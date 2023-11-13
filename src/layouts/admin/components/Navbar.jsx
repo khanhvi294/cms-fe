@@ -11,6 +11,7 @@ const Navbar = () => {
         {[
           "Home",
           "Competition",
+          "Account",
           "Class",
           "Course",
           "Student",
