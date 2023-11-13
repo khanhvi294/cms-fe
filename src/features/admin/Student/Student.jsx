@@ -2,21 +2,20 @@ import { Button, Chip } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 
-const Employees = () => {
+const Students = () => {
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 100,
     },
+    { field: "email", headerName: "email", width: 250 },
     { field: "accountid", headerName: "accountid", width: 200 },
-    { field: "email", headerName: "email", width: 200 },
-    { field: "role", headerName: "role", width: 200 },
-    { field: "fullname", headerName: "fullname", width: 200 },
+    { field: "fullname", headerName: "fullname", width: 250 },
     {
       field: "active",
       headerName: "Active",
-      width: 100,
+      width: 200,
       renderCell: (params) => {
         return params.row.active ? (
           <Chip
@@ -78,25 +77,23 @@ const Employees = () => {
   const rows = [
     {
       id: "1",
-      role: "admin",
-      email: "admin@gmail.com",
+      accountid: "4",
+      email: "sv01@gmail.com",
       active: 1,
-      fullname: "Nguyễn Thúy An",
-      accountid: "1",
+      fullname: "Nguyễn Thúy Hạnh",
     },
     {
       id: "2",
-      role: "employee",
-      email: "teacher@gmail.com",
+      email: "sv02@gmail.com",
+      accountid: "6",
       active: 1,
       fullname: "Trần Thiên Bảo",
-      accountid: 2,
     },
   ];
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
-        <span className="text-2xl font-semibold">Employees</span>
+        <span className="text-2xl font-semibold">Students</span>
         <Button variant="contained flex-end !bg-[#000] !text-white !rounded-md">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -139,4 +136,4 @@ const Employees = () => {
   );
 };
 
-export default Employees;
+export default Students;
