@@ -2,11 +2,18 @@ import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Students = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   const columns = [
     {
       field: "id",
@@ -94,6 +101,7 @@ const Students = () => {
       fullname: "Trần Thiên Bảo",
     },
   ];
+  const onSubmit = (data) => console.log(data);
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -146,38 +154,52 @@ const Students = () => {
         aria-describedby="modal-modal-description"
         className="flex items-center justify-center "
       >
-        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl flex flex-col p-4 gap-5">
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            className="font-bold "
+        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className=" flex flex-col p-4 gap-5"
           >
-            Add Student
-          </Typography>
-          <div className="flex flex-col !justify-center !items-center gap-4">
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="FullName"
-              variant="outlined"
-              className="w-full"
-            />
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="Email"
-              variant="outlined"
-              className="w-full"
-            />
-          </div>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="font-bold "
+            >
+              Add Student
+            </Typography>
+            <div className="flex flex-col !justify-center !items-center gap-4">
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="FullName*"
+                variant="outlined"
+                error={!!errors.fullname}
+                helperText={errors.fullname ? errors.fullname.message : ``}
+                className="w-full"
+                {...register("fullname", {
+                  required: "fullname is required filed",
+                })}
+              />
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Email*"
+                variant="outlined"
+                className="w-full"
+                error={!!errors.email}
+                helperText={errors.email ? errors.email.message : ``}
+                {...register("email", { required: "email is required filed" })}
+              />
+            </div>
 
-          <Button
-            variant="contained"
-            className="self-end !normal-case !rounded-lg !bg-black"
-          >
-            Save
-          </Button>
+            <Button
+              variant="contained"
+              className="self-end !normal-case !rounded-lg !bg-black"
+              type="submit"
+            >
+              Save
+            </Button>
+          </form>
         </Box>
       </Modal>
     </>

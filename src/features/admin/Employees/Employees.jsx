@@ -215,6 +215,26 @@ const Employees = () => {
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
               />
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="CCCD/CMND*"
+                variant="outlined"
+                className="w-full"
+                error={!!errors.cccd}
+                helperText={errors.cccd ? errors.cccd.message : ``}
+                {...register("cccd", {
+                  required: "CCCD/CMND is required filed",
+                  minLength: {
+                    value: 10,
+                    message: "CCCD/CMND must be exactly 10 characters",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "CCCD/CMND must be exactly 10 characters",
+                  },
+                })}
+              />
 
               <FormControl
                 className="w-full"
