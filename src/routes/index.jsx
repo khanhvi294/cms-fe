@@ -10,7 +10,10 @@ import HomePage from "../pages/home/HomePage";
 import Employees from "../features/admin/Employees/Employees";
 import Students from "../features/admin/Student/Students";
 import Classes from "../features/admin/Classes/Classes";
-import { appRoutes } from "./approuter";
+import Courses from "../features/admin/Courses/Courses";
+import Competitions from "../features/admin/Competitions/Competitions";
+import { appRoutes } from "./appRouter";
+import ExamForms from "../features/admin/ExamForm/ExamForm";
 
 export const listRouter = [
   {
@@ -36,6 +39,9 @@ export const AppRouter = () => {
         <Route path={appRoutes.ASTUDENTS} element={<Students />} />
         <Route path={appRoutes.AEMPLOYEES} element={<Employees />} />
         <Route path={appRoutes.ACLASSES} element={<Classes />} />
+        <Route path={appRoutes.ACOURSES} element={<Courses />} />
+        <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
+        <Route path={appRoutes.EXAMFORMS} element={<ExamForms />} />
       </Route>
     </Routes>
   );

@@ -14,7 +14,7 @@ import Table from "../../../components/Table/Table";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
-const Classes = () => {
+const Competitions = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -57,7 +57,7 @@ const Classes = () => {
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
-        <span className="text-2xl font-semibold">Classes</span>
+        <span className="text-2xl font-semibold">Competitions</span>
         <Button
           variant="contained flex-end !bg-[#000] !text-white !rounded-md"
           onClick={handleOpen}
@@ -182,4 +182,4 @@ const Classes = () => {
   );
 };
 
-export default Classes;
+export default Competitions;

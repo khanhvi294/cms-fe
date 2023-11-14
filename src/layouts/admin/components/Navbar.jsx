@@ -1,12 +1,19 @@
 import { Button } from "@mui/material";
 import { NavLink, matchPath, useLocation } from "react-router-dom";
 import logo from "../../../assets/logo.png";
-import { appRoutes } from "../../../routes/approuter";
+import { appRoutes } from "../../../routes/appRouter";
 
 const Navbar = () => {
   const { pathname } = useLocation();
 
   const navbarItems = [
+    {
+      title: "Courses",
+      icon: <i className="fa-light fa-house"></i>,
+      iconActive: <i className="fa-solid fa-house"></i>,
+      path: appRoutes.ACOURSES,
+    },
+
     {
       title: "Classes",
       icon: <i className="fa-light fa-house"></i>,
@@ -25,6 +32,18 @@ const Navbar = () => {
       icon: <i className="fa-light fa-bookmark"></i>,
       iconActive: <i className="fa-solid fa-bookmark"></i>,
       path: appRoutes.ASTUDENTS,
+    },
+    {
+      title: "Exam Form",
+      icon: <i className="fa-light fa-house"></i>,
+      iconActive: <i className="fa-solid fa-house"></i>,
+      path: appRoutes.EXAMFORMS,
+    },
+    {
+      title: "Competitions",
+      icon: <i className="fa-light fa-house"></i>,
+      iconActive: <i className="fa-solid fa-house"></i>,
+      path: appRoutes.ACOMPETITIONS,
     },
     // {
     //   title: "Stories",
