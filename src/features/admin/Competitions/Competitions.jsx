@@ -20,6 +20,9 @@ const Competitions = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [openSee, setOpenSee] = useState(false);
+  const handleOpenSee = () => setOpenSee(true);
+  const handleCloseSee = () => setOpenSee(false);
   const {
     register,
     handleSubmit,
@@ -69,6 +72,7 @@ const Competitions = () => {
               viewBox="0 0 24 24"
               id="Lock"
               width={15}
+              onClick={handleOpenSee}
             >
               <path
                 d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
@@ -265,6 +269,81 @@ const Competitions = () => {
             >
               Save
             </Button>
+          </form>
+        </Box>
+      </Modal>
+      <Modal
+        open={openSee}
+        onClose={handleCloseSee}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        className="flex items-center justify-center "
+      >
+        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className=" flex flex-col p-6 gap-5"
+          >
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              className="font-bold self-center"
+            >
+              Competition
+            </Typography>
+            <div className="flex flex-col !justify-center !items-center gap-4">
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Id</p>
+                <p>123</p>
+              </div>
+
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Name</p>
+                <p>Thi lập trình</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">EmpoyeeId</p>
+                <p>123</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Name</p>
+                <p>Thi lập trình</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Number min</p>
+                <p>8</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Number max</p>
+                <p>9</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">slgiai</p>
+                <p>9</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Status</p>
+                <Chip
+                  label="Active"
+                  color="success"
+                  variant="outlined"
+                  className="w-20 !h-7"
+                />
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Rounds</p>
+                <p>123</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Time Start</p>
+                <p>123</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Time End</p>
+                <p>123</p>
+              </div>
+            </div>
           </form>
         </Box>
       </Modal>
