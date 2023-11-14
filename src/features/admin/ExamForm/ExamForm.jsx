@@ -1,20 +1,8 @@
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import Table from "../../../components/Table/Table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Table from "../../../components/Table/Table";
 
 const ExamForms = () => {
   const [age, setAge] = useState("");
