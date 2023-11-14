@@ -33,39 +33,14 @@ const ExamForms = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 80,
+      width: 300,
     },
-    { field: "accountid", headerName: "accountid", width: 150 },
-    { field: "email", headerName: "email", width: 200 },
-    { field: "role", headerName: "role", width: 100 },
-    { field: "fullname", headerName: "fullname", width: 200 },
-    { field: "cccd", headerName: "CCCD", width: 150 },
-    {
-      field: "active",
-      headerName: "Active",
-      width: 100,
-      renderCell: (params) => {
-        return params.row.active ? (
-          <Chip
-            label="Active"
-            color="success"
-            variant="outlined"
-            className="w-20 !h-7"
-          />
-        ) : (
-          <Chip
-            label="Active"
-            color="success"
-            variant="outlined"
-            className="w-20 !h-7"
-          />
-        );
-      },
-    },
+    { field: "name", headerName: "name", width: 400 },
     {
       field: "actions",
       type: "actions",
       headerName: "Actions",
+      width: 400,
       getActions: (params) => [
         <GridActionsCellItem
           icon={
@@ -108,7 +83,7 @@ const ExamForms = () => {
       role: "admin",
       email: "admin@gmail.com",
       active: 1,
-      fullname: "Nguyễn Thúy An",
+      name: "Nguyễn Thúy An",
       accountid: "1",
       cccd: 1765873678,
     },
@@ -117,7 +92,7 @@ const ExamForms = () => {
       role: "employee",
       email: "teacher@gmail.com",
       active: 1,
-      fullname: "Trần Thiên Bảo",
+      name: "Trần Thiên Bảo",
       accountid: 2,
       cccd: 2674563789,
     },
@@ -130,7 +105,7 @@ const ExamForms = () => {
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
-        <span className="text-2xl font-semibold">Employees</span>
+        <span className="text-2xl font-semibold">Exam Form</span>
         <Button
           variant="contained flex-end !bg-[#000] !text-white !rounded-md"
           onClick={handleOpen}
@@ -179,7 +154,7 @@ const ExamForms = () => {
         aria-describedby="modal-modal-description"
         className="flex items-center justify-center "
       >
-        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl">
+        <Box className="bg-white w-[400px] min-h-[200px]  rounded-2xl">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className=" flex flex-col p-4 gap-5"
@@ -190,75 +165,21 @@ const ExamForms = () => {
               component="h2"
               className="font-bold "
             >
-              Add Employee
+              Add Exam Form
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
               <TextField
                 id="outlined-basic"
                 size="small"
-                label="FullName*"
+                label="Name*"
                 variant="outlined"
-                error={!!errors.fullname}
-                helperText={errors.fullname ? errors.fullname.message : ``}
+                error={!!errors.name}
+                helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
-                {...register("fullname", {
-                  required: "fullname is required filed",
+                {...register("name", {
+                  required: "Name is required filed",
                 })}
               />
-              <TextField
-                id="outlined-basic"
-                size="small"
-                label="Email*"
-                variant="outlined"
-                className="w-full"
-                error={!!errors.email}
-                helperText={errors.email ? errors.email.message : ``}
-                {...register("email", { required: "email is required filed" })}
-              />
-              <TextField
-                id="outlined-basic"
-                size="small"
-                label="CCCD/CMND*"
-                variant="outlined"
-                className="w-full"
-                error={!!errors.cccd}
-                helperText={errors.cccd ? errors.cccd.message : ``}
-                {...register("cccd", {
-                  required: "CCCD/CMND is required filed",
-                  minLength: {
-                    value: 10,
-                    message: "CCCD/CMND must be exactly 10 characters",
-                  },
-                  maxLength: {
-                    value: 10,
-                    message: "CCCD/CMND must be exactly 10 characters",
-                  },
-                })}
-              />
-
-              <FormControl
-                className="w-full"
-                size="small"
-                error={!!errors.role}
-              >
-                <InputLabel id="demo-select-small-label">Role*</InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={age}
-                  label="Role"
-                  onChange={handleChange}
-                  size="small"
-                  {...register("role", { required: "role is required filed" })}
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-                {!!errors.role && (
-                  <FormHelperText>{errors.role.message}</FormHelperText>
-                )}
-              </FormControl>
             </div>
 
             <Button
