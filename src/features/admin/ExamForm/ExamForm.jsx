@@ -3,16 +3,13 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
-import { useQuery } from "react-query";
-import { getExamForms } from "../../../services/examFormService";
+import { useMutation, useQuery } from "react-query";
+import {
+  createExamForm,
+  getExamForms,
+} from "../../../services/examFormService";
 
 const ExamForms = () => {
-  const [age, setAge] = useState("");
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
   const {
     register,
     handleSubmit,
@@ -68,7 +65,6 @@ const ExamForms = () => {
     },
   ];
   const [rows, setRows] = useState([]);
-  // const rows = [
   //   {
   //     id: "1",
   //     role: "admin",
@@ -91,7 +87,10 @@ const ExamForms = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    createExamFormMutation.mutate(data);
+    setOpen(false);
+  };
 
   useQuery({
     queryKey: ["exams"],
@@ -101,7 +100,12 @@ const ExamForms = () => {
     },
   });
 
-  console.log("row", rows);
+  const createExamFormMutation = useMutation({
+    mutationFn: (data) => createExamForm(data),
+    onSuccess: (data) => {
+      setRows((state) => [data.data, ...state]);
+    },
+  });
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
