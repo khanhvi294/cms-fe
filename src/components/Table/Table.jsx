@@ -6,7 +6,7 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const VISIBLE_FIELDS = ["name", "rating", "country", "dateCreated", "isAdmin"];
 
@@ -24,9 +24,13 @@ const Table = ({ rows, columns }) => {
   // const colData = (colArrayData) => {
   //   return colArrayData.map((item) => item.name).join(", ");
   // };
+  useEffect(() => {
+    console.log(rows.length);
+    setTableData(rows);
+  }, [rows]);
 
   return (
-    <div className="w-full">
+    <div className="w-full" key={rows}>
       <div className=" bg-white mt-7 w-full ">
         <div style={{ minHeight: 614, width: "100%" }}>
           <DataGrid

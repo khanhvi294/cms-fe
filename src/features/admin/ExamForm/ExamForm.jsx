@@ -3,6 +3,8 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
+import { useQuery } from "react-query";
+import { getExamForms } from "../../../services/examFormService";
 
 const ExamForms = () => {
   const [age, setAge] = useState("");
@@ -65,31 +67,41 @@ const ExamForms = () => {
       ],
     },
   ];
-  const rows = [
-    {
-      id: "1",
-      role: "admin",
-      email: "admin@gmail.com",
-      active: 1,
-      name: "Nguyễn Thúy An",
-      accountid: "1",
-      cccd: 1765873678,
-    },
-    {
-      id: "2",
-      role: "employee",
-      email: "teacher@gmail.com",
-      active: 1,
-      name: "Trần Thiên Bảo",
-      accountid: 2,
-      cccd: 2674563789,
-    },
-  ];
+  const [rows, setRows] = useState([]);
+  // const rows = [
+  //   {
+  //     id: "1",
+  //     role: "admin",
+  //     email: "admin@gmail.com",
+  //     active: 1,
+  //     name: "Nguyễn Thúy An",
+  //     accountid: "1",
+  //     cccd: 1765873678,
+  //   },
+  //   {
+  //     id: "2",
+  //     role: "employee",
+  //     email: "teacher@gmail.com",
+  //     active: 1,
+  //     name: "Trần Thiên Bảo",
+  //     accountid: 2,
+  //     cccd: 2674563789,
+  //   },
+  // ];
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onSubmit = (data) => console.log(data);
-  console.log(errors?.email);
+
+  useQuery({
+    queryKey: ["exams"],
+    queryFn: getExamForms,
+    onSuccess: (data) => {
+      setRows(data.data.data);
+    },
+  });
+
+  console.log("row", rows);
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -134,6 +146,7 @@ const ExamForms = () => {
           Add
         </Button>
       </div>
+      {/* {console.log("render ", rows)} */}
       <Table columns={columns} rows={rows} />
       <Modal
         open={open}
