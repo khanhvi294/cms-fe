@@ -13,11 +13,14 @@ import {
 import Table from "../../../components/Table/Table";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { getClasses } from "../../../services/classService";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [rows, setRows] = useState([]);
   const {
     register,
     handleSubmit,
@@ -31,27 +34,20 @@ const Classes = () => {
       width: 150,
     },
 
-    { field: "courseid", headerName: "courseid", width: 200 },
+    { field: "courseId", headerName: "courseid", width: 200 },
     { field: "name", headerName: "name", width: 250 },
-    { field: "timestart", headerName: "timestart", width: 250 },
-    { field: "timeend", headerName: "timeend", width: 250 },
+    { field: "timeStart", headerName: "timestart", width: 250 },
+    { field: "timeEnd", headerName: "timeend", width: 250 },
   ];
-  const rows = [
-    {
-      id: "1",
-      courseid: "4",
-      email: "sv01@gmail.com",
-      active: 1,
-      name: "Nguyễn Thúy Hạnh",
+
+  useQuery({
+    queryKey: ["classes"],
+    queryFn: getClasses,
+    onSuccess: (data) => {
+      console.log(data.data.data);
+      setRows(data.data.data);
     },
-    {
-      id: "2",
-      email: "sv02@gmail.com",
-      courseid: "6",
-      active: 1,
-      name: "Trần Thiên Bảo",
-    },
-  ];
+  });
 
   const onSubmit = (data) => console.log(data);
   return (
