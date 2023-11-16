@@ -21,11 +21,11 @@ const Students = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 100,
+      width: 150,
     },
-    { field: "email", headerName: "email", width: 250 },
-    { field: "accountId", headerName: "accountId", width: 200 },
-    { field: "fullName", headerName: "fullName", width: 250 },
+    { field: "email", headerName: "email", width: 300 },
+
+    { field: "fullName", headerName: "fullName", width: 300 },
     {
       field: "active",
       headerName: "Active",
@@ -88,12 +88,28 @@ const Students = () => {
       ],
     },
   ];
+
+  const handleSpreed = (oriObject, key) => {
+    let subObject = oriObject[key];
+    let modifiedObject = {
+      ...oriObject,
+      ...subObject,
+    };
+
+    delete modifiedObject[key];
+
+    return modifiedObject;
+  };
+
   useQuery({
     queryKey: ["students"],
     queryFn: getStudents,
     onSuccess: (data) => {
-      console.log(data.data.data);
-      setRows(data.data.data);
+      const processArray = data.data.data.map((item) =>
+        handleSpreed(item, "accountStudent")
+      );
+
+      setRows(processArray);
     },
   });
 
@@ -113,8 +129,7 @@ const Students = () => {
   const createStudentMutation = useMutation({
     mutationFn: (data) => createStudent(data),
     onSuccess: (data) => {
-      console.log(data);
-      setRows((state) => [data.data, ...state]);
+      setRows((state) => [handleSpreed(data.data, "accountStudent"), ...state]);
     },
   });
 

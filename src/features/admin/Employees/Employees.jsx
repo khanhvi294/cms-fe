@@ -159,7 +159,10 @@ const Employees = () => {
   const createEmployeeMutation = useMutation({
     mutationFn: (data) => createEmployee(data),
     onSuccess: (data) => {
-      setRows((state) => [data.data, ...state]);
+      setRows((state) => [
+        handleSpreed(data.data, "accountEmployee"),
+        ...state,
+      ]);
     },
   });
 
@@ -167,23 +170,7 @@ const Employees = () => {
     <>
       <div className="flex gap-2 justify-between items-center">
         <span className="text-2xl font-semibold">Employees</span>
-        <button onClick={() => toast.success("Success Notification !")}>
-          hhh
-        </button>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        {/* Same as */}
-        <ToastContainer />
+
         <Button
           variant="contained flex-end !bg-[#000] !text-white !rounded-md"
           onClick={handleOpen}
