@@ -3,8 +3,8 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
-import { getStudents } from "../../../services/studentService";
+import { useMutation, useQuery } from "react-query";
+import { createStudent, getStudents } from "../../../services/studentService";
 
 const Students = () => {
   const [open, setOpen] = useState(false);
@@ -24,7 +24,7 @@ const Students = () => {
       width: 100,
     },
     { field: "email", headerName: "email", width: 250 },
-    { field: "accountid", headerName: "accountid", width: 200 },
+    { field: "accountId", headerName: "accountId", width: 200 },
     { field: "fullName", headerName: "fullName", width: 250 },
     {
       field: "active",
@@ -96,7 +96,33 @@ const Students = () => {
       setRows(data.data.data);
     },
   });
-  const onSubmit = (data) => console.log(data);
+
+  const handleCollectKeys = (keyArr, newKey, dataOri) => {
+    // Tạo một đối tượng mới từ originalObject chỉ với các keys cần gom lại
+    let combinedValues = {};
+    keyArr.forEach((key) => (combinedValues[key] = dataOri[key]));
+
+    // Tạo modifiedObject với spread operator và key mới chứa các giá trị đã được gom lại
+    let modifiedObject = {
+      ...dataOri,
+      [newKey]: combinedValues,
+    };
+    keyArr.forEach((key) => delete modifiedObject[key]);
+    return modifiedObject;
+  };
+  const createStudentMutation = useMutation({
+    mutationFn: (data) => createStudent(data),
+    onSuccess: (data) => {
+      console.log(data);
+      setRows((state) => [data.data, ...state]);
+    },
+  });
+
+  const onSubmit = (data) => {
+    const newStudent = handleCollectKeys(["email"], "accountStudent", data);
+    createStudentMutation.mutate(newStudent);
+    // setOpen(false);
+  };
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -168,10 +194,10 @@ const Students = () => {
                 size="small"
                 label="FullName*"
                 variant="outlined"
-                error={!!errors.fullname}
-                helperText={errors.fullname ? errors.fullname.message : ``}
+                error={!!errors.fullName}
+                helperText={errors.fullName ? errors.fullName.message : ``}
                 className="w-full"
-                {...register("fullname", {
+                {...register("fullName", {
                   required: "fullname is required filed",
                 })}
               />
