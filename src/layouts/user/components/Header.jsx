@@ -1,8 +1,12 @@
 import { Avatar, Button, Menu, MenuItem, Popover } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const userName = useSelector(
+    (state) => state.user?.data?.info?.accountStudent?.fullName
+  );
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -25,8 +29,10 @@ const Header = () => {
         >
           <Avatar alt="Hemy Sharp" src="/static/images/avatar/1.jpg" />
           <div>
-            <p className="!normal-case">Thúy Hạnh</p>
-            <p className="!uppercase !text-xs">Student</p>
+            <p className="!normal-case">{userName}</p>
+            <p className="!uppercase !text-xs">
+              {userName ? "Student" : "log in"}
+            </p>
           </div>
         </Button>
         <Popover

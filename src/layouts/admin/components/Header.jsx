@@ -1,8 +1,12 @@
-import { Avatar, Button, IconButton, Menu, MenuItem } from "@mui/material";
-import React, { useState } from "react";
+import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const userName = useSelector(
+    (state) => state.user?.data?.info?.accountEmployee?.fullName
+  );
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,7 +34,7 @@ const Header = () => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
       >
-        <Avatar sx={{ width: 36, height: 36 }}>M</Avatar>
+        <Avatar sx={{ width: 36, height: 36 }}>A</Avatar>
       </IconButton>
       <Menu
         id="basic-menu"
