@@ -15,6 +15,7 @@ import { useMutation } from "react-query";
 import { login } from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "../../redux/slices/userSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
@@ -41,10 +42,12 @@ const Login = () => {
   };
   const dispatch = useDispatch();
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
+  const navigate = useNavigate();
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       if (!data.data.token) return;
       dispatch(setAccessToken(data.data.token));
+      navigate("/");
     },
   });
   const handleLogin = (account) => {

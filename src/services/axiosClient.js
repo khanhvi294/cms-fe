@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import { logout } from "../redux/slices/userSlice";
 import { setIsCallLogin } from "../redux/slices/authSlice";
 import store from "../redux/store";
+import { appRoutes } from "../routes/appRouter";
 
 const baseURL = import.meta.env.VITE_REACT_APP_API_URL;
 const axiosClient = axios.create({
@@ -38,7 +39,7 @@ axiosClientPrivate.interceptors.request.use(
       const today = new Date();
       if (decodeToken.exp < today.getTime() / 1000) {
         store.dispatch(logout());
-        // window.location.href = appRoutes.AUTH_LOGIN;
+        window.location.href = appRoutes.LOGIN;
       }
     }
 
