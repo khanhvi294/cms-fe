@@ -3,11 +3,14 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
+import { useQuery } from "react-query";
+import { getCourses } from "../../../services/courseService";
 
 const Courses = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [rows, setRows] = useState([]);
   const {
     register,
     handleSubmit,
@@ -21,7 +24,7 @@ const Courses = () => {
       width: 260,
     },
     { field: "name", headerName: "name", width: 350 },
-    { field: "timetrainee", headerName: "TimeTrainee", width: 250 },
+    { field: "trainingTime", headerName: "TimeTrainee", width: 250 },
     {
       field: "actions",
       type: "actions",
@@ -63,22 +66,15 @@ const Courses = () => {
       ],
     },
   ];
-  const rows = [
-    {
-      id: "1",
-      courseid: "4",
-      email: "sv01@gmail.com",
-      active: 1,
-      name: "Nguyễn Thúy Hạnh",
+
+  useQuery({
+    queryKey: ["courses"],
+    queryFn: getCourses,
+    onSuccess: (data) => {
+      console.log(data.data.data);
+      setRows(data.data.data);
     },
-    {
-      id: "2",
-      email: "sv02@gmail.com",
-      courseid: "6",
-      active: 1,
-      name: "Trần Thiên Bảo",
-    },
-  ];
+  });
 
   const onSubmit = (data) => console.log(data);
   return (

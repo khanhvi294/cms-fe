@@ -2,8 +2,8 @@ import { axiosClientPrivate } from "./axiosClient";
 
 const url = "/courses";
 const CoursesApi = {
-  getCourse: () => axiosClientPrivate.get(`${url}`),
-  createCourse: (Course) => axiosClientPrivate.post(`${url}`, Course),
+  getCourses: () => axiosClientPrivate.get(`${url}`),
+  createCourse: (course) => axiosClientPrivate.post(`${url}`, course),
 };
-export const { createCourse, getCourse } = CoursesApi;
+export const { createCourse, getCourses } = CoursesApi;
 export default CoursesApi;
