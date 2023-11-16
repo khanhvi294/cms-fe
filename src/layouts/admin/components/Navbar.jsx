@@ -37,7 +37,7 @@ const Navbar = () => {
       title: "Exam Form",
       icon: <i className="fa-light fa-house"></i>,
       iconActive: <i className="fa-solid fa-house"></i>,
-      path: appRoutes.EXAMFORMS,
+      path: appRoutes.AEXAMFORMS,
     },
     {
       title: "Competitions",

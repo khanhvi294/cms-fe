@@ -1,7 +1,7 @@
 export const appRoutes = {
   HOME: "/",
   COMPETITIONS: "/competitions",
-  EXAMFORMS: "/examforms",
+  AEXAMFORMS: "/admin/examforms",
   CLASSES: "/classes",
   DETAIL: "/detail",
   ACLASSES: "/admin/classes",

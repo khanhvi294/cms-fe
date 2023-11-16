@@ -41,7 +41,7 @@ export const AppRouter = () => {
         <Route path={appRoutes.ACLASSES} element={<Classes />} />
         <Route path={appRoutes.ACOURSES} element={<Courses />} />
         <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
-        <Route path={appRoutes.EXAMFORMS} element={<ExamForms />} />
+        <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
       </Route>
     </Routes>
   );

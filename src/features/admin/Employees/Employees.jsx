@@ -15,14 +15,10 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
+import { getEmployees } from "../../../services/employeeService";
 
 const Employees = () => {
-  const [age, setAge] = useState("");
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
   const {
     register,
     handleSubmit,
@@ -38,7 +34,7 @@ const Employees = () => {
     { field: "accountid", headerName: "accountid", width: 150 },
     { field: "email", headerName: "email", width: 200 },
     { field: "role", headerName: "role", width: 100 },
-    { field: "fullname", headerName: "fullname", width: 200 },
+    { field: "fullName", headerName: "fullname", width: 200 },
     { field: "cccd", headerName: "CCCD", width: 150 },
     {
       field: "active",
@@ -102,31 +98,40 @@ const Employees = () => {
       ],
     },
   ];
-  const rows = [
-    {
-      id: "1",
-      role: "admin",
-      email: "admin@gmail.com",
-      active: 1,
-      fullname: "Nguyễn Thúy An",
-      accountid: "1",
-      cccd: 1765873678,
+  const [rows, setRows] = useState([]);
+  useQuery({
+    queryKey: ["employees"],
+    queryFn: getEmployees,
+    onSuccess: (data) => {
+      console.log(data.data.data);
+      setRows(data.data.data);
     },
-    {
-      id: "2",
-      role: "employee",
-      email: "teacher@gmail.com",
-      active: 1,
-      fullname: "Trần Thiên Bảo",
-      accountid: 2,
-      cccd: 2674563789,
-    },
-  ];
+  });
+  // const rows = [
+  //   {
+  //     id: "1",
+  //     role: "admin",
+  //     email: "admin@gmail.com",
+  //     active: 1,
+  //     fullname: "Nguyễn Thúy An",
+  //     accountid: "1",
+  //     cccd: 1765873678,
+  //   },
+  //   {
+  //     id: "2",
+  //     role: "employee",
+  //     email: "teacher@gmail.com",
+  //     active: 1,
+  //     fullname: "Trần Thiên Bảo",
+  //     accountid: 2,
+  //     cccd: 2674563789,
+  //   },
+  // ];
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onSubmit = (data) => console.log(data);
-  console.log(errors?.email);
+ 
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -236,7 +241,7 @@ const Employees = () => {
                 })}
               />
 
-              <FormControl
+              {/* <FormControl
                 className="w-full"
                 size="small"
                 error={!!errors.role}
@@ -258,7 +263,7 @@ const Employees = () => {
                 {!!errors.role && (
                   <FormHelperText>{errors.role.message}</FormHelperText>
                 )}
-              </FormControl>
+              </FormControl> */}
             </div>
 
             <Button
