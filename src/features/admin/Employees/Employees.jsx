@@ -1,21 +1,9 @@
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import Table from "../../../components/Table/Table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
+import Table from "../../../components/Table/Table";
 import {
   createEmployee,
   getEmployees,
@@ -102,11 +90,27 @@ const Employees = () => {
     },
   ];
   const [rows, setRows] = useState([]);
+  const hanldetemp = (oriObject, key) => {
+    // "Mở rộng" object con thành các key và value của object cha
+    let subObject = oriObject["fullName"];
+    let modifiedObject = {
+      ...oriObject,
+      ...subObject,
+    };
+    console.log("orii", subObject);
+    console.log("kett", modifiedObject);
+
+    // Xóa key3 để loại bỏ object con
+    // delete modifiedObject[key];
+
+    // console.log("modidiii", modifiedObject);
+  };
   useQuery({
     queryKey: ["employees"],
     queryFn: getEmployees,
     onSuccess: (data) => {
       console.log(data.data.data);
+      hanldetemp(data.data.data, "accountEmployee");
       setRows(data.data.data);
     },
   });
