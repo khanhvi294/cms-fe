@@ -8,6 +8,7 @@ import {
   createEmployee,
   getEmployees,
 } from "../../../services/employeeService";
+import { ToastContainer, toast } from "react-toastify";
 
 const Employees = () => {
   const {
@@ -20,11 +21,11 @@ const Employees = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 80,
+      width: 100,
     },
-    { field: "accountid", headerName: "accountid", width: 150 },
-    { field: "email", headerName: "email", width: 200 },
-    { field: "role", headerName: "role", width: 100 },
+
+    { field: "email", headerName: "email", width: 250 },
+    { field: "role", headerName: "role", width: 200 },
     { field: "fullName", headerName: "fullname", width: 200 },
     { field: "cccd", headerName: "CCCD", width: 150 },
     {
@@ -90,28 +91,28 @@ const Employees = () => {
     },
   ];
   const [rows, setRows] = useState([]);
-  const hanldetemp = (oriObject, key) => {
-    // "Mở rộng" object con thành các key và value của object cha
-    let subObject = oriObject["fullName"];
+
+  const handleSpreed = (oriObject, key) => {
+    let subObject = oriObject[key];
     let modifiedObject = {
       ...oriObject,
       ...subObject,
     };
-    console.log("orii", subObject);
-    console.log("kett", modifiedObject);
 
-    // Xóa key3 để loại bỏ object con
-    // delete modifiedObject[key];
+    delete modifiedObject[key];
 
-    // console.log("modidiii", modifiedObject);
+    return modifiedObject;
   };
+
   useQuery({
     queryKey: ["employees"],
     queryFn: getEmployees,
     onSuccess: (data) => {
-      console.log(data.data.data);
-      hanldetemp(data.data.data, "accountEmployee");
-      setRows(data.data.data);
+      const processArray = data.data.data.map((item) =>
+        handleSpreed(item, "accountEmployee")
+      );
+
+      setRows(processArray);
     },
   });
   // const rows = [
@@ -166,6 +167,23 @@ const Employees = () => {
     <>
       <div className="flex gap-2 justify-between items-center">
         <span className="text-2xl font-semibold">Employees</span>
+        <button onClick={() => toast.success("Success Notification !")}>
+          hhh
+        </button>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/* Same as */}
+        <ToastContainer />
         <Button
           variant="contained flex-end !bg-[#000] !text-white !rounded-md"
           onClick={handleOpen}
