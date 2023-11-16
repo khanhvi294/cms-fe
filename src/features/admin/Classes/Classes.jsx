@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { createClass, getClasses } from "../../../services/classService";
+import { toast } from "react-toastify";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
@@ -54,6 +55,10 @@ const Classes = () => {
     onSuccess: (data) => {
       console.log(data);
       setRows((state) => [data.data, ...state]);
+      toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 

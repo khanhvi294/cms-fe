@@ -163,6 +163,10 @@ const Employees = () => {
         handleSpreed(data.data, "accountEmployee"),
         ...state,
       ]);
+      toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 

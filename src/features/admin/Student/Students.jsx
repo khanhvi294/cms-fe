@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { createStudent, getStudents } from "../../../services/studentService";
+import { toast } from "react-toastify";
 
 const Students = () => {
   const [open, setOpen] = useState(false);
@@ -129,7 +130,11 @@ const Students = () => {
   const createStudentMutation = useMutation({
     mutationFn: (data) => createStudent(data),
     onSuccess: (data) => {
+      toast.success("Create successfully!");
       setRows((state) => [handleSpreed(data.data, "accountStudent"), ...state]);
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 

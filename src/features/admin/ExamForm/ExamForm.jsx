@@ -8,6 +8,7 @@ import {
   createExamForm,
   getExamForms,
 } from "../../../services/examFormService";
+import { toast } from "react-toastify";
 
 const ExamForms = () => {
   const {
@@ -104,6 +105,10 @@ const ExamForms = () => {
     mutationFn: (data) => createExamForm(data),
     onSuccess: (data) => {
       setRows((state) => [data.data, ...state]);
+      toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
   return (

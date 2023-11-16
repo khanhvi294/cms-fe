@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
 import { useMutation, useQuery } from "react-query";
 import { createCourse, getCourses } from "../../../services/courseService";
+import { toast } from "react-toastify";
 
 const Courses = () => {
   const [open, setOpen] = useState(false);
@@ -81,6 +82,10 @@ const Courses = () => {
     onSuccess: (data) => {
       console.log(data);
       setRows((state) => [data.data, ...state]);
+      toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 
