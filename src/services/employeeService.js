@@ -3,7 +3,7 @@ import { axiosClientPrivate } from "./axiosClient";
 const url = "/employees";
 const employeeApi = {
   getEmployees: () => axiosClientPrivate.get(`${url}`),
-  createExamForm: (examForm) => axiosClientPrivate.post(`${url}`, examForm),
+  createEmployee: (employee) => axiosClientPrivate.post(`${url}`, employee),
 };
-export const { createExamForm, getEmployees } = employeeApi;
+export const { createEmployee, getEmployees } = employeeApi;
 export default employeeApi;

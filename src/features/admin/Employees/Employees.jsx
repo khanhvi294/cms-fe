@@ -15,8 +15,11 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
-import { getEmployees } from "../../../services/employeeService";
+import { useMutation, useQuery } from "react-query";
+import {
+  createEmployee,
+  getEmployees,
+} from "../../../services/employeeService";
 
 const Employees = () => {
   const {
@@ -130,8 +133,31 @@ const Employees = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const onSubmit = (data) => console.log(data);
- 
+  const onSubmit = (data) => {
+    const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
+    createEmployeeMutation.mutate(newEmployee);
+    setOpen(false);
+  };
+  const handleCollectKeys = (keyArr, newKey, dataOri) => {
+    // Tạo một đối tượng mới từ originalObject chỉ với các keys cần gom lại
+    let combinedValues = {};
+    keyArr.forEach((key) => (combinedValues[key] = dataOri[key]));
+
+    // Tạo modifiedObject với spread operator và key mới chứa các giá trị đã được gom lại
+    let modifiedObject = {
+      ...dataOri,
+      [newKey]: combinedValues,
+    };
+    keyArr.forEach((key) => delete modifiedObject[key]);
+    return modifiedObject;
+  };
+  const createEmployeeMutation = useMutation({
+    mutationFn: (data) => createEmployee(data),
+    onSuccess: (data) => {
+      setRows((state) => [data.data, ...state]);
+    },
+  });
+
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -203,10 +229,10 @@ const Employees = () => {
                 size="small"
                 label="FullName*"
                 variant="outlined"
-                error={!!errors.fullname}
-                helperText={errors.fullname ? errors.fullname.message : ``}
+                error={!!errors.fullName}
+                helperText={errors.fullName ? errors.fullName.message : ``}
                 className="w-full"
-                {...register("fullname", {
+                {...register("fullName", {
                   required: "fullname is required filed",
                 })}
               />
@@ -226,9 +252,9 @@ const Employees = () => {
                 label="CCCD/CMND*"
                 variant="outlined"
                 className="w-full"
-                error={!!errors.cccd}
-                helperText={errors.cccd ? errors.cccd.message : ``}
-                {...register("cccd", {
+                error={!!errors.CCCD}
+                helperText={errors.CCCD ? errors.CCCD.message : ``}
+                {...register("CCCD", {
                   required: "CCCD/CMND is required filed",
                   minLength: {
                     value: 10,
