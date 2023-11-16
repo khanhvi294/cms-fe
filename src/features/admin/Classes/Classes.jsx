@@ -13,8 +13,8 @@ import {
 import Table from "../../../components/Table/Table";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useQuery } from "react-query";
-import { getClasses } from "../../../services/classService";
+import { useMutation, useQuery } from "react-query";
+import { createClass, getClasses } from "../../../services/classService";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
@@ -49,7 +49,19 @@ const Classes = () => {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const createStudentMutation = useMutation({
+    mutationFn: (data) => createClass(data),
+    onSuccess: (data) => {
+      console.log(data);
+      setRows((state) => [data.data, ...state]);
+    },
+  });
+
+  const onSubmit = (data) => {
+    createStudentMutation.mutate(data);
+    // setOpen(false);
+  };
+
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
