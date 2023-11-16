@@ -3,8 +3,8 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
-import { useQuery } from "react-query";
-import { getCourses } from "../../../services/courseService";
+import { useMutation, useQuery } from "react-query";
+import { createCourse, getCourses } from "../../../services/courseService";
 
 const Courses = () => {
   const [open, setOpen] = useState(false);
@@ -76,7 +76,18 @@ const Courses = () => {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const createCourseMutation = useMutation({
+    mutationFn: (data) => createCourse(data),
+    onSuccess: (data) => {
+      console.log(data);
+      setRows((state) => [data.data, ...state]);
+    },
+  });
+
+  const onSubmit = (data) => {
+    createCourseMutation.mutate(data);
+    setOpen(false);
+  };
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -148,11 +159,11 @@ const Courses = () => {
                 size="small"
                 label="Name*"
                 variant="outlined"
-                error={!!errors.fullname}
-                helperText={errors.fullname ? errors.fullname.message : ``}
+                error={!!errors.name}
+                helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
-                {...register("fullname", {
-                  required: "fullname is required filed",
+                {...register("name", {
+                  required: "Name is required filed",
                 })}
               />
               <TextField
@@ -161,9 +172,14 @@ const Courses = () => {
                 label="Time Trainee*"
                 variant="outlined"
                 className="w-full"
-                error={!!errors.email}
-                helperText={errors.email ? errors.email.message : ``}
-                {...register("email", { required: "email is required filed" })}
+                type="number"
+                error={!!errors.trainingTime}
+                helperText={
+                  errors.trainingTime ? errors.trainingTime.message : ``
+                }
+                {...register("trainingTime", {
+                  required: "Training Time is required filed",
+                })}
               />
             </div>
 

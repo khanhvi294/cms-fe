@@ -121,7 +121,7 @@ const Students = () => {
   const onSubmit = (data) => {
     const newStudent = handleCollectKeys(["email"], "accountStudent", data);
     createStudentMutation.mutate(newStudent);
-    // setOpen(false);
+    setOpen(false);
   };
   return (
     <>
