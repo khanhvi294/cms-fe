@@ -12,7 +12,7 @@ import {
 import Input from "@mui/material/Input";
 import { useState } from "react";
 import { useMutation } from "react-query";
-import { login } from "../../services/authApi";
+import { login } from "../../services/authService";
 import { useDispatch } from "react-redux";
 import { setAccessToken } from "../../redux/slices/userSlice";
 
