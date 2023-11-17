@@ -9,5 +9,6 @@ export const appRoutes = {
   AEMPLOYEES: "/admin/employees",
   ASTUDENTS: "/admin/students",
   ACOMPETITIONS: "/admin/competitions",
+  AROUNDS: "/admin/rounds",
   LOGIN: "/login",
 };

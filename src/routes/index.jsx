@@ -14,6 +14,7 @@ import Courses from "../features/admin/Courses/Courses";
 import Competitions from "../features/admin/Competitions/Competitions";
 import { appRoutes } from "./appRouter";
 import ExamForms from "../features/admin/ExamForm/ExamForm";
+import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
   {
@@ -42,6 +43,7 @@ export const AppRouter = () => {
         <Route path={appRoutes.ACOURSES} element={<Courses />} />
         <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
         <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
+        <Route path={appRoutes.AROUNDS} element={<Rounds />} />
       </Route>
     </Routes>
   );
