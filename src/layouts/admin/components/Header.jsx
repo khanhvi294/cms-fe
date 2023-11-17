@@ -1,9 +1,14 @@
 import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { appRoutes } from "../../../routes/appRouter";
+import { logout } from "../../../redux/slices/userSlice";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userName = useSelector(
     (state) => state.user?.data?.info?.accountEmployee?.fullName
   );
@@ -13,6 +18,12 @@ const Header = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    navigate(appRoutes.LOGIN);
+    setAnchorEl(null);
+    dispatch(logout());
   };
   return (
     <div className="flex gap-1 justify-end items-center h-full">
@@ -47,7 +58,7 @@ const Header = () => {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );

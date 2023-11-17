@@ -1,9 +1,14 @@
 import { Avatar, Button, Menu, MenuItem, Popover } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../../redux/slices/userSlice";
+import { appRoutes } from "../../../routes/appRouter";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userName = useSelector(
     (state) => state.user?.data?.info?.accountStudent?.fullName
   );
@@ -14,6 +19,11 @@ const Header = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    navigate(appRoutes.LOGIN);
+    dispatch(logout());
   };
 
   const open = Boolean(anchorEl);
@@ -56,7 +66,7 @@ const Header = () => {
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </Popover>
       </div>
