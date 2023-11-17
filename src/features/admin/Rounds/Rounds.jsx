@@ -13,6 +13,7 @@ import {
 } from "../../../services/competitionService";
 import ModalSeeCompetition from "../../../components/admin/competitions/modalSee";
 import { getRounds } from "../../../services/roundService";
+import ModalSeeRound from "../../../components/admin/rounds/modalSeeRound";
 
 const Rounds = () => {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ const Rounds = () => {
   const handleCloseSee = () => setOpenSee(false);
   const [dateStart, setDateStart] = useState(new Date());
   const [rows, setRows] = useState([]);
-  const [competitionSee, setCompetitionSee] = useState();
+  const [roundSee, setRoundSee] = useState();
 
   const {
     register,
@@ -56,7 +57,7 @@ const Rounds = () => {
               id="Eye"
               width={15}
               onClick={() => {
-                setCompetitionSee(params.row);
+                setRoundSee(params.row);
                 handleOpenSee();
               }}
             >
@@ -203,7 +204,7 @@ const Rounds = () => {
               component="h2"
               className="font-bold "
             >
-              Add Competition
+              Add Round
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
               <TextField
@@ -303,10 +304,10 @@ const Rounds = () => {
         </Box>
       </Modal>
       {openSee && (
-        <ModalSeeCompetition
+        <ModalSeeRound
           open={openSee}
           handleClose={handleCloseSee}
-          competition={competitionSee}
+          round={roundSee}
         />
       )}
     </>
