@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { createClass, getClasses } from "../../../services/classService";
 import { toast } from "react-toastify";
+import { getCourses } from "../../../services/courseService";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
@@ -49,11 +50,18 @@ const Classes = () => {
       setRows(data.data.data);
     },
   });
+  const { data: courses } = useQuery({
+    queryKey: ["courses"],
+    queryFn: getCourses,
+    onSuccess: (data) => {
+      console.log(data.data.data);
+      setRows(data.data.data);
+    },
+  });
 
   const createStudentMutation = useMutation({
     mutationFn: (data) => createClass(data),
     onSuccess: (data) => {
-      console.log(data);
       setRows((state) => [data.data, ...state]);
       toast.success("Create successfully!");
     },
@@ -64,7 +72,7 @@ const Classes = () => {
 
   const onSubmit = (data) => {
     createStudentMutation.mutate(data);
-    // setOpen(false);
+    setOpen(false);
   };
 
   return (
@@ -122,7 +130,7 @@ const Classes = () => {
         <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className=" flex flex-col p-4 gap-5"
+            className=" flex flex-col p-4 gap-6"
           >
             <Typography
               id="modal-modal-title"
@@ -136,24 +144,26 @@ const Classes = () => {
               <TextField
                 id="outlined-basic"
                 size="small"
-                label="FullName*"
+                label="Name*"
                 variant="outlined"
-                error={!!errors.fullname}
-                helperText={errors.fullname ? errors.fullname.message : ``}
+                error={!!errors.name}
+                helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
-                {...register("fullname", {
-                  required: "fullname is required filed",
+                {...register("name", {
+                  required: "Name is required filed",
                 })}
               />
               <TextField
-                id="outlined-basic"
+                error={!!errors.timeStart}
+                helperText={errors.timeStart ? errors.timeStart.message : ``}
                 size="small"
-                label="Email*"
-                variant="outlined"
+                label="Time Start"
+                type="date"
+                defaultValue={new Date().toISOString().slice(0, 10)}
                 className="w-full"
-                error={!!errors.email}
-                helperText={errors.email ? errors.email.message : ``}
-                {...register("email", { required: "email is required filed" })}
+                {...register("timeStart", {
+                  required: "Time start is required filed",
+                })}
               />
 
               <FormControl
@@ -161,19 +171,25 @@ const Classes = () => {
                 size="small"
                 error={!!errors.role}
               >
-                <InputLabel id="demo-select-small-label">Role*</InputLabel>
+                <InputLabel id="demo-select-small-label">Course*</InputLabel>
+
                 <Select
                   labelId="demo-select-small-label"
                   id="demo-select-small"
                   // value={age}
                   label="Role"
                   // onChange={handleChange}
+                  defaultValue={courses.data.data[0].id}
                   size="small"
-                  {...register("role", { required: "role is required filed" })}
+                  {...register("courseId", {
+                    required: "Course is required filed",
+                  })}
                 >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  {courses.data.data.map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
                 </Select>
                 {!!errors.role && (
                   <FormHelperText>{errors.role.message}</FormHelperText>

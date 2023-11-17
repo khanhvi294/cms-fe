@@ -1,7 +1,7 @@
 import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import Table from "../../../components/Table/Table";
 
@@ -12,23 +12,32 @@ import {
   getCompetitions,
 } from "../../../services/competitionService";
 import ModalSeeCompetition from "../../../components/admin/competitions/modalSee";
+import { format, startOfToday } from "date-fns";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const [openSee, setOpenSee] = useState(false);
   const handleOpenSee = () => setOpenSee(true);
   const handleCloseSee = () => setOpenSee(false);
   const [dateStart, setDateStart] = useState(new Date());
   const [rows, setRows] = useState([]);
   const [competitionSee, setCompetitionSee] = useState();
-
+  // const defaultValues = {
+  //   dob: new Date().toISOString().slice(0, 10),
+  // };
   const {
     register,
     handleSubmit,
+    reset,
+    control,
     formState: { errors },
   } = useForm();
+  const handleClose = () => {
+    reset();
+    setOpen(false);
+  };
 
   const columns = [
     {
@@ -37,8 +46,8 @@ const Competitions = () => {
       width: 150,
     },
     { field: "name", headerName: "name", width: 250 },
-    { field: "employeeid", headerName: "employeeid", width: 200 },
-    { field: "timestart", headerName: "timestart", width: 250 },
+    { field: "employeeId", headerName: "employeeid", width: 200 },
+    { field: "timeStart", headerName: "timeStart", width: 250 },
     {
       field: "active",
       headerName: "Active",
@@ -156,8 +165,14 @@ const Competitions = () => {
 
   const onSubmit = (data) => {
     createCompetitionMutation.mutate(data);
-    //  setOpen(false);
+    setOpen(false);
   };
+  // const { control } = useForm({
+  //   defaultValues: {
+  //     dob: new Date().toISOString().slice(0, 10),
+  //   },
+  // });
+
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -203,123 +218,244 @@ const Competitions = () => {
         </Button>
       </div>
       <Table columns={columns} rows={rows} />
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="flex items-center justify-center "
-      >
-        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className=" flex flex-col p-4 gap-5"
-          >
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              className="font-bold "
+      {open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="flex items-center justify-center "
+        >
+          <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className=" flex flex-col p-4 gap-5"
             >
-              Add Competition
-            </Typography>
-            <div className="flex flex-col !justify-center !items-center gap-4">
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="font-bold "
+              >
+                Add Competition
+              </Typography>
+              <div className="flex flex-col !justify-center !items-center gap-4">
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  name="name"
+                  label="Name*"
+                  variant="outlined"
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name.message : ``}
+                  className="w-full"
+                  {...register("name", {
+                    required: "Name is required filed",
+                  })}
+                />
+              </div>
+              <div className="flex gap-5">
+                <TextField
+                  error={!!errors.timeStart}
+                  helperText={errors.timeStart ? errors.timeStart.message : ``}
+                  size="small"
+                  label="Time Start"
+                  type="date"
+                  defaultValue={new Date().toISOString().slice(0, 10)}
+                  className="w-full"
+                  {...register("timeStart", {
+                    required: "Time start is required filed",
+                  })}
+                />
+                <TextField
+                  error={!!errors.timeEnd}
+                  helperText={errors.timeEnd ? errors.timeEnd.message : ``}
+                  size="small"
+                  label="Time End"
+                  defaultValue={new Date().toISOString().slice(0, 10)}
+                  type="date"
+                  className="w-full"
+                  {...register("timeEnd", {
+                    required: "Time End is required filed",
+                  })}
+                />
+              </div>
+              <div className="flex gap-5">
+                <TextField
+                  id="outlined-min"
+                  label="Number min"
+                  type="number"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("minimumQuantity", {
+                    required: "Number min is required filed",
+                  })}
+                />
+                <TextField
+                  id="outlined-max"
+                  label="Number max"
+                  type="number"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("maximumQuantity", {
+                    required: "Number max is required filed",
+                  })}
+                />
+              </div>
               <TextField
-                id="outlined-basic"
+                id="outlined-prizes"
+                label="Number of prizes"
+                type="number"
                 size="small"
-                label="Name*"
-                variant="outlined"
-                error={!!errors.name}
-                helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
-                {...register("name", {
-                  required: "Name is required filed",
-                })}
-              />
-            </div>
-            {/* <div className="flex gap-5">
-              <DatePicker
-                selected={dateStart}
-                onChange={(date) => setDateStart(date)}
-                error={!!errors.timeStart}
-                helperText={errors.timeStart ? errors.timeStart.message : ``}
-                {...register("timeStart", {
-                  required: "Date start is required filed",
-                })}
-              />
-              <DatePicker
-                selected={dateStart}
-                error={!!errors.timeEnd}
-                helperText={errors.timeEnd ? errors.timeEnd.message : ``}
-                onChange={(date) => setDateStart(date)}
-                {...register("timeEnd", {
-                  required: "Date end is required filed",
-                })}
-              />
-            </div> */}
-            <div className="flex gap-5">
-              <TextField
-                id="outlined-min"
-                label="Number min"
-                type="number"
-                size="small"
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...register("minimumQuantity", {
-                  required: "Number min is required filed",
+                {...register("numOfPrizes", {
+                  required: "Number of prizes is required filed",
                 })}
               />
               <TextField
-                id="outlined-max"
-                label="Number max"
+                id="outlined-round"
+                label="Rounds"
                 type="number"
                 size="small"
+                className="w-full"
                 InputLabelProps={{
                   shrink: true,
                 }}
-                {...register("maximumQuantity", {
-                  required: "Number max is required filed",
+                {...register("numberOfRound", {
+                  required: "Rounds is required filed",
                 })}
               />
-            </div>
-            <TextField
-              id="outlined-prizes"
-              label="Number of prizes"
-              type="number"
-              size="small"
-              className="w-full"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              {...register("numOfPrizes", {
-                required: "Number of prizes is required filed",
-              })}
-            />
-            <TextField
-              id="outlined-round"
-              label="Rounds"
-              type="number"
-              size="small"
-              className="w-full"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              {...register("numberOfRound", {
-                required: "Rounds is required filed",
-              })}
-            />
-
-            <Button
-              variant="contained"
-              className="self-end !normal-case !rounded-lg !bg-black"
-              type="submit"
+              <Button
+                variant="contained"
+                className="self-end !normal-case !rounded-lg !bg-black"
+                type="submit"
+              >
+                Save
+              </Button>
+            </form>
+            {/* <form
+              onSubmit={handleSubmit(onSubmit)}
+              className=" flex flex-col p-4 gap-5"
             >
-              Save
-            </Button>
-          </form>
-        </Box>
-      </Modal>
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="font-bold "
+              >
+                Add Competition
+              </Typography>
+              <div className="flex flex-col !justify-center !items-center gap-4">
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  name="name"
+                  label="Name*"
+                  variant="outlined"
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name.message : ``}
+                  className="w-full"
+                  {...register("name", {
+                    required: "Name is required filed",
+                  })}
+                />
+              </div>
+              <div className="flex gap-5">
+                <TextField
+                  error={!!errors.timeStart}
+                  helperText={errors.timeStart ? errors.timeStart.message : ``}
+                  size="small"
+                  label="Time Start"
+                  type="date"
+                  defaultValue={new Date().toISOString().slice(0, 10)}
+                  className="w-full"
+                  {...register("timeStart", {
+                    required: "Time start is required filed",
+                  })}
+                />
+                <TextField
+                  error={!!errors.timeEnd}
+                  helperText={errors.timeEnd ? errors.timeEnd.message : ``}
+                  size="small"
+                  label="Time End"
+                  type="date"
+                  className="w-full"
+                  {...register("timeEnd", {
+                    required: "Time End is required filed",
+                  })}
+                />
+              </div>
+              <div className="flex gap-5">
+                <TextField
+                  id="outlined-min"
+                  label="Number min"
+                  type="number"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("minimumQuantity", {
+                    required: "Number min is required filed",
+                  })}
+                />
+                <TextField
+                  id="outlined-max"
+                  label="Number max"
+                  type="number"
+                  size="small"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("maximumQuantity", {
+                    required: "Number max is required filed",
+                  })}
+                />
+              </div>
+              <TextField
+                id="outlined-prizes"
+                label="Number of prizes"
+                type="number"
+                size="small"
+                className="w-full"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                {...register("numOfPrizes", {
+                  required: "Number of prizes is required filed",
+                })}
+              />
+              <TextField
+                id="outlined-round"
+                label="Rounds"
+                type="number"
+                size="small"
+                className="w-full"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                {...register("numberOfRound", {
+                  required: "Rounds is required filed",
+                })}
+              />
+
+              <Button
+                variant="contained"
+                className="self-end !normal-case !rounded-lg !bg-black"
+                type="submit"
+              >
+                Save
+              </Button>
+            </form> */}
+          </Box>
+        </Modal>
+      )}
       {openSee && (
         <ModalSeeCompetition
           open={openSee}
