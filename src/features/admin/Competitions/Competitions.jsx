@@ -15,6 +15,12 @@ import Table from "../../../components/Table/Table";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import { useMutation, useQuery } from "react-query";
+import {
+  createCompetition,
+  getCompetitions,
+} from "../../../services/competitionService";
+import { toast } from "react-toastify";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
@@ -23,6 +29,7 @@ const Competitions = () => {
   const [openSee, setOpenSee] = useState(false);
   const handleOpenSee = () => setOpenSee(true);
   const handleCloseSee = () => setOpenSee(false);
+  const [rows, setRows] = useState([]);
   const {
     register,
     handleSubmit,
@@ -101,24 +108,32 @@ const Competitions = () => {
       ],
     },
   ];
-  const rows = [
-    {
-      id: "1",
-      courseid: "4",
-      email: "sv01@gmail.com",
-      active: 1,
-      name: "Nguyễn Thúy Hạnh",
-    },
-    {
-      id: "2",
-      email: "sv02@gmail.com",
-      courseid: "6",
-      active: 1,
-      name: "Trần Thiên Bảo",
-    },
-  ];
 
-  const onSubmit = (data) => console.log(data);
+  useQuery({
+    queryKey: ["competitions"],
+    queryFn: getCompetitions,
+    onSuccess: (data) => {
+      console.log(data.data.data);
+      setRows(data.data.data);
+    },
+  });
+
+  const createCompetitionMutation = useMutation({
+    mutationFn: (data) => createCompetition(data),
+    onSuccess: (data) => {
+      console.log(data);
+      setRows((state) => [data.data, ...state]);
+      toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const onSubmit = (data) => {
+    createCompetitionMutation.mutate(data);
+    //  setOpen(false);
+  };
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -190,76 +205,13 @@ const Competitions = () => {
                 size="small"
                 label="Name*"
                 variant="outlined"
-                error={!!errors.fullname}
-                helperText={errors.fullname ? errors.fullname.message : ``}
+                error={!!errors.name}
+                helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
-                {...register("fullname", {
-                  required: "fullname is required filed",
+                {...register("name", {
+                  required: "Name is required filed",
                 })}
               />
-              <div className="flex gap-5">
-                <TextField
-                  id="outlined-number"
-                  label="Number min"
-                  type="number"
-                  size="small"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <TextField
-                  id="outlined-number"
-                  label="Number max"
-                  type="number"
-                  size="small"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </div>
-              <TextField
-                id="outlined-number"
-                label="Number max"
-                type="number"
-                size="small"
-                className="w-full"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <TextField
-                id="outlined-number"
-                label="Rounds"
-                type="number"
-                size="small"
-                className="w-full"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <FormControl
-                className="w-full"
-                size="small"
-                error={!!errors.role}
-              >
-                <InputLabel id="demo-select-small-label">Role*</InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  // value={age}
-                  label="Role"
-                  // onChange={handleChange}
-                  size="small"
-                  {...register("role", { required: "role is required filed" })}
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-                {!!errors.role && (
-                  <FormHelperText>{errors.role.message}</FormHelperText>
-                )}
-              </FormControl>
             </div>
             <p>date picker</p>
             <Button
@@ -272,7 +224,7 @@ const Competitions = () => {
           </form>
         </Box>
       </Modal>
-      <Modal
+      {/* <Modal
         open={openSee}
         onClose={handleCloseSee}
         aria-labelledby="modal-modal-title"
@@ -280,10 +232,7 @@ const Competitions = () => {
         className="flex items-center justify-center "
       >
         <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className=" flex flex-col p-6 gap-5"
-          >
+          <form className=" flex flex-col p-6 gap-5">
             <Typography
               id="modal-modal-title"
               variant="h6"
@@ -346,7 +295,7 @@ const Competitions = () => {
             </div>
           </form>
         </Box>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
