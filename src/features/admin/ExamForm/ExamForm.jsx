@@ -94,7 +94,7 @@ const ExamForms = () => {
   };
   const onSubmit = (data) => {
     createExamFormMutation.mutate(data);
-    setOpen(false);
+    handleClose();
   };
 
   useQuery({

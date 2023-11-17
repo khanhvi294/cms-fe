@@ -165,7 +165,7 @@ const Competitions = () => {
 
   const onSubmit = (data) => {
     createCompetitionMutation.mutate(data);
-    setOpen(false);
+    handleClose();
   };
   // const { control } = useForm({
   //   defaultValues: {

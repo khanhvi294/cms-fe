@@ -95,7 +95,7 @@ const Courses = () => {
 
   const onSubmit = (data) => {
     createCourseMutation.mutate(data);
-    setOpen(false);
+    handleClose();
   };
   return (
     <>
