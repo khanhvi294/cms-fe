@@ -21,15 +21,11 @@ import { getCourses } from "../../../services/courseService";
 const Classes = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    reset();
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
   const [rows, setRows] = useState([]);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 
@@ -54,13 +50,10 @@ const Classes = () => {
       setRows(data.data.data);
     },
   });
+
   const { data: courses } = useQuery({
     queryKey: ["courses"],
     queryFn: getCourses,
-    onSuccess: (data) => {
-      console.log(data.data.data);
-      setRows(data.data.data);
-    },
   });
 
   const createStudentMutation = useMutation({
@@ -183,13 +176,13 @@ const Classes = () => {
                   // value={age}
                   label="Role"
                   // onChange={handleChange}
-                  defaultValue={courses.data.data[0].id}
+                  defaultValue={courses?.data?.data[0]?.id}
                   size="small"
                   {...register("courseId", {
                     required: "Course is required filed",
                   })}
                 >
-                  {courses.data.data.map((item, index) => (
+                  {courses?.data?.data.map((item, index) => (
                     <MenuItem key={index} value={item.id}>
                       {item.name}
                     </MenuItem>
