@@ -18,7 +18,10 @@ import ModalSeeRound from "../../../components/admin/rounds/modalSeeRound";
 const Rounds = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    reset();
+    setOpen(false);
+  };
   const [openSee, setOpenSee] = useState(false);
   const handleOpenSee = () => setOpenSee(true);
   const handleCloseSee = () => setOpenSee(false);
@@ -29,6 +32,7 @@ const Rounds = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 

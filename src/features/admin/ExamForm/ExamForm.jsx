@@ -14,6 +14,7 @@ const ExamForms = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -87,7 +88,10 @@ const ExamForms = () => {
   // ];
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    reset();
+    setOpen(false);
+  };
   const onSubmit = (data) => {
     createExamFormMutation.mutate(data);
     setOpen(false);

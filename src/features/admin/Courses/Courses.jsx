@@ -10,11 +10,15 @@ import { toast } from "react-toastify";
 const Courses = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    reset();
+    setOpen(false);
+  };
   const [rows, setRows] = useState([]);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
