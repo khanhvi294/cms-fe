@@ -192,8 +192,8 @@ const Classes = () => {
                     </MenuItem>
                   ))}
                 </Select>
-                {!!errors.role && (
-                  <FormHelperText>{errors.role.message}</FormHelperText>
+                {!!errors.courseId && (
+                  <FormHelperText>{errors.courseId.message}</FormHelperText>
                 )}
               </FormControl>
             </div>

@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -7,13 +7,9 @@ import Table from "../../../components/Table/Table";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
-import {
-  createCompetition,
-  getCompetitions,
-} from "../../../services/competitionService";
-import ModalSeeCompetition from "../../../components/admin/competitions/modalSee";
-import { getRounds } from "../../../services/roundService";
 import ModalSeeRound from "../../../components/admin/rounds/modalSeeRound";
+import { createCompetition } from "../../../services/competitionService";
+import { getRounds } from "../../../services/roundService";
 
 const Rounds = () => {
   const [open, setOpen] = useState(false);
@@ -296,7 +292,26 @@ const Rounds = () => {
                 required: "Rounds is required filed",
               })}
             />
-
+            {/* <FormControl sx={{ m: 1, width: 300 }}>
+              <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+              >
+                {names.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    <Checkbox checked={personName.indexOf(name) > -1} />
+                    <ListItemText primary={name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
             <Button
               variant="contained"
               className="self-end !normal-case !rounded-lg !bg-black"
