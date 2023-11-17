@@ -15,7 +15,7 @@ import { useMutation } from "react-query";
 import { login } from "../../services/authService";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccessToken } from "../../redux/slices/userSlice";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../configs/role";
 import { appRoutes } from "../../routes/appRouter";
 

@@ -1,8 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
+import { useSelector } from "react-redux";
+import { ROLES } from "../../configs/role";
+import { appRoutes } from "../../routes/appRouter";
 
 const AdminLayout = () => {
+  const userRole = useSelector((state) => state.user?.data?.info?.role);
+  const isAdmin = userRole !== ROLES.STUDENT;
+
   return (
     <div className="flex flex-col overflow-hidden h-screen ">
       <div className="flex h-full">
@@ -13,7 +19,7 @@ const AdminLayout = () => {
             <Header />
           </div>
           <div className="w-[1120px] m-auto py-6">
-            <Outlet />
+            {isAdmin ? <Outlet /> : <Navigate to={appRoutes.HOME} replace />}
           </div>
         </div>
       </div>
