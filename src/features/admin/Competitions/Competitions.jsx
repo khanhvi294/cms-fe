@@ -1,26 +1,17 @@
-import {
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
-import Table from "../../../components/Table/Table";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
+import Table from "../../../components/Table/Table";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 import {
   createCompetition,
   getCompetitions,
 } from "../../../services/competitionService";
-import { toast } from "react-toastify";
+import ModalSeeCompetition from "../../../components/admin/competitions/modalSee";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
@@ -29,7 +20,10 @@ const Competitions = () => {
   const [openSee, setOpenSee] = useState(false);
   const handleOpenSee = () => setOpenSee(true);
   const handleCloseSee = () => setOpenSee(false);
+  const [dateStart, setDateStart] = useState(new Date());
   const [rows, setRows] = useState([]);
+  const [competitionSee, setCompetitionSee] = useState();
+
   const {
     register,
     handleSubmit,
@@ -77,6 +71,51 @@ const Competitions = () => {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
+              id="Eye"
+              width={15}
+              onClick={() => {
+                setCompetitionSee(params.row);
+                handleOpenSee();
+              }}
+            >
+              <g
+                data-name="Layer 2"
+                fill="#151515"
+                className="color000000 svgShape"
+              >
+                <g
+                  data-name="eye"
+                  fill="#151515"
+                  className="color000000 svgShape"
+                >
+                  <rect
+                    width="24"
+                    height="24"
+                    opacity="0"
+                    fill="#151515"
+                    className="color000000 svgShape"
+                  ></rect>
+                  <path
+                    d="M21.87 11.5c-.64-1.11-4.16-6.68-10.14-6.5-5.53.14-8.73 5-9.6 6.5a1 1 0 0 0 0 1c.63 1.09 4 6.5 9.89 6.5h.25c5.53-.14 8.74-5 9.6-6.5a1 1 0 0 0 0-1zM12.22 17c-4.31.1-7.12-3.59-8-5 1-1.61 3.61-4.9 7.61-5 4.29-.11 7.11 3.59 8 5-1.03 1.61-3.61 4.9-7.61 5z"
+                    fill="#151515"
+                    className="color000000 svgShape"
+                  ></path>
+                  <path
+                    d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 8.5zm0 5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z"
+                    fill="#151515"
+                    className="color000000 svgShape"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          }
+          label="See"
+        />,
+        <GridActionsCellItem
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
               id="Lock"
               width={15}
               onClick={handleOpenSee}
@@ -89,21 +128,6 @@ const Competitions = () => {
             </svg>
           }
           label="Block"
-        />,
-        <GridActionsCellItem
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              data-name="Layer 1"
-              viewBox="0 0 32 32"
-              id="notification"
-              width={30}
-            >
-              <path d="M26.59 21.17a2 2 0 0 1-.59-1.41V14a10 10 0 0 0-7.64-9.71 2.47 2.47 0 0 0 .14-.79 2.5 2.5 0 0 0-5 0 2.47 2.47 0 0 0 .14.79A10 10 0 0 0 6 14v5.76a2 2 0 0 1-.59 1.41A4.79 4.79 0 0 0 4 24.59V25a2 2 0 0 0 2 2h7.18a3 3 0 0 0-.18 1 3 3 0 0 0 6 0 3 3 0 0 0-.18-1H26a2 2 0 0 0 2-2v-.41a4.79 4.79 0 0 0-1.41-3.42ZM15.5 3.5a.5.5 0 1 1 .5.5.5.5 0 0 1-.5-.5Z"></path>
-            </svg>
-          }
-          label="Print"
-          showInMenu
         />,
       ],
     },
@@ -213,7 +237,79 @@ const Competitions = () => {
                 })}
               />
             </div>
-            <p>date picker</p>
+            {/* <div className="flex gap-5">
+              <DatePicker
+                selected={dateStart}
+                onChange={(date) => setDateStart(date)}
+                error={!!errors.timeStart}
+                helperText={errors.timeStart ? errors.timeStart.message : ``}
+                {...register("timeStart", {
+                  required: "Date start is required filed",
+                })}
+              />
+              <DatePicker
+                selected={dateStart}
+                error={!!errors.timeEnd}
+                helperText={errors.timeEnd ? errors.timeEnd.message : ``}
+                onChange={(date) => setDateStart(date)}
+                {...register("timeEnd", {
+                  required: "Date end is required filed",
+                })}
+              />
+            </div> */}
+            <div className="flex gap-5">
+              <TextField
+                id="outlined-min"
+                label="Number min"
+                type="number"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                {...register("minimumQuantity", {
+                  required: "Number min is required filed",
+                })}
+              />
+              <TextField
+                id="outlined-max"
+                label="Number max"
+                type="number"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                {...register("maximumQuantity", {
+                  required: "Number max is required filed",
+                })}
+              />
+            </div>
+            <TextField
+              id="outlined-prizes"
+              label="Number of prizes"
+              type="number"
+              size="small"
+              className="w-full"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...register("numOfPrizes", {
+                required: "Number of prizes is required filed",
+              })}
+            />
+            <TextField
+              id="outlined-round"
+              label="Rounds"
+              type="number"
+              size="small"
+              className="w-full"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...register("numberOfRound", {
+                required: "Rounds is required filed",
+              })}
+            />
+
             <Button
               variant="contained"
               className="self-end !normal-case !rounded-lg !bg-black"
@@ -224,78 +320,13 @@ const Competitions = () => {
           </form>
         </Box>
       </Modal>
-      {/* <Modal
-        open={openSee}
-        onClose={handleCloseSee}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="flex items-center justify-center "
-      >
-        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
-          <form className=" flex flex-col p-6 gap-5">
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              className="font-bold self-center"
-            >
-              Competition
-            </Typography>
-            <div className="flex flex-col !justify-center !items-center gap-4">
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Id</p>
-                <p>123</p>
-              </div>
-
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Name</p>
-                <p>Thi lập trình</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">EmpoyeeId</p>
-                <p>123</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Name</p>
-                <p>Thi lập trình</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Number min</p>
-                <p>8</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Number max</p>
-                <p>9</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">slgiai</p>
-                <p>9</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Status</p>
-                <Chip
-                  label="Active"
-                  color="success"
-                  variant="outlined"
-                  className="w-20 !h-7"
-                />
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Rounds</p>
-                <p>123</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Time Start</p>
-                <p>123</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Time End</p>
-                <p>123</p>
-              </div>
-            </div>
-          </form>
-        </Box>
-      </Modal> */}
+      {openSee && (
+        <ModalSeeCompetition
+          open={openSee}
+          handleClose={handleCloseSee}
+          competition={competitionSee}
+        />
+      )}
     </>
   );
 };
