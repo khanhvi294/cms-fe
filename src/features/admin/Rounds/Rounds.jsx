@@ -12,6 +12,7 @@ import {
   getCompetitions,
 } from "../../../services/competitionService";
 import ModalSeeCompetition from "../../../components/admin/competitions/modalSee";
+import { getRounds } from "../../../services/roundService";
 
 const Rounds = () => {
   const [open, setOpen] = useState(false);
@@ -36,31 +37,12 @@ const Rounds = () => {
       headerName: "ID",
       width: 150,
     },
-    { field: "name", headerName: "name", width: 250 },
-    { field: "employeeid", headerName: "employeeid", width: 200 },
-    { field: "timestart", headerName: "timestart", width: 250 },
-    {
-      field: "active",
-      headerName: "Active",
-      width: 100,
-      renderCell: (params) => {
-        return params.row.active ? (
-          <Chip
-            label="Active"
-            color="success"
-            variant="outlined"
-            className="w-20 !h-7"
-          />
-        ) : (
-          <Chip
-            label="Active"
-            color="success"
-            variant="outlined"
-            className="w-20 !h-7"
-          />
-        );
-      },
-    },
+
+    { field: "competitionId", headerName: "competition Id", width: 200 },
+    { field: "examFormId", headerName: "examForm Id", width: 250 },
+    { field: "roundNumber", headerName: "round", width: 100 },
+    { field: "timeStart", headerName: "time Start", width: 250 },
+
     {
       field: "actions",
       type: "actions",
@@ -134,8 +116,8 @@ const Rounds = () => {
   ];
 
   useQuery({
-    queryKey: ["competitions"],
-    queryFn: getCompetitions,
+    queryKey: ["rounds"],
+    queryFn: getRounds,
     onSuccess: (data) => {
       console.log(data.data.data);
       setRows(data.data.data);
@@ -161,7 +143,7 @@ const Rounds = () => {
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
-        <span className="text-2xl font-semibold">Competitions</span>
+        <span className="text-2xl font-semibold">Rounds</span>
         <Button
           variant="contained flex-end !bg-[#000] !text-white !rounded-md"
           onClick={handleOpen}
