@@ -1,7 +1,9 @@
-import { Chip, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { appRoutes } from "../../../routes/appRouter";
+import { useQuery } from "react-query";
+import { getCompetitionById } from "../../../services/competitionService";
 
 const CompetitionDetail = () => {
   const { id } = useParams();
@@ -10,7 +12,15 @@ const CompetitionDetail = () => {
   if (!id) {
     navigate(appRoutes.ACOMPETITIONS);
   }
-
+  useQuery({
+    queryKey: ["competition", id],
+    enabled: !!id,
+    queryFn: () => getCompetitionById(id),
+    onSuccess: (data) => {
+      console.log(data);
+      //setRounds(data.data.data);
+    },
+  });
   console.log(`Competition `, id);
   return (
     <div className="bg-white w-[400px] min-h-[300px]  rounded-2xl flex flex-col p-4 gap-5 ">
