@@ -1,4 +1,5 @@
 import { Box, Chip, Modal, Typography } from "@mui/material";
+import ModalSeeRound from "../rounds/modalSeeRound";
 
 const ModalSeeCompetition = ({ competition, open, handleClose }) => {
   return (
@@ -67,6 +68,7 @@ const ModalSeeCompetition = ({ competition, open, handleClose }) => {
             <p>{competition.timeEnd}</p>
           </div>
         </div>
+        <ModalSeeRound competition={competition} />
       </Box>
     </Modal>
   );

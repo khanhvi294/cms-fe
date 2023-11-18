@@ -45,12 +45,12 @@ const Navbar = () => {
       iconActive: <i className="fa-solid fa-house"></i>,
       path: appRoutes.ACOMPETITIONS,
     },
-    {
-      title: "Rounds",
-      icon: <i className="fa-light fa-house"></i>,
-      iconActive: <i className="fa-solid fa-house"></i>,
-      path: appRoutes.AROUNDS,
-    },
+    // {
+    //   title: "Rounds",
+    //   icon: <i className="fa-light fa-house"></i>,
+    //   iconActive: <i className="fa-solid fa-house"></i>,
+    //   path: appRoutes.AROUNDS,
+    // },
     // {
     //   title: "Stories",
     //   icon: <i className="fa-light fa-rectangle-history"></i>,

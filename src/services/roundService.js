@@ -2,8 +2,9 @@ import { axiosClientPrivate } from "./axiosClient";
 
 const url = "/rounds";
 const RoundApi = {
-  getRounds: () => axiosClientPrivate.get(`${url}`),
+  getRoundByCompetition: (competitionId) =>
+    axiosClientPrivate.get(`${url}/:${competitionId}/competition`),
   createRound: (round) => axiosClientPrivate.post(`${url}`, round),
 };
-export const { createRound, getRounds } = RoundApi;
+export const { createRound, getRoundByCompetition } = RoundApi;
 export default RoundApi;
