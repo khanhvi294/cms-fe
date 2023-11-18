@@ -1,14 +1,11 @@
 import {
   Box,
   Button,
-  Checkbox,
   Chip,
   FormControl,
   InputLabel,
-  ListItemText,
   MenuItem,
   Modal,
-  OutlinedInput,
   Select,
   TextField,
   Typography,
@@ -28,6 +25,7 @@ import {
   getAllClassCanJoinCompetition,
   getCompetitions,
 } from "../../../services/competitionService";
+import { redirect, useNavigate } from "react-router-dom";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
@@ -72,6 +70,7 @@ const Competitions = () => {
     console.log("va", value);
     setClassesChoose(value);
   };
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -117,8 +116,7 @@ const Competitions = () => {
               id="Eye"
               width={15}
               onClick={() => {
-                setCompetitionSee(params.row);
-                handleOpenSee();
+                navigate("/classes");
               }}
             >
               <g

@@ -12,6 +12,7 @@ import Students from "../features/admin/Student/Students";
 import Classes from "../features/admin/Classes/Classes";
 import Courses from "../features/admin/Courses/Courses";
 import Competitions from "../features/admin/Competitions/Competitions";
+import CompetitionDetail from "../features/admin/Competitions/CompetitionDetail";
 import { appRoutes } from "./appRouter";
 import ExamForms from "../features/admin/ExamForm/ExamForm";
 // import Rounds from "../features/admin/Rounds/Rounds";
@@ -42,6 +43,10 @@ export const AppRouter = () => {
         <Route path={appRoutes.ACLASSES} element={<Classes />} />
         <Route path={appRoutes.ACOURSES} element={<Courses />} />
         <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
+        <Route
+          path={appRoutes.ACOMPETITIONS_DETAIL}
+          element={<CompetitionDetail />}
+        />
         <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
         {/* <Route path={appRoutes.AROUNDS} element={<Rounds />} /> */}
       </Route>
