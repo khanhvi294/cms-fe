@@ -1,7 +1,21 @@
-import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Modal,
+  OutlinedInput,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import Table from "../../../components/Table/Table";
 
@@ -11,9 +25,9 @@ import ModalSeeCompetition from "../../../components/admin/competitions/modalSee
 import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import {
   createCompetition,
+  getAllClassCanJoinCompetition,
   getCompetitions,
 } from "../../../services/competitionService";
-import { createRound } from "../../../services/roundService";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
@@ -38,13 +52,25 @@ const Competitions = () => {
     register,
     handleSubmit,
     reset,
-
+    watch,
+    control,
     formState: { errors },
   } = useForm();
 
   const handleClose = () => {
     reset();
     setOpen(false);
+  };
+  const timeStart = watch("timeStart");
+
+  const [classesChoose, setClassesChoose] = useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    console.log("va", value);
+    setClassesChoose(value);
   };
 
   const columns = [
@@ -174,14 +200,26 @@ const Competitions = () => {
     },
   ];
 
+  const fieldValue = watch("competitionClass");
+
+  useEffect(() => {
+    // Xử lý khi giá trị thay đổi
+    console.log("Giá trị đã thay đổi:", fieldValue);
+  }, [fieldValue]);
   useQuery({
     queryKey: ["competitions"],
     queryFn: getCompetitions,
     onSuccess: (data) => {
-      console.log(data.data.data);
       setRows(data.data.data);
     },
   });
+
+  const { data: classesJoin } = useQuery({
+    queryKey: ["classesJoin", timeStart],
+    enabled: !!timeStart,
+    queryFn: () => getAllClassCanJoinCompetition(timeStart),
+  });
+  console.log("vooo", classesJoin);
 
   const createCompetitionMutation = useMutation({
     mutationFn: (data) => createCompetition(data),
@@ -196,6 +234,7 @@ const Competitions = () => {
   });
 
   const onSubmit = (data) => {
+    console.log("daatta", data);
     createCompetitionMutation.mutate(data);
     handleClose();
   };
@@ -205,6 +244,21 @@ const Competitions = () => {
   //     dob: new Date().toISOString().slice(0, 10),
   //   },
   // });
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const items = [
+    { id: 1, name: "Item 1" },
+    { id: 2, name: "Item 2" },
+    { id: 3, name: "Item 3" },
+  ];
 
   return (
     <>
@@ -365,6 +419,51 @@ const Competitions = () => {
                   required: "Rounds is required filed",
                 })}
               />
+
+              <FormControl>
+                <InputLabel id="demo-mutiple-name-label">Classes</InputLabel>
+                <Controller
+                  name="competitionClass"
+                  control={control}
+                  defaultValue={[]}
+                  render={({ field }) => (
+                    <Select label="Select Items" multiple {...field}>
+                      {classesJoin?.data?.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+              </FormControl>
+              {/* <FormControl>
+                <InputLabel id="demo-multiple-checkbox-label">
+                  Classes
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  size="small"
+                  multiple
+                  value={classesChoose}
+                  onChange={handleChange}
+                  input={<OutlinedInput label="Classes" />}
+                  renderValue={(selected) => selected.join(", ")}
+                  MenuProps={MenuProps}
+                  {...register("competitionClass", {
+                    required: "Rounds is required filed",
+                  })}
+                >
+                  {classesJoin?.data?.map((item, index) => (
+                    <MenuItem key={index} value={item.id}>
+                      {console.log(classesChoose)}
+                      <Checkbox checked={classesChoose.indexOf(item.id) >= 0} />
+                      <ListItemText primary={item.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl> */}
               <Button
                 variant="contained"
                 className="self-end !normal-case !rounded-lg !bg-black"

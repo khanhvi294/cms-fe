@@ -1,6 +1,6 @@
-import { Box, Chip, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { getRoundByCompetition } from "../../../services/roundService";
 const ModalSeeRound = ({ competition }) => {
   const [open, setOpen] = useState(false);
