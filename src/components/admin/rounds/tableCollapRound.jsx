@@ -19,16 +19,18 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const [openAddJudges, setOpenAddJudges] = React.useState(false);
   const [judges, setJudges] = React.useState([]);
+  console.log("idđ", row?.id);
   useQuery({
     queryKey: ["judges", row?.id],
     enabled: !!row?.id,
     queryFn: () => getJudgeByRound(row?.id),
     onSuccess: (data) => {
       console.log(data);
-      setJudges(data.data);
+      setJudges(data?.data?.data);
     },
   });
-
+  console.log(row);
+  console.log(judges);
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -141,7 +143,11 @@ function Row(props) {
                   ></path>
                 </svg>
               </IconButton>
-              <Table size="medium" aria-label="purchases" className="!w-[60%]">
+              <Table
+                size="medium"
+                aria-label="purchases"
+                className="!w-[60%] !mt-3"
+              >
                 <TableHead>
                   <TableRow>
                     <TableCell className="!font-semibold">
@@ -154,13 +160,13 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {judges?.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {judges?.map((item, index) => (
+                    <TableRow key={index}>
                       <TableCell component="th" scope="row">
-                        {historyRow.date}
+                        {item.id}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
+                      <TableCell>{item.fullName}</TableCell>
+                      <TableCell align="right">{item.amount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

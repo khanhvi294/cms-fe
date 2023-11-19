@@ -160,17 +160,15 @@ const CompetitionDetail = () => {
     <>
       <div>
         <div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
-          <Typography
+          <p
             id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            className="font-bold self-center"
+            className="font-semibold self-center !text-xl"
           >
             Competition
-          </Typography>
-          <div className=" flex justify-between">
-            <div className="">
-              <div className="flex justify-between w-full">
+          </p>
+          <div className=" flex justify-between mt-4">
+            <div className="w-[250px] flex flex-col gap-2">
+              <div className="flex justify-between w-full ">
                 <p className="font-bold">Id</p>
                 <p>{competition?.id}</p>
               </div>
@@ -188,7 +186,7 @@ const CompetitionDetail = () => {
                 <p>{competition?.numOfPrizes}</p>
               </div>
             </div>
-            <div>
+            <div className="w-[250px] flex flex-col gap-2">
               <div className="flex justify-between w-full">
                 <p className="font-bold">Number min</p>
                 <p>{competition?.minimumQuantity}</p>
@@ -202,7 +200,7 @@ const CompetitionDetail = () => {
                 <p>{competition?.numberOfRound}</p>
               </div>
             </div>
-            <div>
+            <div className="w-[250px] flex flex-col gap-2">
               <div className="flex justify-between w-full">
                 <p className="font-bold">Status</p>
                 <Chip
@@ -227,8 +225,8 @@ const CompetitionDetail = () => {
         </div>
 
         <div>
-          <div className="flex gap-2 justify-between items-center">
-            <span className="text-2xl font-semibold">Rounds</span>
+          <div className="flex gap-2 justify-between items-center mb-4">
+            <span className="text-xl font-semibold">Rounds</span>
             <Button
               variant="contained flex-end !bg-[#000] !text-white !rounded-md"
               onClick={handleOpen}
@@ -271,48 +269,6 @@ const CompetitionDetail = () => {
           </div>
           <RoundTable rows={rows} />
         </div>
-      </div>
-      <div className="flex gap-2 justify-between items-center">
-        <span className="text-2xl font-semibold">Rounds</span>
-        <Button
-          variant="contained flex-end !bg-[#000] !text-white !rounded-md"
-          onClick={handleOpen}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            id="plus"
-            width={22}
-            height={22}
-          >
-            <g
-              data-name="Layer 2"
-              fill="#ffffff"
-              className="color000000 svgShape"
-            >
-              <g
-                data-name="plus"
-                fill="#ffffff"
-                className="color000000 svgShape"
-              >
-                <rect
-                  width="24"
-                  height="24"
-                  opacity="0"
-                  transform="rotate(180 12 12)"
-                  fill="#ffffff"
-                  className="color000000 svgShape"
-                ></rect>
-                <path
-                  d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
-                  fill="#ffffff"
-                  className="color000000 svgShape"
-                ></path>
-              </g>
-            </g>
-          </svg>
-          Add
-        </Button>
       </div>
 
       {/* <Table columns={columns} rows={rows} /> */}
