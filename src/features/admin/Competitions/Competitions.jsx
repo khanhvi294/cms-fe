@@ -17,16 +17,16 @@ import { useMutation, useQuery } from "react-query";
 import Table from "../../../components/Table/Table";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ModalSeeCompetition from "../../../components/admin/competitions/modalSee";
 import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
+import { appRoutes } from "../../../routes/appRouter";
 import {
   createCompetition,
   getAllClassCanJoinCompetition,
   getCompetitions,
 } from "../../../services/competitionService";
-import { redirect, useNavigate } from "react-router-dom";
-import { appRoutes } from "../../../routes/appRouter";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
@@ -242,27 +242,6 @@ const Competitions = () => {
     createCompetitionMutation.mutate(data);
     handleClose();
   };
-
-  // const { control } = useForm({
-  //   defaultValues: {
-  //     dob: new Date().toISOString().slice(0, 10),
-  //   },
-  // });
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-  const items = [
-    { id: 1, name: "Item 1" },
-    { id: 2, name: "Item 2" },
-    { id: 3, name: "Item 3" },
-  ];
 
   return (
     <>

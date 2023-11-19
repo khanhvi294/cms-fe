@@ -1,49 +1,46 @@
-import { Chip, Typography } from "@mui/material";
+import { Button, Chip, Modal, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { appRoutes } from "../../../routes/appRouter";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getCompetitionById } from "../../../services/competitionService";
 import Table from "../../../components/Table/Table";
 import { getRoundByCompetition } from "../../../services/roundService";
+import { useForm } from "react-hook-form";
+import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
+import { GridActionsCellItem } from "@mui/x-data-grid";
+import {
+  createExamForm,
+  getExamForms,
+} from "../../../services/examFormService";
+import { toast } from "react-toastify";
 
 const CompetitionDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [competition, setCompetition] = useState();
-  const [rows, setRows] = useState([]);
-
-  if (!id) {
-    navigate(appRoutes.ACOMPETITIONS);
-  }
-  useQuery({
-    queryKey: ["competition", id],
-    enabled: !!id,
-    queryFn: () => getCompetitionById(id),
-    onSuccess: (data) => {
-      console.log(data);
-      setCompetition(data.data);
-    },
-  });
-  useQuery({
-    queryKey: ["rounds", id],
-    enabled: !!id,
-    queryFn: () => getRoundByCompetition(id),
-    onSuccess: (data) => {
-      console.log(data);
-      setRows(data.data.data);
-    },
-  });
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    reset();
+    setOpen(false);
+  };
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const columns = [
     {
       field: "id",
       headerName: "ID",
-      width: 150,
+      width: 250,
     },
 
     { field: "examFormId", headerName: "examForm Id", width: 250 },
-    { field: "roundNumber", headerName: "round", width: 100 },
+    { field: "roundNumber", headerName: "round", width: 200 },
     { field: "timeStart", headerName: "time Start", width: 250 },
 
     {
@@ -58,10 +55,7 @@ const CompetitionDetail = () => {
               viewBox="0 0 24 24"
               id="Eye"
               width={15}
-              onClick={() => {
-                setCompetitionSee(params.row);
-                handleOpenSee();
-              }}
+              onClick={() => {}}
             >
               <g
                 data-name="Layer 2"
@@ -103,7 +97,6 @@ const CompetitionDetail = () => {
               viewBox="0 0 24 24"
               id="Lock"
               width={15}
-              onClick={handleOpenSee}
             >
               <path
                 d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
@@ -117,78 +110,235 @@ const CompetitionDetail = () => {
       ],
     },
   ];
+  const [rows, setRows] = useState([]);
+  //   {
+  //     id: "1",
+  //     role: "admin",
+  //     email: "admin@gmail.com",
+  //     active: 1,
+  //     name: "Nguyễn Thúy An",
+  //     accountid: "1",
+  //     cccd: 1765873678,
+  //   },
+  //   {
+  //     id: "2",
+  //     role: "employee",
+  //     email: "teacher@gmail.com",
+  //     active: 1,
+  //     name: "Trần Thiên Bảo",
+  //     accountid: 2,
+  //     cccd: 2674563789,
+  //   },
+  // ];
 
+  const onSubmit = (data) => {
+    createExamFormMutation.mutate(data);
+    handleClose();
+  };
+
+  // useQuery({
+  //   queryKey: ["exams"],
+  //   queryFn: getExamForms,
+  //   onSuccess: (data) => {
+  //     setRows(data.data.data);
+  //   },
+  // });
+  useQuery({
+    queryKey: ["competition", id],
+    enabled: !!id,
+    queryFn: () => getCompetitionById(id),
+    onSuccess: (data) => {
+      console.log(data);
+      setCompetition(data.data);
+    },
+  });
+
+  useQuery({
+    queryKey: ["rounds", id],
+    enabled: !!id,
+    queryFn: () => getRoundByCompetition(id),
+    onSuccess: (data) => {
+      setRows(data.data.data);
+    },
+  });
+
+  const createExamFormMutation = useMutation({
+    mutationFn: (data) => createExamForm(data),
+    onSuccess: (data) => {
+      setRows((state) => [data.data, ...state]);
+      toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
   return (
-    <div>
-      <div className="bg-white min-h-[300px]  rounded-2xl  p-4 gap-5 ">
-        <Typography
-          id="modal-modal-title"
-          variant="h6"
-          component="h2"
-          className="font-bold self-center"
-        >
-          Competition
-        </Typography>
-        <div className=" flex justify-between">
-          <div className="">
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Id</p>
-              <p>{competition?.id}</p>
-            </div>
+    <>
+      <div>
+        <div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            className="font-bold self-center"
+          >
+            Competition
+          </Typography>
+          <div className=" flex justify-between">
+            <div className="">
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Id</p>
+                <p>{competition?.id}</p>
+              </div>
 
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Name</p>
-              <p>{competition?.name}</p>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Name</p>
+                <p>{competition?.name}</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">EmpoyeeId</p>
+                <p>{competition?.employeeId}</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Number of prizes</p>
+                <p>{competition?.numOfPrizes}</p>
+              </div>
             </div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">EmpoyeeId</p>
-              <p>{competition?.employeeId}</p>
+            <div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Number min</p>
+                <p>{competition?.minimumQuantity}</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Number max</p>
+                <p>{competition?.maximumQuantity}</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Rounds</p>
+                <p>{competition?.numberOfRound}</p>
+              </div>
             </div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Number of prizes</p>
-              <p>{competition?.numOfPrizes}</p>
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Number min</p>
-              <p>{competition?.minimumQuantity}</p>
-            </div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Number max</p>
-              <p>{competition?.maximumQuantity}</p>
-            </div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Rounds</p>
-              <p>{competition?.numberOfRound}</p>
-            </div>
-          </div>
-          <div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Status</p>
-              <Chip
-                label="Active"
-                color="success"
-                variant="outlined"
-                className="w-20 !h-7"
-              />
-            </div>
+            <div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Status</p>
+                <Chip
+                  label="Active"
+                  color="success"
+                  variant="outlined"
+                  className="w-20 !h-7"
+                />
+              </div>
 
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Time Start</p>
-              <p>{competition?.timeStart}</p>
-            </div>
-            <div className="flex justify-between w-full">
-              <p className="font-bold">Time End</p>
-              <p>{competition?.timeEnd}</p>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Time Start</p>
+                <p>{competition?.timeStart}</p>
+              </div>
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Time End</p>
+                <p>{competition?.timeEnd}</p>
+              </div>
             </div>
           </div>
+          {/* <ModalSeeRound competition={competition} /> */}
         </div>
-        {/* <ModalSeeRound competition={competition} /> */}
+
+        <div>
+          <div className="flex gap-2 justify-between items-center">
+            <span className="text-2xl font-semibold">Rounds</span>
+            <Button
+              variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+              onClick={handleOpen}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                id="plus"
+                width={22}
+                height={22}
+              >
+                <g
+                  data-name="Layer 2"
+                  fill="#ffffff"
+                  className="color000000 svgShape"
+                >
+                  <g
+                    data-name="plus"
+                    fill="#ffffff"
+                    className="color000000 svgShape"
+                  >
+                    <rect
+                      width="24"
+                      height="24"
+                      opacity="0"
+                      transform="rotate(180 12 12)"
+                      fill="#ffffff"
+                      className="color000000 svgShape"
+                    ></rect>
+                    <path
+                      d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
+                      fill="#ffffff"
+                      className="color000000 svgShape"
+                    ></path>
+                  </g>
+                </g>
+              </svg>
+              Add
+            </Button>
+          </div>
+          <Table columns={columns} rows={rows} />
+        </div>
       </div>
+      <div className="flex gap-2 justify-between items-center">
+        <span className="text-2xl font-semibold">Rounds</span>
+        <Button
+          variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+          onClick={handleOpen}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            id="plus"
+            width={22}
+            height={22}
+          >
+            <g
+              data-name="Layer 2"
+              fill="#ffffff"
+              className="color000000 svgShape"
+            >
+              <g
+                data-name="plus"
+                fill="#ffffff"
+                className="color000000 svgShape"
+              >
+                <rect
+                  width="24"
+                  height="24"
+                  opacity="0"
+                  transform="rotate(180 12 12)"
+                  fill="#ffffff"
+                  className="color000000 svgShape"
+                ></rect>
+                <path
+                  d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
+                  fill="#ffffff"
+                  className="color000000 svgShape"
+                ></path>
+              </g>
+            </g>
+          </svg>
+          Add
+        </Button>
+      </div>
+      {/* {console.log("render ", rows)} */}
       <Table columns={columns} rows={rows} />
-    </div>
+      <ModalAddRound
+        openAddRound={open}
+        handleCloseAddRound={handleClose}
+        competition={competition}
+        setRows={setRows}
+      />
+    </>
   );
 };
-
 export default CompetitionDetail;

@@ -18,8 +18,12 @@ import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 import { getExamForms } from "../../../services/examFormService";
 
-const ModalAddRound = ({ openAddRound, handleCloseAddRound, competition }) => {
-  console.log(competition);
+const ModalAddRound = ({
+  openAddRound,
+  handleCloseAddRound,
+  competition,
+  setRows,
+}) => {
   const {
     register,
     handleSubmit,
@@ -34,13 +38,14 @@ const ModalAddRound = ({ openAddRound, handleCloseAddRound, competition }) => {
   const createRoundMutation = useMutation({
     mutationFn: (data) => createRound(data),
     onSuccess: (data) => {
-      // setRows((state) => [data.data, ...state]);
+      setRows((state) => [data.data, ...state]);
       toast.success("Create successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
     },
   });
+
   const onSubmitAddRound = (data) => {
     const round = data;
     round.competitionId = competition.id;
