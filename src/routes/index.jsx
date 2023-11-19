@@ -15,6 +15,7 @@ import Competitions from "../features/admin/Competitions/Competitions";
 import CompetitionDetail from "../features/admin/Competitions/CompetitionDetail";
 import { appRoutes } from "./appRouter";
 import ExamForms from "../features/admin/ExamForm/ExamForm";
+import CollapsibleTable from "../features/admin/demo";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -47,6 +48,7 @@ export const AppRouter = () => {
           path={appRoutes.ACOMPETITIONS_DETAIL}
           element={<CompetitionDetail />}
         />
+        <Route path="/admin/demo" element={<CollapsibleTable />} />
         <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
         {/* <Route path={appRoutes.AROUNDS} element={<Rounds />} /> */}
       </Route>
