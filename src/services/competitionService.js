@@ -5,8 +5,8 @@ const CompetitionApi = {
   getCompetitions: () => axiosClientPrivate.get(`${url}`),
   createCompetition: (competition) =>
     axiosClientPrivate.post(`${url}`, competition),
-  getAllClassCanJoinCompetition: (id) =>
-    axiosClientPrivate.get(`${url}/${id}/join`),
+  getAllClassCanJoinCompetition: (timeStart) =>
+    axiosClientPrivate.get(`${url}/${timeStart}/join`),
   getCompetitionById: (id) => axiosClientPrivate.get(`${url}/${id}`),
 };
 export const {
