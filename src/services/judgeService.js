@@ -4,7 +4,7 @@ const url = "/judges";
 const JudgesApi = {
   getJudgeByRound: (roundId) =>
     axiosClientPrivate.get(`${url}/round${roundId}`),
-  createRound: (round) => axiosClientPrivate.post(`${url}`, round),
+  createJudges: (judges) => axiosClientPrivate.post(`${url}/multiple`, judges),
 };
-export const { createRound, getJudgeByRound } = JudgesApi;
+export const { createJudges, getJudgeByRound } = JudgesApi;
 export default JudgesApi;

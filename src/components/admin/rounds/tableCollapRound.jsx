@@ -12,13 +12,15 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useQuery } from "react-query";
 import { getJudgeByRound } from "../../../services/judgeService";
+import ModalAddJudge from "../judges/modalAddJudge";
 
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [openAddJudges, setOpenAddJudges] = React.useState(false);
   const [judges, setJudges] = React.useState([]);
   useQuery({
-    queryKey: ["competition", row?.id],
+    queryKey: ["judges", row?.id],
     enabled: !!row?.id,
     queryFn: () => getJudgeByRound(row?.id),
     onSuccess: (data) => {
@@ -124,7 +126,7 @@ function Row(props) {
               >
                 Judges
               </Typography>
-              <IconButton>
+              <IconButton onClick={() => setOpenAddJudges(true)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -167,6 +169,12 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
+      <ModalAddJudge
+        open={openAddJudges}
+        setOpen={setOpenAddJudges}
+        setJudges={setJudges}
+        roundId={row?.id}
+      />
     </React.Fragment>
   );
 }
