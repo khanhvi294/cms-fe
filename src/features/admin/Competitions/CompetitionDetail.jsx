@@ -14,11 +14,14 @@ import {
   getExamForms,
 } from "../../../services/examFormService";
 import { toast } from "react-toastify";
+import ModalJudge from "../../../components/admin/judges/modalJudge";
 
 const CompetitionDetail = () => {
   const { id } = useParams();
   const [competition, setCompetition] = useState();
   const [open, setOpen] = useState(false);
+  const [openJudge, setOpenJudge] = useState(false);
+  const [roundChoose, setRoundChoose] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     reset();
@@ -53,42 +56,21 @@ const CompetitionDetail = () => {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              id="Eye"
+              id="Judge"
               width={15}
-              onClick={() => {}}
+              onClick={() => {
+                setOpenJudge(true);
+                setRoundChoose(params?.row);
+              }}
             >
-              <g
-                data-name="Layer 2"
+              <path
+                d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z"
                 fill="#151515"
                 className="color000000 svgShape"
-              >
-                <g
-                  data-name="eye"
-                  fill="#151515"
-                  className="color000000 svgShape"
-                >
-                  <rect
-                    width="24"
-                    height="24"
-                    opacity="0"
-                    fill="#151515"
-                    className="color000000 svgShape"
-                  ></rect>
-                  <path
-                    d="M21.87 11.5c-.64-1.11-4.16-6.68-10.14-6.5-5.53.14-8.73 5-9.6 6.5a1 1 0 0 0 0 1c.63 1.09 4 6.5 9.89 6.5h.25c5.53-.14 8.74-5 9.6-6.5a1 1 0 0 0 0-1zM12.22 17c-4.31.1-7.12-3.59-8-5 1-1.61 3.61-4.9 7.61-5 4.29-.11 7.11 3.59 8 5-1.03 1.61-3.61 4.9-7.61 5z"
-                    fill="#151515"
-                    className="color000000 svgShape"
-                  ></path>
-                  <path
-                    d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 8.5zm0 5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z"
-                    fill="#151515"
-                    className="color000000 svgShape"
-                  ></path>
-                </g>
-              </g>
+              ></path>
             </svg>
           }
-          label="See"
+          label="Judge"
         />,
         <GridActionsCellItem
           icon={
@@ -107,42 +89,41 @@ const CompetitionDetail = () => {
           }
           label="Block"
         />,
+        <GridActionsCellItem
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              id="Add"
+              x="0"
+              y="0"
+              version="1.1"
+              viewBox="0 0 29 29"
+              xml:space="preserve"
+              width={15}
+              onClick={() => {
+                setCompetitionSee(params.row);
+                handleOpenAddRound();
+              }}
+            >
+              <path
+                d="M14.5 2C7.596 2 2 7.596 2 14.5S7.596 27 14.5 27 27 21.404 27 14.5 21.404 2 14.5 2zM21 15.5h-5.5V21a1 1 0 1 1-2 0v-5.5H8a1 1 0 1 1 0-2h5.5V8a1 1 0 1 1 2 0v5.5H21a1 1 0 1 1 0 2z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+            </svg>
+          }
+          label="Block"
+        />,
       ],
     },
   ];
   const [rows, setRows] = useState([]);
-  //   {
-  //     id: "1",
-  //     role: "admin",
-  //     email: "admin@gmail.com",
-  //     active: 1,
-  //     name: "Nguyễn Thúy An",
-  //     accountid: "1",
-  //     cccd: 1765873678,
-  //   },
-  //   {
-  //     id: "2",
-  //     role: "employee",
-  //     email: "teacher@gmail.com",
-  //     active: 1,
-  //     name: "Trần Thiên Bảo",
-  //     accountid: 2,
-  //     cccd: 2674563789,
-  //   },
-  // ];
 
   const onSubmit = (data) => {
     createExamFormMutation.mutate(data);
     handleClose();
   };
 
-  // useQuery({
-  //   queryKey: ["exams"],
-  //   queryFn: getExamForms,
-  //   onSuccess: (data) => {
-  //     setRows(data.data.data);
-  //   },
-  // });
   useQuery({
     queryKey: ["competition", id],
     enabled: !!id,
@@ -330,7 +311,7 @@ const CompetitionDetail = () => {
           Add
         </Button>
       </div>
-      {/* {console.log("render ", rows)} */}
+
       <Table columns={columns} rows={rows} />
       <ModalAddRound
         openAddRound={open}
@@ -338,6 +319,13 @@ const CompetitionDetail = () => {
         competition={competition}
         setRows={setRows}
       />
+      {openJudge && (
+        <ModalJudge
+          open={openJudge}
+          setOpenJudge={setOpenJudge}
+          round={roundChoose}
+        />
+      )}
     </>
   );
 };
