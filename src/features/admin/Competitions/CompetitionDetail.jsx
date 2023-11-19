@@ -15,6 +15,8 @@ import {
 } from "../../../services/examFormService";
 import { toast } from "react-toastify";
 import ModalJudge from "../../../components/admin/judges/modalJudge";
+import CollapsibleTable from "../demo";
+import RoundTable from "../../../components/admin/rounds/tableCollapRound";
 
 const CompetitionDetail = () => {
   const { id } = useParams();
@@ -153,6 +155,7 @@ const CompetitionDetail = () => {
       toast.error(err.message);
     },
   });
+  console.log(rows);
   return (
     <>
       <div>
@@ -266,7 +269,7 @@ const CompetitionDetail = () => {
               Add
             </Button>
           </div>
-          <Table columns={columns} rows={rows} />
+          <RoundTable rows={rows} />
         </div>
       </div>
       <div className="flex gap-2 justify-between items-center">
@@ -312,7 +315,7 @@ const CompetitionDetail = () => {
         </Button>
       </div>
 
-      <Table columns={columns} rows={rows} />
+      {/* <Table columns={columns} rows={rows} /> */}
       <ModalAddRound
         openAddRound={open}
         handleCloseAddRound={handleClose}
