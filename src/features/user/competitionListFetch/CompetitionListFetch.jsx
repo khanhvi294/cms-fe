@@ -1,50 +1,23 @@
 import { Button, Chip } from "@mui/material";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { getCompetitionsForStudent } from "../../../services/studentService";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
-const competitions = [
-  {
-    name: "Bảo mật thông tin",
-    status: 0,
-    timeStart: "19-11-2023",
-    timeEnd: "22-11-2023",
-    soVong: 2,
-    people: 5,
-  },
-  {
-    name: "Trí tuệ nhân tạo",
-    status: 0,
-    timeStart: "19-11-2023",
-    timeEnd: "22-11-2023",
-    soVong: 2,
-    people: 5,
-  },
-  {
-    name: "Lập trình ứng dụng",
-    status: 1,
-    timeStart: "10-11-2023",
-    timeEnd: "05-12-2023",
-    soVong: 3,
-    people: 2,
-  },
-  {
-    name: "Kiểm thử phần mềm",
-    status: 2,
-    timeStart: "01-11-2023",
-    timeEnd: "11-11-2023",
-    soVong: 2,
-    people: 12,
-  },
-
-  {
-    name: "Lập trình Java",
-    status: 3,
-    timeStart: "10-11-2023",
-    timeEnd: "10-11-2023",
-    soVong: 2,
-    people: 5,
-  },
-];
 const CompetitionListFetch = () => {
+  const [competitions, setCompetitions] = useState([]);
+  const user = useSelector((state) => state.user?.data?.info);
+  useQuery({
+    queryKey: ["competitions", user?.id],
+    queryFn: () => getCompetitionsForStudent(user?.id),
+    enabled: !!user?.id,
+    onSuccess: (data) => {
+      setCompetitions(data?.data);
+    },
+    onError: (err) => console.log(err),
+  });
+
   return (
     <div className="flex flex-wrap gap-5">
       {competitions.map((cuocThi, index) => (
@@ -169,7 +142,7 @@ const CompetitionListFetch = () => {
               <div className="w-[95%] h-[6px] bg-slate-400 rounded-3xl"></div>
             </div>
 
-            <p>{cuocThi.soVong} rounds</p>
+            <p>{cuocThi.numberOfRound} rounds</p>
           </div>
         </Link>
       ))}
