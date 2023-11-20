@@ -4,8 +4,10 @@ import { useQuery } from "react-query";
 import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../Table/Table";
 import { getAllStudentByClass } from "../../../services/classService";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
   //   const [open, setOpen] = useState(false);
+  console.log(classRoom);
   const [judges, setJudges] = useState([]);
   const columns = [
     {
@@ -87,14 +89,17 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
     },
   ];
   const [rows, setRows] = useState([]);
-  console.log("classrooom", classRoom?.id);
+
   useQuery({
     queryKey: ["students", classRoom?.id],
     enabled: !!classRoom?.id,
-    queryFn: () => getAllStudentByClass(classId),
+    queryFn: () => getAllStudentByClass(classRoom?.id),
     onSuccess: (data) => {
-      console.log(data.data);
-      setRows(data.data.data);
+      const students = data?.data?.data.map((item) => ({
+        fullName: item.ClassStudentStudent.fullName,
+        id: item.ClassStudentStudent.id,
+      }));
+      setRows(students);
     },
   });
 
