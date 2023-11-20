@@ -36,7 +36,10 @@ export const AppRouter = () => {
           element={<CompetitionListPage />}
         />
         <Route path={appRoutes.CLASSES} element={<ClassListPage />} />
-        <Route path="/detail" element={<CompetitionPage />} />
+        <Route
+          path={appRoutes.COMPETITION_DETAIL}
+          element={<CompetitionPage />}
+        />
       </Route>
       <Route element={<AdminLayout />}>
         <Route path={appRoutes.ASTUDENTS} element={<Students />} />

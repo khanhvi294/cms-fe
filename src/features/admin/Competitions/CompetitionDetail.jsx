@@ -1,22 +1,18 @@
-import { Button, Chip, Modal, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { appRoutes } from "../../../routes/appRouter";
-import { useMutation, useQuery } from "react-query";
-import { getCompetitionById } from "../../../services/competitionService";
-import Table from "../../../components/Table/Table";
-import { getRoundByCompetition } from "../../../services/roundService";
-import { useForm } from "react-hook-form";
-import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
+import { Button, Chip } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import {
-  createExamForm,
-  getExamForms,
-} from "../../../services/examFormService";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation, useQuery } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ModalJudge from "../../../components/admin/judges/modalJudge";
-import CollapsibleTable from "../demo";
+import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import RoundTable from "../../../components/admin/rounds/tableCollapRound";
+import { getCompetitionById } from "../../../services/competitionService";
+import {
+  createExamForm
+} from "../../../services/examFormService";
+import { getRoundByCompetition } from "../../../services/roundService";
 
 const CompetitionDetail = () => {
   const { id } = useParams();
