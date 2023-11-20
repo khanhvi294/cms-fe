@@ -150,8 +150,8 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
               >
                 Class
               </Typography>
-              <div className=" flex justify-between">
-                <div className="">
+              <div className=" flex justify-between mt-4 w-[60%]">
+                <div className="w-[250px] flex flex-col gap-2">
                   <div className="flex justify-between w-full">
                     <p className="font-bold">Id</p>
                     <p>{classRoom?.id}</p>
@@ -161,13 +161,15 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
                     <p className="font-bold">Name</p>
                     <p>{classRoom?.name}</p>
                   </div>
+                </div>
+                <div className="w-[250px] flex flex-col gap-2">
                   <div className="flex justify-between w-full">
-                    <p className="font-bold">EmpoyeeId</p>
-                    <p>{classRoom?.employeeId}</p>
+                    <p className="font-bold">Time Start</p>
+                    <p>{classRoom?.timeStart}</p>
                   </div>
                   <div className="flex justify-between w-full">
-                    <p className="font-bold">Number of prizes</p>
-                    <p>{classRoom?.numOfPrizes}</p>
+                    <p className="font-bold">Time End</p>
+                    <p>{classRoom?.timeEnd}</p>
                   </div>
                 </div>
               </div>
