@@ -118,7 +118,7 @@ const ModalAddRound = ({
             )}
           </FormControl>
 
-          <TextField
+          {/* <TextField
             id="outlined-min"
             label="Num Point"
             type="number"
@@ -129,7 +129,7 @@ const ModalAddRound = ({
             {...register("numPoint", {
               required: "Number point is required filed",
             })}
-          />
+          /> */}
 
           <TextField
             error={!!errors.timeStart}

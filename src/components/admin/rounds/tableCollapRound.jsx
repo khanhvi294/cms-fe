@@ -19,7 +19,7 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const [openAddJudges, setOpenAddJudges] = React.useState(false);
   const [judges, setJudges] = React.useState([]);
-  console.log("idđ", row?.id);
+
   useQuery({
     queryKey: ["judges", row?.id],
     enabled: !!row?.id,
@@ -29,8 +29,7 @@ function Row(props) {
       setJudges(data?.data?.data);
     },
   });
-  console.log(row);
-  console.log(judges);
+
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -119,35 +118,34 @@ function Row(props) {
           colSpan={6}
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography
-                variant="h6"
-                gutterBottom
-                component="div"
-                className="!font-semibold"
-              >
-                Judges
-              </Typography>
-              <IconButton onClick={() => setOpenAddJudges(true)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  id="Plus"
-                  width={18}
+            <Box sx={{ margin: 1 }} className="!w-[60%] ">
+              <div className="flex justify-between">
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  component="div"
+                  className="!font-semibold"
                 >
-                  <path
-                    fill="#151515"
-                    d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10ZM11 8a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H8a1 1 0 1 1 0-2h3V8Z"
-                    className="color000000 svgShape"
-                  ></path>
-                </svg>
-              </IconButton>
-              <Table
-                size="medium"
-                aria-label="purchases"
-                className="!w-[60%] !mt-3"
-              >
+                  Judges
+                </Typography>
+                <IconButton onClick={() => setOpenAddJudges(true)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    id="Plus"
+                    width={18}
+                  >
+                    <path
+                      fill="#151515"
+                      d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10ZM11 8a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H8a1 1 0 1 1 0-2h3V8Z"
+                      className="color000000 svgShape"
+                    ></path>
+                  </svg>
+                </IconButton>
+              </div>
+
+              <Table size="medium" aria-label="purchases">
                 <TableHead>
                   <TableRow>
                     <TableCell className="!font-semibold">
@@ -165,7 +163,7 @@ function Row(props) {
                       <TableCell component="th" scope="row">
                         {item.id}
                       </TableCell>
-                      <TableCell>{item.fullName}</TableCell>
+                      <TableCell>{item.employeeJudge.fullName}</TableCell>
                       <TableCell align="right">{item.amount}</TableCell>
                     </TableRow>
                   ))}

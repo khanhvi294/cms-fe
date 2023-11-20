@@ -13,8 +13,10 @@ import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { createJudges } from "../../../services/judgeService";
 import { getEmployees } from "../../../services/employeeService";
+import { getStudents } from "../../../services/studentService";
+import { addStudents } from "../../../services/classService";
 
-const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
+const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   const {
     register,
     control,
@@ -22,10 +24,10 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
     reset,
     formState: { errors },
   } = useForm();
-  const createJudgesMutation = useMutation({
-    mutationFn: (data) => createJudges(data),
+  const addStudentsMutation = useMutation({
+    mutationFn: (data) => addStudents(data),
     onSuccess: (data) => {
-      setJudges((state) => [data.data, ...state]);
+      setStudents((state) => [data.data, ...state]);
       toast.success("Create successfully!");
     },
     onError: (err) => {
@@ -34,19 +36,19 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
   });
   const onSubmit = (data) => {
     const judges = {
-      roundId: roundId,
-      employeeIds: data.employeeIds,
+      classId: classId,
+      studentIds: data.employeeIds,
     };
     console.log(judges);
-    createJudgesMutation.mutate(judges);
+    addStudentsMutation.mutate(judges);
     setOpen(false);
     reset();
     // handleClose();
   };
 
-  const { data: teachers } = useQuery({
-    queryKey: ["employees"],
-    queryFn: getEmployees,
+  const { data: students } = useQuery({
+    queryKey: ["students"],
+    queryFn: getStudents,
   });
 
   return (
@@ -64,7 +66,7 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
         <Box className="bg-white w-[400px] min-h-[250px]  rounded-2xl ">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className=" flex flex-col p-4 gap-6"
+            className=" flex flex-col h-full p-4 gap-6"
           >
             <Typography
               id="modal-modal-title"
@@ -72,18 +74,18 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
               component="h2"
               className="font-bold "
             >
-              Add Judges
+              Add Students
             </Typography>
 
             <FormControl>
-              <InputLabel id="demo-mutiple-name-label">Judges</InputLabel>
+              <InputLabel id="demo-mutiple-name-label">Students</InputLabel>
               <Controller
                 name="employeeIds"
                 control={control}
                 defaultValue={[]}
                 render={({ field }) => (
                   <Select label="Select Items" multiple {...field}>
-                    {teachers?.data?.data.map((item) => (
+                    {students?.data?.data.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
                         {item.fullName}
                       </MenuItem>
@@ -107,4 +109,4 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
   );
 };
 
-export default ModalAddJudge;
+export default ModalAddStudents;
