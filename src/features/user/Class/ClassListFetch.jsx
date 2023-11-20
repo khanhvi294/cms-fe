@@ -1,25 +1,24 @@
-import { Button, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
+import { useState } from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import { getAllClassesByStudent } from "../../../services/studentService";
 
-const classes = [
-  {
-    id: 1,
-    name: "Lập trình C++ 20231",
-    course: "Lập trình C++",
-    timeStart: "19-09-2023",
-    timeEnd: "19-12-2023",
-    status: 0,
-  },
-
-  {
-    id: 3,
-    name: "Lập trình Java 20231",
-    course: "Lập trình Java",
-    timeStart: "10-07-2023",
-    timeEnd: "10-10-2023",
-    status: 1,
-  },
-];
 const ClassListFetch = () => {
+  const [classes, setClasses] = useState([]);
+  const user = useSelector((state) => state.user?.data?.info);
+  const currentDay = new Date();
+
+  useQuery({
+    queryKey: ["classes", user?.id],
+    enabled: !!user?.id,
+    queryFn: () => getAllClassesByStudent(user?.id),
+    onSuccess: (data) => {
+      const classes = data.data?.data?.map((item) => item.ClassStudentClass);
+
+      setClasses(classes);
+    },
+  });
   return (
     <div className="flex flex-wrap gap-5">
       {classes.map((item, index) => {
@@ -31,16 +30,15 @@ const ClassListFetch = () => {
             <div className="flex items-center justify-between">
               <div className="flex justify-between w-full">
                 <p className="font-semibold mb-3">{item.name}</p>
-                {item.status === 0 && (
-                  <Chip
-                    label="Ongoing"
-                    className="!bg-[#ddf7ed] !text-[#28f2a5] !font-medium"
-                  />
-                )}
-                {item.status === 1 && (
+                {item.timeEnd < currentDay ? (
                   <Chip
                     label="Completed"
                     className="!bg-[#f6b2a6] !text-[#f54323] !font-medium"
+                  />
+                ) : (
+                  <Chip
+                    label="Ongoing"
+                    className="!bg-[#ddf7ed] !text-[#28f2a5] !font-medium"
                   />
                 )}
               </div>
