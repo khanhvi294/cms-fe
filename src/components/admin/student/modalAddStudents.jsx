@@ -25,6 +25,7 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   const addStudentsMutation = useMutation({
     mutationFn: (data) => addStudents(data),
     onSuccess: (data) => {
+      console.log("data", data);
       setStudents((state) => [data.data, ...state]);
       toast.success("Create successfully!");
     },

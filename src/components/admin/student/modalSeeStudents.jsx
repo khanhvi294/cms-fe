@@ -5,10 +5,10 @@ import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../Table/Table";
 import { getAllStudentByClass } from "../../../services/classService";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import ModalAddStudents from "./modalAddStudents";
 const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
-  //   const [open, setOpen] = useState(false);
-  console.log(classRoom);
-  const [judges, setJudges] = useState([]);
+  const [openAddStudent, setOpenAddStudent] = useState(false);
+
   const columns = [
     {
       field: "id",
@@ -104,127 +104,135 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
   });
 
   return (
-    <div>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="flex items-center justify-center "
-      >
-        <Box className="bg-white w-[1160px] h-[719px]  flex flex-col p-4 gap-5 ">
-          <div className="flex justify-between">
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              className="font-bold self-center"
-            ></Typography>
-            <IconButton
-              edge="end"
-              color="inherit"
-              onClick={() => setOpen(false)}
-              aria-label="close"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                id="Close"
-                width={18}
-              >
-                <path
-                  d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
-                  fill="#151515"
-                  className="color000000 svgShape"
-                ></path>
-              </svg>
-            </IconButton>
-          </div>
-          <div>
-            <div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
+    <>
+      <div>
+        <Modal
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="flex items-center justify-center "
+        >
+          <Box className="bg-white w-[1160px] h-[719px]  flex flex-col p-4 gap-5 ">
+            <div className="flex justify-between">
               <Typography
                 id="modal-modal-title"
                 variant="h6"
                 component="h2"
                 className="font-bold self-center"
+              ></Typography>
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={() => setOpen(false)}
+                aria-label="close"
               >
-                Class
-              </Typography>
-              <div className=" flex justify-between mt-4 w-[60%]">
-                <div className="w-[250px] flex flex-col gap-2">
-                  <div className="flex justify-between w-full">
-                    <p className="font-bold">Id</p>
-                    <p>{classRoom?.id}</p>
-                  </div>
-
-                  <div className="flex justify-between w-full">
-                    <p className="font-bold">Name</p>
-                    <p>{classRoom?.name}</p>
-                  </div>
-                </div>
-                <div className="w-[250px] flex flex-col gap-2">
-                  <div className="flex justify-between w-full">
-                    <p className="font-bold">Time Start</p>
-                    <p>{classRoom?.timeStart}</p>
-                  </div>
-                  <div className="flex justify-between w-full">
-                    <p className="font-bold">Time End</p>
-                    <p>{classRoom?.timeEnd}</p>
-                  </div>
-                </div>
-              </div>
-              {/* <ModalSeeRound competition={competition} /> */}
-            </div>
-
-            <div>
-              <div className="flex gap-2 justify-between items-center">
-                <span className="text-2xl font-semibold">Students</span>
-                <Button
-                  variant="contained flex-end !bg-[#000] !text-white !rounded-md"
-                  //   onClick={handleOpen}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  id="Close"
+                  width={18}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    id="plus"
-                    width={22}
-                    height={22}
+                  <path
+                    d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
+                    fill="#151515"
+                    className="color000000 svgShape"
+                  ></path>
+                </svg>
+              </IconButton>
+            </div>
+            <div>
+              <div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  className="font-bold self-center"
+                >
+                  Class
+                </Typography>
+                <div className=" flex justify-between mt-4 w-[60%]">
+                  <div className="w-[250px] flex flex-col gap-2">
+                    <div className="flex justify-between w-full">
+                      <p className="font-bold">Id</p>
+                      <p>{classRoom?.id}</p>
+                    </div>
+
+                    <div className="flex justify-between w-full">
+                      <p className="font-bold">Name</p>
+                      <p>{classRoom?.name}</p>
+                    </div>
+                  </div>
+                  <div className="w-[250px] flex flex-col gap-2">
+                    <div className="flex justify-between w-full">
+                      <p className="font-bold">Time Start</p>
+                      <p>{classRoom?.timeStart}</p>
+                    </div>
+                    <div className="flex justify-between w-full">
+                      <p className="font-bold">Time End</p>
+                      <p>{classRoom?.timeEnd}</p>
+                    </div>
+                  </div>
+                </div>
+                {/* <ModalSeeRound competition={competition} /> */}
+              </div>
+
+              <div>
+                <div className="flex gap-2 justify-between items-center">
+                  <span className="text-2xl font-semibold">Students</span>
+                  <Button
+                    variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+                    onClick={() => setOpenAddStudent(true)}
                   >
-                    <g
-                      data-name="Layer 2"
-                      fill="#ffffff"
-                      className="color000000 svgShape"
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      id="plus"
+                      width={22}
+                      height={22}
                     >
                       <g
-                        data-name="plus"
+                        data-name="Layer 2"
                         fill="#ffffff"
                         className="color000000 svgShape"
                       >
-                        <rect
-                          width="24"
-                          height="24"
-                          opacity="0"
-                          transform="rotate(180 12 12)"
+                        <g
+                          data-name="plus"
                           fill="#ffffff"
                           className="color000000 svgShape"
-                        ></rect>
-                        <path
-                          d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
-                          fill="#ffffff"
-                          className="color000000 svgShape"
-                        ></path>
+                        >
+                          <rect
+                            width="24"
+                            height="24"
+                            opacity="0"
+                            transform="rotate(180 12 12)"
+                            fill="#ffffff"
+                            className="color000000 svgShape"
+                          ></rect>
+                          <path
+                            d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
+                            fill="#ffffff"
+                            className="color000000 svgShape"
+                          ></path>
+                        </g>
                       </g>
-                    </g>
-                  </svg>
-                  Add
-                </Button>
+                    </svg>
+                    Add
+                  </Button>
+                </div>
+                <Table columns={columns} rows={rows} />
               </div>
-              <Table columns={columns} rows={rows} />
             </div>
-          </div>
-        </Box>
-      </Modal>
-    </div>
+          </Box>
+        </Modal>
+      </div>
+      <ModalAddStudents
+        open={openAddStudent}
+        setOpen={setOpenAddStudent}
+        classId={classRoom?.id}
+        setStudents={setRows}
+      />
+    </>
   );
 };
 
