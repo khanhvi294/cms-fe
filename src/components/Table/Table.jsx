@@ -34,7 +34,7 @@ const Table = ({ rows, columns }) => {
   return (
     <div className="w-full" key={rows}>
       <div className=" bg-white mt-7 w-full ">
-        <div style={{ minHeight: 614, width: "100%" }}>
+        <div style={{ minHeight: 314, width: "100%" }}>
           <DataGrid
             className="!rounded-3xl "
             rows={tableData}

@@ -11,10 +11,8 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { createJudges } from "../../../services/judgeService";
-import { getEmployees } from "../../../services/employeeService";
-import { getStudents } from "../../../services/studentService";
 import { addStudents } from "../../../services/classService";
+import { getStudents } from "../../../services/studentService";
 
 const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   const {

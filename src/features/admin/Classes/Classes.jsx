@@ -19,10 +19,12 @@ import { toast } from "react-toastify";
 import { getCourses } from "../../../services/courseService";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import ModalAddStudents from "../../../components/admin/student/modalAddStudents";
+import ModalSeeStudent from "../../../components/admin/student/modalSeeStudents";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
   const [openAddStudent, setOpenAddStudent] = useState(false);
+  const [openSeeStudents, setOpenSeeStudents] = useState(false);
   const [studentsOfClass, setStudentsOfClass] = useState([]);
   const [classChoose, setClassChoose] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -62,8 +64,7 @@ const Classes = () => {
               id="Judge"
               width={15}
               onClick={() => {
-                // setOpenJudge(true);
-                // setRoundChoose(params?.row);
+                setOpenSeeStudents(true);
               }}
             >
               <path
@@ -105,7 +106,7 @@ const Classes = () => {
               width={15}
               onClick={() => {
                 setOpenAddStudent(true);
-                setClassChoose(params.row.id);
+                setClassChoose(params.row);
               }}
             >
               <path
@@ -286,8 +287,13 @@ const Classes = () => {
       <ModalAddStudents
         open={openAddStudent}
         setOpen={setOpenAddStudent}
-        classId={classChoose}
+        classId={classChoose?.id}
         setStudents={setStudentsOfClass}
+      />
+      <ModalSeeStudent
+        open={openSeeStudents}
+        setOpen={setOpenSeeStudents}
+        class={classChoose}
       />
     </>
   );
