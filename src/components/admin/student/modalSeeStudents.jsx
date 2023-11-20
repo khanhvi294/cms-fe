@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../Table/Table";
+import { getAllStudentByClass } from "../../../services/classService";
 const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
   //   const [open, setOpen] = useState(false);
   const [judges, setJudges] = useState([]);
@@ -86,10 +87,11 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
     },
   ];
   const [rows, setRows] = useState([]);
+  console.log("classrooom", classRoom?.id);
   useQuery({
-    queryKey: ["judges", classRoom?.id],
+    queryKey: ["students", classRoom?.id],
     enabled: !!classRoom?.id,
-    queryFn: (competitionId) => getRoundByCompetition(competitionId),
+    queryFn: () => getAllStudentByClass(classId),
     onSuccess: (data) => {
       console.log(data.data);
       setRows(data.data.data);

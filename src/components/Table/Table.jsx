@@ -20,14 +20,11 @@ function CustomToolbar() {
 }
 
 const Table = ({ rows, columns }) => {
-  console.log("row", rows);
-  console.log(columns);
   const [tableData, setTableData] = useState(rows);
   // const colData = (colArrayData) => {
   //   return colArrayData.map((item) => item.name).join(", ");
   // };
   useEffect(() => {
-    console.log(rows.length);
     setTableData(rows);
   }, [rows]);
 
