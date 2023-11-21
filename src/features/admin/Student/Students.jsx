@@ -17,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { createStudent, getStudents } from "../../../services/studentService";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const Students = () => {
   const [open, setOpen] = useState(false);
@@ -25,6 +26,7 @@ const Students = () => {
     reset();
     setOpen(false);
   };
+  const today = new Date();
   const [rows, setRows] = useState([]);
   const {
     register,
@@ -278,26 +280,26 @@ const Students = () => {
                 helperText={errors.address ? errors.address.message : ``}
                 {...register("address")}
               />
+
               <TextField
-                id="outlined-basic"
+                error={!!errors.dateOfBirth}
+                helperText={
+                  errors.dateOfBirth ? errors.dateOfBirth.message : ``
+                }
                 size="small"
-                label="CCCD/CMND*"
-                type="number"
-                variant="outlined"
+                label="DOB"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
+                }}
+                // defaultValue={
+                //   classEdit ? classEdit.timeStart : formattedTomorrow
+                // }
                 className="w-full"
-                error={!!errors.CCCD}
-                helperText={errors.CCCD ? errors.CCCD.message : ``}
-                {...register("CCCD", {
-                  required: "CCCD/CMND is required filed",
-                  minLength: {
-                    value: 10,
-                    message: "CCCD/CMND must be exactly 10 characters",
-                  },
-                  maxLength: {
-                    value: 10,
-                    message: "CCCD/CMND must be exactly 10 characters",
-                  },
-                })}
+                {...register("dateOfBirth")}
               />
 
               <Controller
@@ -309,14 +311,15 @@ const Students = () => {
                     <FormLabel id="demo-row-radio-buttons-group-label">
                       Gender
                     </FormLabel>
+
                     <RadioGroup {...field} row className="self-start">
                       <FormControlLabel
-                        value={0}
+                        value={true}
                         control={<Radio />}
                         label="Male"
                       />
                       <FormControlLabel
-                        value={1}
+                        value={false}
                         control={<Radio />}
                         label="Female"
                       />

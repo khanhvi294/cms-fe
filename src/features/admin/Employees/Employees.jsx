@@ -21,6 +21,7 @@ import {
   createEmployee,
   getEmployees,
 } from "../../../services/employeeService";
+import { format } from "date-fns";
 
 const Employees = () => {
   const {
@@ -136,6 +137,7 @@ const Employees = () => {
     reset();
     setOpen(false);
   };
+  const today = new Date();
   const onSubmit = (data) => {
     const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
     createEmployeeMutation.mutate(newEmployee);
@@ -305,11 +307,30 @@ const Employees = () => {
                   },
                   maxLength: {
                     value: 12,
-                    message: "CCCD/CMND must be exactly 12 characters",
+                    message: "CCCD must be exactly 12 characters",
                   },
                 })}
               />
-
+              <TextField
+                error={!!errors.dateOfBirth}
+                helperText={
+                  errors.dateOfBirth ? errors.dateOfBirth.message : ``
+                }
+                size="small"
+                label="DOB"
+                type="date"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
+                }}
+                // defaultValue={
+                //   classEdit ? classEdit.timeStart : formattedTomorrow
+                // }
+                className="w-full"
+                {...register("dateOfBirth")}
+              />
               <Controller
                 name="role"
                 control={control}
