@@ -10,9 +10,11 @@ import { toast } from "react-toastify";
 const Courses = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const [courseEdit, setCourseEdit] = useState();
   const handleClose = () => {
     reset();
     setOpen(false);
+    setCourseEdit({});
   };
   const [rows, setRows] = useState([]);
   const {
@@ -40,33 +42,59 @@ const Courses = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              dataName="Layer 1"
               viewBox="0 0 24 24"
-              id="Lock"
+              id="Edit"
               width={15}
+              onClick={() => {
+                handleOpen();
+                setCourseEdit(params.row);
+              }}
             >
               <path
-                d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
+                d="M3.5,24h15A3.51,3.51,0,0,0,22,20.487V12.95a1,1,0,0,0-2,0v7.537A1.508,1.508,0,0,1,18.5,22H3.5A1.508,1.508,0,0,1,2,20.487V5.513A1.508,1.508,0,0,1,3.5,4H11a1,1,0,0,0,0-2H3.5A3.51,3.51,0,0,0,0,5.513V20.487A3.51,3.51,0,0,0,3.5,24Z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M9.455,10.544l-.789,3.614a1,1,0,0,0,.271.921,1.038,1.038,0,0,0,.92.269l3.606-.791a1,1,0,0,0,.494-.271l9.114-9.114a3,3,0,0,0,0-4.243,3.07,3.07,0,0,0-4.242,0l-9.1,9.123A1,1,0,0,0,9.455,10.544Zm10.788-8.2a1.022,1.022,0,0,1,1.414,0,1.009,1.009,0,0,1,0,1.413l-.707.707L19.536,3.05Zm-8.9,8.914,6.774-6.791,1.4,1.407-6.777,6.793-1.795.394Z"
                 fill="#151515"
                 className="color000000 svgShape"
               ></path>
             </svg>
           }
-          label="Block"
+          label="Edit"
         />,
         <GridActionsCellItem
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              data-name="Layer 1"
-              viewBox="0 0 32 32"
-              id="notification"
-              width={30}
+              id="Delete"
+              x="0"
+              y="0"
+              version="1.1"
+              viewBox="0 0 29 29"
+              xml:space="preserve"
+              width={15}
             >
-              <path d="M26.59 21.17a2 2 0 0 1-.59-1.41V14a10 10 0 0 0-7.64-9.71 2.47 2.47 0 0 0 .14-.79 2.5 2.5 0 0 0-5 0 2.47 2.47 0 0 0 .14.79A10 10 0 0 0 6 14v5.76a2 2 0 0 1-.59 1.41A4.79 4.79 0 0 0 4 24.59V25a2 2 0 0 0 2 2h7.18a3 3 0 0 0-.18 1 3 3 0 0 0 6 0 3 3 0 0 0-.18-1H26a2 2 0 0 0 2-2v-.41a4.79 4.79 0 0 0-1.41-3.42ZM15.5 3.5a.5.5 0 1 1 .5.5.5.5 0 0 1-.5-.5Z"></path>
+              <path
+                d="M19.795 27H9.205a2.99 2.99 0 0 1-2.985-2.702L4.505 7.099A.998.998 0 0 1 5.5 6h18a1 1 0 0 1 .995 1.099L22.78 24.297A2.991 2.991 0 0 1 19.795 27zM6.604 8 8.21 24.099a.998.998 0 0 0 .995.901h10.59a.998.998 0 0 0 .995-.901L22.396 8H6.604z"
+                fill="#151515"
+                class="color000000 svgShape"
+              ></path>
+              <path
+                d="M26 8H3a1 1 0 1 1 0-2h23a1 1 0 1 1 0 2zM14.5 23a1 1 0 0 1-1-1V11a1 1 0 1 1 2 0v11a1 1 0 0 1-1 1zM10.999 23a1 1 0 0 1-.995-.91l-1-11a1 1 0 0 1 .905-1.086 1.003 1.003 0 0 1 1.087.906l1 11a1 1 0 0 1-.997 1.09zM18.001 23a1 1 0 0 1-.997-1.09l1-11c.051-.55.531-.946 1.087-.906a1 1 0 0 1 .905 1.086l-1 11a1 1 0 0 1-.995.91z"
+                fill="#151515"
+                class="color000000 svgShape"
+              ></path>
+              <path
+                d="M19 8h-9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm-8-2h7V4h-7v2z"
+                fill="#151515"
+                class="color000000 svgShape"
+              ></path>
             </svg>
           }
           label="Print"
-          showInMenu
         />,
       ],
     },
@@ -94,8 +122,9 @@ const Courses = () => {
   });
 
   const onSubmit = (data) => {
-    createCourseMutation.mutate(data);
-    handleClose();
+    console.log(data);
+    // createCourseMutation.mutate(data);
+    // handleClose();
   };
   return (
     <>
@@ -168,6 +197,7 @@ const Courses = () => {
                 size="small"
                 label="Name*"
                 variant="outlined"
+                defaultValue={courseEdit?.name}
                 error={!!errors.name}
                 helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
@@ -179,6 +209,7 @@ const Courses = () => {
                 id="outlined-basic"
                 size="small"
                 label="Time Trainee*"
+                defaultValue={courseEdit?.trainingTime}
                 variant="outlined"
                 className="w-full"
                 type="number"
