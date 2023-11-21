@@ -10,16 +10,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Table from "../../../components/Table/Table";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import { createClass, getClasses } from "../../../services/classService";
-import { toast } from "react-toastify";
-import { getCourses } from "../../../services/courseService";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import ModalAddStudents from "../../../components/admin/student/modalAddStudents";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation, useQuery } from "react-query";
+import { toast } from "react-toastify";
+import Table from "../../../components/Table/Table";
 import ModalSeeStudent from "../../../components/admin/student/modalSeeStudents";
+import { createClass, getClasses } from "../../../services/classService";
+import { getCourses } from "../../../services/courseService";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);

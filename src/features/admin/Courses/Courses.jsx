@@ -210,18 +210,21 @@ const Courses = () => {
               component="h2"
               className="font-bold "
             >
-              Add Course
+              {courseEdit ? "Edit Course" : "Add Course"}
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
-              <TextField
-                id="outlined-basic"
-                size="small"
-                label="Id*"
-                variant="outlined"
-                defaultValue={courseEdit?.id}
-                className="w-full"
-                {...register("id")}
-              />
+              {courseEdit && (
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  label="Id*"
+                  variant="outlined"
+                  defaultValue={courseEdit?.id}
+                  className="w-full"
+                  {...register("id")}
+                />
+              )}
+
               <TextField
                 id="outlined-basic"
                 size="small"
