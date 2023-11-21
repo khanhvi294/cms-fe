@@ -1,8 +1,19 @@
-import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  FormControlLabel,
+  FormLabel,
+  Modal,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { createStudent, getStudents } from "../../../services/studentService";
 import { toast } from "react-toastify";
@@ -19,6 +30,7 @@ const Students = () => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -234,6 +246,83 @@ const Students = () => {
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
+              />
+
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Phone"
+                variant="outlined"
+                className="w-full"
+                type="number"
+                error={!!errors.phone}
+                helperText={errors.phone ? errors.phone.message : ``}
+                {...register("phone", {
+                  minLength: {
+                    value: 10,
+                    message: "Phone must be exactly 10 characters",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "Phone must be exactly 10 characters",
+                  },
+                })}
+              />
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="address"
+                variant="outlined"
+                className="w-full"
+                error={!!errors.address}
+                helperText={errors.address ? errors.address.message : ``}
+                {...register("address")}
+              />
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="CCCD/CMND*"
+                type="number"
+                variant="outlined"
+                className="w-full"
+                error={!!errors.CCCD}
+                helperText={errors.CCCD ? errors.CCCD.message : ``}
+                {...register("CCCD", {
+                  required: "CCCD/CMND is required filed",
+                  minLength: {
+                    value: 10,
+                    message: "CCCD/CMND must be exactly 10 characters",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "CCCD/CMND must be exactly 10 characters",
+                  },
+                })}
+              />
+
+              <Controller
+                name="gender" // Tên của trường trong form
+                control={control}
+                defaultValue="" // Giá trị mặc định
+                render={({ field }) => (
+                  <div className="self-start">
+                    <FormLabel id="demo-row-radio-buttons-group-label">
+                      Gender
+                    </FormLabel>
+                    <RadioGroup {...field} row className="self-start">
+                      <FormControlLabel
+                        value={0}
+                        control={<Radio />}
+                        label="Male"
+                      />
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label="Female"
+                      />
+                    </RadioGroup>
+                  </div>
+                )}
               />
             </div>
 

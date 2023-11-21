@@ -321,12 +321,12 @@ const Employees = () => {
                     </FormLabel>
                     <RadioGroup {...field} row>
                       <FormControlLabel
-                        value={1}
+                        value={2}
                         control={<Radio />}
                         label="Teacher"
                       />
                       <FormControlLabel
-                        value={0}
+                        value={1}
                         control={<Radio />}
                         label="Employee"
                       />
