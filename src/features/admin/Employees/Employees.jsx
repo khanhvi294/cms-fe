@@ -359,7 +359,7 @@ const Employees = () => {
               <Controller
                 name="gender" // Tên của trường trong form
                 control={control}
-                defaultValue="" // Giá trị mặc định
+                defaultValue={true}
                 render={({ field }) => (
                   <div className="self-start">
                     <FormLabel id="demo-row-radio-buttons-group-label">
