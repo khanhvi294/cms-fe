@@ -4,17 +4,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
 import { useMutation, useQuery } from "react-query";
-import { createCourse, getCourses } from "../../../services/courseService";
+import {
+  createCourse,
+  getCourses,
+  updateCourse,
+} from "../../../services/courseService";
 import { toast } from "react-toastify";
 
 const Courses = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const [courseEdit, setCourseEdit] = useState();
+  const [courseEdit, setCourseEdit] = useState(null);
+
   const handleClose = () => {
     reset();
     setOpen(false);
-    setCourseEdit({});
+    setCourseEdit(null);
   };
   const [rows, setRows] = useState([]);
   const {
@@ -121,10 +126,26 @@ const Courses = () => {
     },
   });
 
+  const updateCourseMutation = useMutation({
+    mutationFn: (data) => updateCourse(data),
+    onSuccess: (data) => {
+      console.log("update", data);
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
   const onSubmit = (data) => {
-    console.log(data);
-    // createCourseMutation.mutate(data);
-    // handleClose();
+    if (courseEdit) {
+      updateCourseMutation.mutate(data);
+    } else {
+      createCourseMutation.mutate(data);
+    }
+
+    handleClose();
   };
   return (
     <>
@@ -192,6 +213,15 @@ const Courses = () => {
               Add Course
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Id*"
+                variant="outlined"
+                defaultValue={courseEdit?.id}
+                className="w-full"
+                {...register("id")}
+              />
               <TextField
                 id="outlined-basic"
                 size="small"
