@@ -3,7 +3,7 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createCourse,
   getCourses,
@@ -22,6 +22,7 @@ const Courses = () => {
     setCourseEdit(null);
   };
   const [rows, setRows] = useState([]);
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -129,7 +130,7 @@ const Courses = () => {
   const updateCourseMutation = useMutation({
     mutationFn: (data) => updateCourse(data),
     onSuccess: (data) => {
-      console.log("update", data);
+      queryClient.invalidateQueries(["courses"]);
       // setRows((state) => [data.data, ...state]);
       toast.success("Update successfully!");
     },
@@ -140,7 +141,7 @@ const Courses = () => {
 
   const onSubmit = (data) => {
     if (courseEdit) {
-      updateCourseMutation.mutate(data);
+      updateCourseMutation.mutate({ ...data, id: courseEdit?.id });
     } else {
       createCourseMutation.mutate(data);
     }
@@ -221,8 +222,7 @@ const Courses = () => {
                   disabled
                   variant="outlined"
                   defaultValue={courseEdit?.id}
-                  className="w-full"
-                  {...register("id")}
+                  className="w-full !text-black bg-slate-200"
                 />
               )}
 

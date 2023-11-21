@@ -1,4 +1,3 @@
-import { Button, IconButton } from "@mui/material";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -37,6 +36,7 @@ const Table = ({ rows, columns }) => {
             rows={tableData}
             columns={columns}
             pageSize={12}
+            pageSizeOptions={[7, 10, 25, 50, 100]}
             slots={{ toolbar: CustomToolbar }}
             sx={{
               ".MuiDataGrid-columnHeaderTitle": {

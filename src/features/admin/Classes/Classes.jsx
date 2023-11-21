@@ -13,11 +13,15 @@ import {
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import Table from "../../../components/Table/Table";
 import ModalSeeStudent from "../../../components/admin/student/modalSeeStudents";
-import { createClass, getClasses } from "../../../services/classService";
+import {
+  createClass,
+  getClasses,
+  updateClass,
+} from "../../../services/classService";
 import { getCourses } from "../../../services/courseService";
 import { addDays, format } from "date-fns";
 
@@ -35,6 +39,8 @@ const Classes = () => {
   };
   const [rows, setRows] = useState([]);
   const today = new Date();
+
+  const queryClient = useQueryClient();
 
   // Lấy ngày mai
   const tomorrow = addDays(today, 1);
@@ -151,7 +157,7 @@ const Classes = () => {
     queryFn: getCourses,
   });
 
-  const createStudentMutation = useMutation({
+  const createClassMutation = useMutation({
     mutationFn: (data) => createClass(data),
     onSuccess: (data) => {
       setRows((state) => [data.data, ...state]);
@@ -162,8 +168,23 @@ const Classes = () => {
     },
   });
 
+  const updateClassMutation = useMutation({
+    mutationFn: (data) => updateClass(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["classes"]);
+      toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
   const onSubmit = (data) => {
-    createStudentMutation.mutate(data);
+    if (classEdit) {
+      updateClassMutation.mutate({ ...data, id: classEdit?.id });
+    } else {
+      createClassMutation.mutate(data);
+    }
     handleClose();
   };
 
@@ -241,8 +262,7 @@ const Classes = () => {
                   disabled
                   variant="outlined"
                   defaultValue={classEdit?.id}
-                  className="w-full"
-                  {...register("id")}
+                  className="w-full !text-black bg-slate-200"
                 />
               )}
 
@@ -268,7 +288,9 @@ const Classes = () => {
                 inputProps={{
                   min: formattedTomorrow,
                 }}
-                defaultValue={formattedTomorrow}
+                defaultValue={
+                  classEdit ? classEdit.timeStart : formattedTomorrow
+                }
                 className="w-full"
                 {...register("timeStart", {
                   required: "Time start is required filed",
