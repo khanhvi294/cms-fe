@@ -68,7 +68,6 @@ const Competitions = () => {
     const {
       target: { value },
     } = event;
-    console.log("va", value);
     setClassesChoose(value);
   };
   const navigate = useNavigate();
@@ -420,33 +419,6 @@ const Competitions = () => {
                   )}
                 />
               </FormControl>
-              {/* <FormControl>
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Classes
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  size="small"
-                  multiple
-                  value={classesChoose}
-                  onChange={handleChange}
-                  input={<OutlinedInput label="Classes" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                  {...register("competitionClass", {
-                    required: "Rounds is required filed",
-                  })}
-                >
-                  {classesJoin?.data?.map((item, index) => (
-                    <MenuItem key={index} value={item.id}>
-                      {console.log(classesChoose)}
-                      <Checkbox checked={classesChoose.indexOf(item.id) >= 0} />
-                      <ListItemText primary={item.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
               <Button
                 variant="contained"
                 className="self-end !normal-case !rounded-lg !bg-black"

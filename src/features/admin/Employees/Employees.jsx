@@ -1,20 +1,33 @@
-import { Box, Button, Chip, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Modal,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
+import { toast } from "react-toastify";
 import Table from "../../../components/Table/Table";
 import {
   createEmployee,
   getEmployees,
 } from "../../../services/employeeService";
-import { ToastContainer, toast } from "react-toastify";
 
 const Employees = () => {
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -116,26 +129,7 @@ const Employees = () => {
       setRows(processArray);
     },
   });
-  // const rows = [
-  //   {
-  //     id: "1",
-  //     role: "admin",
-  //     email: "admin@gmail.com",
-  //     active: 1,
-  //     fullname: "Nguyễn Thúy An",
-  //     accountid: "1",
-  //     cccd: 1765873678,
-  //   },
-  //   {
-  //     id: "2",
-  //     role: "employee",
-  //     email: "teacher@gmail.com",
-  //     active: 1,
-  //     fullname: "Trần Thiên Bảo",
-  //     accountid: 2,
-  //     cccd: 2674563789,
-  //   },
-  // ];
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -250,7 +244,7 @@ const Employees = () => {
                 helperText={errors.fullName ? errors.fullName.message : ``}
                 className="w-full"
                 {...register("fullName", {
-                  required: "fullname is required filed",
+                  required: "FullName is required filed",
                 })}
               />
               <TextField
@@ -263,10 +257,42 @@ const Employees = () => {
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
               />
+
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Phone"
+                variant="outlined"
+                className="w-full"
+                type="number"
+                error={!!errors.phone}
+                helperText={errors.phone ? errors.phone.message : ``}
+                {...register("phone", {
+                  minLength: {
+                    value: 10,
+                    message: "Phone must be exactly 10 characters",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "Phone must be exactly 10 characters",
+                  },
+                })}
+              />
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="address"
+                variant="outlined"
+                className="w-full"
+                error={!!errors.address}
+                helperText={errors.address ? errors.address.message : ``}
+                {...register("address")}
+              />
               <TextField
                 id="outlined-basic"
                 size="small"
                 label="CCCD/CMND*"
+                type="number"
                 variant="outlined"
                 className="w-full"
                 error={!!errors.CCCD}
@@ -284,29 +310,55 @@ const Employees = () => {
                 })}
               />
 
-              {/* <FormControl
-                className="w-full"
-                size="small"
-                error={!!errors.role}
-              >
-                <InputLabel id="demo-select-small-label">Role*</InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={age}
-                  label="Role"
-                  onChange={handleChange}
-                  size="small"
-                  {...register("role", { required: "role is required filed" })}
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-                {!!errors.role && (
-                  <FormHelperText>{errors.role.message}</FormHelperText>
+              <Controller
+                name="role"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <div className="self-start">
+                    <FormLabel id="demo-row-radio-buttons-group-label">
+                      Role*
+                    </FormLabel>
+                    <RadioGroup {...field} row>
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label="Teacher"
+                      />
+                      <FormControlLabel
+                        value={0}
+                        control={<Radio />}
+                        label="Employee"
+                      />
+                    </RadioGroup>
+                  </div>
                 )}
-              </FormControl> */}
+              />
+
+              <Controller
+                name="gender" // Tên của trường trong form
+                control={control}
+                defaultValue="" // Giá trị mặc định
+                render={({ field }) => (
+                  <div className="self-start">
+                    <FormLabel id="demo-row-radio-buttons-group-label">
+                      Gender
+                    </FormLabel>
+                    <RadioGroup {...field} row className="self-start">
+                      <FormControlLabel
+                        value={0}
+                        control={<Radio />}
+                        label="Male"
+                      />
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label="Female"
+                      />
+                    </RadioGroup>
+                  </div>
+                )}
+              />
             </div>
 
             <Button
