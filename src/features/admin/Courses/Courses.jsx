@@ -108,7 +108,7 @@ const Courses = () => {
               ></path>
             </svg>
           }
-          label="Print"
+          label="Delete"
         />,
       ],
     },

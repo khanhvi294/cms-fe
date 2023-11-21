@@ -9,6 +9,7 @@ const ClassesApi = {
     axiosClientPrivate.post(`${url}/student/add/multiple`, data),
   getAllStudentByClass: (classId) =>
     axiosClientPrivate.get(`${url}/${classId}/students`),
+  deleteClass: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 };
 export const {
   createClass,
@@ -16,5 +17,6 @@ export const {
   addStudents,
   getAllStudentByClass,
   updateClass,
+  deleteClass,
 } = ClassesApi;
 export default ClassesApi;

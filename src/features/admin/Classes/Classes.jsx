@@ -19,18 +19,23 @@ import Table from "../../../components/Table/Table";
 import ModalSeeStudent from "../../../components/admin/student/modalSeeStudents";
 import {
   createClass,
+  deleteClass,
   getClasses,
   updateClass,
 } from "../../../services/classService";
 import { getCourses } from "../../../services/courseService";
 import { addDays, format } from "date-fns";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
-  const [openAddStudent, setOpenAddStudent] = useState(false);
+
   const [openSeeStudents, setOpenSeeStudents] = useState(false);
   const [classEdit, setClassEdit] = useState(null);
   const [classChoose, setClassChoose] = useState();
+  const [openDelete, setOpenDelete] = useState(false);
+  const [classDelete, setClassDelete] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     reset();
@@ -39,13 +44,8 @@ const Classes = () => {
   };
   const [rows, setRows] = useState([]);
   const today = new Date();
-
   const queryClient = useQueryClient();
-
-  // Lấy ngày mai
   const tomorrow = addDays(today, 1);
-
-  // Định dạng ngày thành chuỗi 'yyyy-MM-dd'
   const formattedTomorrow = format(tomorrow, "yyyy-MM-dd");
   const {
     register,
@@ -101,18 +101,36 @@ const Classes = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              id="Lock"
+              id="Delete"
+              x="0"
+              y="0"
+              version="1.1"
+              viewBox="0 0 29 29"
+              xmlSpace="preserve"
               width={15}
+              onClick={() => {
+                setClassDelete(params?.row);
+                setOpenDelete(true);
+              }}
             >
               <path
-                d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
+                d="M19.795 27H9.205a2.99 2.99 0 0 1-2.985-2.702L4.505 7.099A.998.998 0 0 1 5.5 6h18a1 1 0 0 1 .995 1.099L22.78 24.297A2.991 2.991 0 0 1 19.795 27zM6.604 8 8.21 24.099a.998.998 0 0 0 .995.901h10.59a.998.998 0 0 0 .995-.901L22.396 8H6.604z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M26 8H3a1 1 0 1 1 0-2h23a1 1 0 1 1 0 2zM14.5 23a1 1 0 0 1-1-1V11a1 1 0 1 1 2 0v11a1 1 0 0 1-1 1zM10.999 23a1 1 0 0 1-.995-.91l-1-11a1 1 0 0 1 .905-1.086 1.003 1.003 0 0 1 1.087.906l1 11a1 1 0 0 1-.997 1.09zM18.001 23a1 1 0 0 1-.997-1.09l1-11c.051-.55.531-.946 1.087-.906a1 1 0 0 1 .905 1.086l-1 11a1 1 0 0 1-.995.91z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M19 8h-9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm-8-2h7V4h-7v2z"
                 fill="#151515"
                 className="color000000 svgShape"
               ></path>
             </svg>
           }
-          label="Block"
+          label="Delete"
         />,
         <GridActionsCellItem
           icon={
@@ -174,6 +192,18 @@ const Classes = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries(["classes"]);
       toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const deleteClassMutation = useMutation({
+    mutationFn: deleteClass,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["classes"]);
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Delete successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -349,6 +379,12 @@ const Classes = () => {
         open={openSeeStudents}
         setOpen={setOpenSeeStudents}
         classRoom={classChoose}
+      />
+      <ModalConfirmDelete
+        open={openDelete}
+        setOpen={setOpenDelete}
+        deleteMutation={deleteClassMutation}
+        deleteId={classDelete?.id}
       />
     </>
   );
