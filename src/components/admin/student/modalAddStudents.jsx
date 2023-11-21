@@ -9,12 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { addStudents } from "../../../services/classService";
 import { getStudents } from "../../../services/studentService";
 
 const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
+  const queryClient = useQueryClient();
   const {
     register,
     control,
@@ -25,8 +26,10 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   const addStudentsMutation = useMutation({
     mutationFn: (data) => addStudents(data),
     onSuccess: (data) => {
-      console.log("data", data);
-      setStudents((state) => [data.data, ...state]);
+      // console.log("data", data);
+      // setStudents((state) => [data.data, ...state]);
+      queryClient.invalidateQueries(["students", classId]);
+
       toast.success("Create successfully!");
     },
     onError: (err) => {
