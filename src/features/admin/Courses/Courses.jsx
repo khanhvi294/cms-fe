@@ -6,14 +6,18 @@ import Table from "../../../components/Table/Table";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createCourse,
+  deleteCourse,
   getCourses,
   updateCourse,
 } from "../../../services/courseService";
 import { toast } from "react-toastify";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const Courses = () => {
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const handleOpen = () => setOpen(true);
+  const [courseDelete, setCourseDelete] = useState(false);
   const [courseEdit, setCourseEdit] = useState(null);
 
   const handleClose = () => {
@@ -80,23 +84,27 @@ const Courses = () => {
               y="0"
               version="1.1"
               viewBox="0 0 29 29"
-              xml:space="preserve"
+              xmlSpace="preserve"
               width={15}
+              onClick={() => {
+                setCourseDelete(params?.row);
+                setOpenDelete(true);
+              }}
             >
               <path
                 d="M19.795 27H9.205a2.99 2.99 0 0 1-2.985-2.702L4.505 7.099A.998.998 0 0 1 5.5 6h18a1 1 0 0 1 .995 1.099L22.78 24.297A2.991 2.991 0 0 1 19.795 27zM6.604 8 8.21 24.099a.998.998 0 0 0 .995.901h10.59a.998.998 0 0 0 .995-.901L22.396 8H6.604z"
                 fill="#151515"
-                class="color000000 svgShape"
+                className="color000000 svgShape"
               ></path>
               <path
                 d="M26 8H3a1 1 0 1 1 0-2h23a1 1 0 1 1 0 2zM14.5 23a1 1 0 0 1-1-1V11a1 1 0 1 1 2 0v11a1 1 0 0 1-1 1zM10.999 23a1 1 0 0 1-.995-.91l-1-11a1 1 0 0 1 .905-1.086 1.003 1.003 0 0 1 1.087.906l1 11a1 1 0 0 1-.997 1.09zM18.001 23a1 1 0 0 1-.997-1.09l1-11c.051-.55.531-.946 1.087-.906a1 1 0 0 1 .905 1.086l-1 11a1 1 0 0 1-.995.91z"
                 fill="#151515"
-                class="color000000 svgShape"
+                className="color000000 svgShape"
               ></path>
               <path
                 d="M19 8h-9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm-8-2h7V4h-7v2z"
                 fill="#151515"
-                class="color000000 svgShape"
+                className="color000000 svgShape"
               ></path>
             </svg>
           }
@@ -110,7 +118,6 @@ const Courses = () => {
     queryKey: ["courses"],
     queryFn: getCourses,
     onSuccess: (data) => {
-      console.log(data.data.data);
       setRows(data.data.data);
     },
   });
@@ -133,6 +140,18 @@ const Courses = () => {
       queryClient.invalidateQueries(["courses"]);
       // setRows((state) => [data.data, ...state]);
       toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const deleteCourseMutation = useMutation({
+    mutationFn: deleteCourse,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["courses"]);
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Delete successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -267,6 +286,12 @@ const Courses = () => {
           </form>
         </Box>
       </Modal>
+      <ModalConfirmDelete
+        open={openDelete}
+        setOpen={setOpenDelete}
+        deleteMutation={deleteCourseMutation}
+        deleteId={courseDelete?.id}
+      />
     </>
   );
 };
