@@ -30,7 +30,7 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
       // setStudents((state) => [data.data, ...state]);
       queryClient.invalidateQueries(["students", classId]);
 
-      toast.success("Create successfully!");
+      toast.success("Add students successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
