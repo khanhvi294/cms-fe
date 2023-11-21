@@ -19,18 +19,28 @@ import Table from "../../../components/Table/Table";
 import ModalSeeStudent from "../../../components/admin/student/modalSeeStudents";
 import { createClass, getClasses } from "../../../services/classService";
 import { getCourses } from "../../../services/courseService";
+import { addDays, format } from "date-fns";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);
   const [openAddStudent, setOpenAddStudent] = useState(false);
   const [openSeeStudents, setOpenSeeStudents] = useState(false);
+  const [classEdit, setClassEdit] = useState(null);
   const [classChoose, setClassChoose] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     reset();
     setOpen(false);
+    setClassEdit(null);
   };
   const [rows, setRows] = useState([]);
+  const today = new Date();
+
+  // Lấy ngày mai
+  const tomorrow = addDays(today, 1);
+
+  // Định dạng ngày thành chuỗi 'yyyy-MM-dd'
+  const formattedTomorrow = format(tomorrow, "yyyy-MM-dd");
   const {
     register,
     handleSubmit,
@@ -58,43 +68,25 @@ const Classes = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              dataName="Layer 1"
               viewBox="0 0 24 24"
-              id="Eye"
+              id="Edit"
               width={15}
               onClick={() => {
-                setClassChoose(params.row);
-                setOpenSeeStudents(true);
+                handleOpen();
+                setClassEdit(params.row);
               }}
             >
-              <g
-                data-name="Layer 2"
+              <path
+                d="M3.5,24h15A3.51,3.51,0,0,0,22,20.487V12.95a1,1,0,0,0-2,0v7.537A1.508,1.508,0,0,1,18.5,22H3.5A1.508,1.508,0,0,1,2,20.487V5.513A1.508,1.508,0,0,1,3.5,4H11a1,1,0,0,0,0-2H3.5A3.51,3.51,0,0,0,0,5.513V20.487A3.51,3.51,0,0,0,3.5,24Z"
                 fill="#151515"
                 className="color000000 svgShape"
-              >
-                <g
-                  data-name="eye"
-                  fill="#151515"
-                  className="color000000 svgShape"
-                >
-                  <rect
-                    width="24"
-                    height="24"
-                    opacity="0"
-                    fill="#151515"
-                    className="color000000 svgShape"
-                  ></rect>
-                  <path
-                    d="M21.87 11.5c-.64-1.11-4.16-6.68-10.14-6.5-5.53.14-8.73 5-9.6 6.5a1 1 0 0 0 0 1c.63 1.09 4 6.5 9.89 6.5h.25c5.53-.14 8.74-5 9.6-6.5a1 1 0 0 0 0-1zM12.22 17c-4.31.1-7.12-3.59-8-5 1-1.61 3.61-4.9 7.61-5 4.29-.11 7.11 3.59 8 5-1.03 1.61-3.61 4.9-7.61 5z"
-                    fill="#151515"
-                    className="color000000 svgShape"
-                  ></path>
-                  <path
-                    d="M12 8.5a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12 8.5zm0 5a1.5 1.5 0 1 1 1.5-1.5 1.5 1.5 0 0 1-1.5 1.5z"
-                    fill="#151515"
-                    className="color000000 svgShape"
-                  ></path>
-                </g>
-              </g>
+              ></path>
+              <path
+                d="M9.455,10.544l-.789,3.614a1,1,0,0,0,.271.921,1.038,1.038,0,0,0,.92.269l3.606-.791a1,1,0,0,0,.494-.271l9.114-9.114a3,3,0,0,0,0-4.243,3.07,3.07,0,0,0-4.242,0l-9.1,9.123A1,1,0,0,0,9.455,10.544Zm10.788-8.2a1.022,1.022,0,0,1,1.414,0,1.009,1.009,0,0,1,0,1.413l-.707.707L19.536,3.05Zm-8.9,8.914,6.774-6.791,1.4,1.407-6.777,6.793-1.795.394Z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
             </svg>
           }
           label="Block"
@@ -238,14 +230,28 @@ const Classes = () => {
               component="h2"
               className="font-bold "
             >
-              Add Class
+              {classEdit ? "Edit Class" : "Add Class"}
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
+              {classEdit && (
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  label="Id*"
+                  disabled
+                  variant="outlined"
+                  defaultValue={classEdit?.id}
+                  className="w-full"
+                  {...register("id")}
+                />
+              )}
+
               <TextField
                 id="outlined-basic"
                 size="small"
                 label="Name*"
                 variant="outlined"
+                defaultValue={classEdit?.name}
                 error={!!errors.name}
                 helperText={errors.name ? errors.name.message : ``}
                 className="w-full"
@@ -259,7 +265,10 @@ const Classes = () => {
                 size="small"
                 label="Time Start"
                 type="date"
-                defaultValue={new Date().toISOString().slice(0, 10)}
+                inputProps={{
+                  min: formattedTomorrow,
+                }}
+                defaultValue={formattedTomorrow}
                 className="w-full"
                 {...register("timeStart", {
                   required: "Time start is required filed",

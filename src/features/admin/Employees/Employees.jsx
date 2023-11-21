@@ -138,9 +138,8 @@ const Employees = () => {
   };
   const onSubmit = (data) => {
     const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
-    console.log(newEmployee);
-    // createEmployeeMutation.mutate(newEmployee);
-    // handleClose();
+    createEmployeeMutation.mutate(newEmployee);
+    //handleClose();
   };
   const handleCollectKeys = (keyArr, newKey, dataOri) => {
     // Tạo một đối tượng mới từ originalObject chỉ với các keys cần gom lại
@@ -292,21 +291,21 @@ const Employees = () => {
               <TextField
                 id="outlined-basic"
                 size="small"
-                label="CCCD/CMND*"
+                label="CCCD*"
                 type="number"
                 variant="outlined"
                 className="w-full"
-                error={!!errors.CCCD}
-                helperText={errors.CCCD ? errors.CCCD.message : ``}
-                {...register("CCCD", {
-                  required: "CCCD/CMND is required filed",
+                error={!!errors.cccd}
+                helperText={errors.cccd ? errors.cccd.message : ``}
+                {...register("cccd", {
+                  required: "CCCD is required filed",
                   minLength: {
-                    value: 10,
-                    message: "CCCD/CMND must be exactly 10 characters",
+                    value: 12,
+                    message: "CCCD must be exactly 12 characters",
                   },
                   maxLength: {
-                    value: 10,
-                    message: "CCCD/CMND must be exactly 10 characters",
+                    value: 12,
+                    message: "CCCD/CMND must be exactly 12 characters",
                   },
                 })}
               />
@@ -347,12 +346,12 @@ const Employees = () => {
                     </FormLabel>
                     <RadioGroup {...field} row className="self-start">
                       <FormControlLabel
-                        value={0}
+                        value={true}
                         control={<Radio />}
                         label="Male"
                       />
                       <FormControlLabel
-                        value={1}
+                        value={false}
                         control={<Radio />}
                         label="Female"
                       />

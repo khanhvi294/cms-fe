@@ -218,6 +218,7 @@ const Courses = () => {
                   id="outlined-basic"
                   size="small"
                   label="Id*"
+                  disabled
                   variant="outlined"
                   defaultValue={courseEdit?.id}
                   className="w-full"
