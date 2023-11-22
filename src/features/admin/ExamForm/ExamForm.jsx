@@ -3,10 +3,11 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Table from "../../../components/Table/Table";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createExamForm,
   getExamForms,
+  updateExamForm,
 } from "../../../services/examFormService";
 import { toast } from "react-toastify";
 
@@ -25,6 +26,7 @@ const ExamForms = () => {
     setOpen(false);
   };
   const [examFormEdit, setExamFormClassEdit] = useState(null);
+  const queryClient = useQueryClient();
 
   const columns = [
     {
@@ -44,7 +46,6 @@ const ExamForms = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              dataName="Layer 1"
               viewBox="0 0 24 24"
               id="Edit"
               width={15}
@@ -108,7 +109,9 @@ const ExamForms = () => {
   ];
 
   const onSubmit = (data) => {
-    createExamFormMutation.mutate(data);
+    if (examFormEdit) {
+      updateExamFormMutation.mutate({ ...data, id: examFormEdit.id });
+    } else createExamFormMutation.mutate(data);
     handleClose();
   };
 
@@ -130,6 +133,18 @@ const ExamForms = () => {
       toast.error(err.message);
     },
   });
+
+  const updateExamFormMutation = useMutation({
+    mutationFn: updateExamForm,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["exams"]);
+      toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
