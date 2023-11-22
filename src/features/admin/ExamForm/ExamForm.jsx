@@ -115,7 +115,7 @@ const ExamForms = () => {
 
   const onSubmit = (data) => {
     if (examFormEdit) {
-      updateExamFormMutation.mutate({ ...data, id: examFormEdit.id });
+      updateExamFormMutation.mutate({ examForm: data, id: examFormEdit.id });
     } else createExamFormMutation.mutate(data);
     handleClose();
   };
