@@ -1,13 +1,20 @@
 import { Box, Button, IconButton, Modal, Typography } from "@mui/material";
-import { useState } from "react";
-import { useQuery } from "react-query";
-import { getRoundByCompetition } from "../../../services/roundService";
-import Table from "../../Table/Table";
-import { getAllStudentByClass } from "../../../services/classService";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  deleteStudentInClass,
+  getAllStudentByClass,
+} from "../../../services/classService";
+import Table from "../../Table/Table";
 import ModalAddStudents from "./modalAddStudents";
+import ModalConfirmDelete from "../../Modal/modalConfirmDelete";
+import { toast } from "react-toastify";
 const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
   const [openAddStudent, setOpenAddStudent] = useState(false);
+  const [studentDelete, setStudentDelete] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const queryClient = useQueryClient();
 
   const columns = [
     {
@@ -21,69 +28,42 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
       field: "actions",
       type: "actions",
       headerName: "Actions",
-      getActions: (params) => [
+      getActions: (params, index) => [
         <GridActionsCellItem
+          key={index}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              id="Judge"
-              width={15}
-              onClick={() => {
-                setOpen(true);
-                setRoundChoose(params?.row);
-              }}
-            >
-              <path
-                d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z"
-                fill="#151515"
-                className="color000000 svgShape"
-              ></path>
-            </svg>
-          }
-          label="Judge"
-        />,
-        <GridActionsCellItem
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              id="Lock"
-              width={15}
-            >
-              <path
-                d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
-                fill="#151515"
-                className="color000000 svgShape"
-              ></path>
-            </svg>
-          }
-          label="Block"
-        />,
-        <GridActionsCellItem
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              id="Add"
+              id="Delete"
               x="0"
               y="0"
               version="1.1"
               viewBox="0 0 29 29"
-              xml:space="preserve"
+              xmlSpace="preserve"
               width={15}
               onClick={() => {
-                setCompetitionSee(params.row);
-                handleOpenAddRound();
+                setStudentDelete(params?.row);
+                setOpenDelete(true);
               }}
             >
               <path
-                d="M14.5 2C7.596 2 2 7.596 2 14.5S7.596 27 14.5 27 27 21.404 27 14.5 21.404 2 14.5 2zM21 15.5h-5.5V21a1 1 0 1 1-2 0v-5.5H8a1 1 0 1 1 0-2h5.5V8a1 1 0 1 1 2 0v5.5H21a1 1 0 1 1 0 2z"
+                d="M19.795 27H9.205a2.99 2.99 0 0 1-2.985-2.702L4.505 7.099A.998.998 0 0 1 5.5 6h18a1 1 0 0 1 .995 1.099L22.78 24.297A2.991 2.991 0 0 1 19.795 27zM6.604 8 8.21 24.099a.998.998 0 0 0 .995.901h10.59a.998.998 0 0 0 .995-.901L22.396 8H6.604z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M26 8H3a1 1 0 1 1 0-2h23a1 1 0 1 1 0 2zM14.5 23a1 1 0 0 1-1-1V11a1 1 0 1 1 2 0v11a1 1 0 0 1-1 1zM10.999 23a1 1 0 0 1-.995-.91l-1-11a1 1 0 0 1 .905-1.086 1.003 1.003 0 0 1 1.087.906l1 11a1 1 0 0 1-.997 1.09zM18.001 23a1 1 0 0 1-.997-1.09l1-11c.051-.55.531-.946 1.087-.906a1 1 0 0 1 .905 1.086l-1 11a1 1 0 0 1-.995.91z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M19 8h-9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm-8-2h7V4h-7v2z"
                 fill="#151515"
                 className="color000000 svgShape"
               ></path>
             </svg>
           }
-          label="Block"
+          label="Delete"
         />,
       ],
     },
@@ -100,6 +80,18 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
         id: item.ClassStudentStudent.id,
       }));
       setRows(students);
+    },
+  });
+
+  const deleteStudentInClassMutation = useMutation({
+    mutationFn: deleteStudentInClass,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["students", classRoom?.id]);
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Delete successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
     },
   });
 
@@ -174,7 +166,6 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
                     </div>
                   </div>
                 </div>
-                {/* <ModalSeeRound competition={competition} /> */}
               </div>
 
               <div>
@@ -231,6 +222,14 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
         setOpen={setOpenAddStudent}
         classId={classRoom?.id}
         setStudents={setRows}
+      />
+      {/* tobe */}
+      <ModalConfirmDelete
+        open={openDelete}
+        setOpenDelete={setOpenDelete}
+        deleteMutation={deleteStudentInClassMutation}
+        deleteId={studentDelete?.id}
+        deleteParentId={classRoom?.id}
       />
     </>
   );

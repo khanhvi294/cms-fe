@@ -1,6 +1,12 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 
-const ModalConfirmDelete = ({ open, setOpen, deleteMutation, deleteId }) => {
+const ModalConfirmDelete = ({
+  open,
+  setOpen,
+  deleteMutation,
+  deleteId,
+  deleteParentId = null,
+}) => {
   return (
     <div>
       <Modal
@@ -27,6 +33,7 @@ const ModalConfirmDelete = ({ open, setOpen, deleteMutation, deleteId }) => {
               variant="outlined"
               className="self-end !normal-case !rounded-lg !bg-red"
               onClick={() => {
+                //if(!!deleteParentId) deleteMutation.mutate();
                 deleteMutation.mutate(deleteId);
                 setOpen(false);
               }}

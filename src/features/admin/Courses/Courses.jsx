@@ -160,6 +160,8 @@ const Courses = () => {
 
   const onSubmit = (data) => {
     if (courseEdit) {
+      console.log(courseEdit?.id);
+      console.log({ ...data, id: courseEdit?.id });
       updateCourseMutation.mutate({ ...data, id: courseEdit?.id });
     } else {
       createCourseMutation.mutate(data);

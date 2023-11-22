@@ -141,7 +141,7 @@ const Employees = () => {
   const onSubmit = (data) => {
     const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
     createEmployeeMutation.mutate(newEmployee);
-    //handleClose();
+    handleClose();
   };
   const handleCollectKeys = (keyArr, newKey, dataOri) => {
     // Tạo một đối tượng mới từ originalObject chỉ với các keys cần gom lại
@@ -163,6 +163,7 @@ const Employees = () => {
         handleSpreed(data.data, "accountEmployee"),
         ...state,
       ]);
+      // handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {

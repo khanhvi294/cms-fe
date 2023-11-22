@@ -10,6 +10,8 @@ const ClassesApi = {
   getAllStudentByClass: (classId) =>
     axiosClientPrivate.get(`${url}/${classId}/students`),
   deleteClass: (id) => axiosClientPrivate.delete(`${url}/${id}`),
+  deleteStudentInClass: (deleteItem) =>
+    axiosClientPrivate.delete(`${url}/student/delete`, deleteItem),
 };
 export const {
   createClass,
@@ -18,5 +20,6 @@ export const {
   getAllStudentByClass,
   updateClass,
   deleteClass,
+  deleteStudentInClass,
 } = ClassesApi;
 export default ClassesApi;

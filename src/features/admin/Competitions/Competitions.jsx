@@ -349,32 +349,20 @@ const Competitions = () => {
                   })}
                 />
               </div>
-              <div className="flex gap-5">
-                <TextField
-                  id="outlined-min"
-                  label="Number min"
-                  type="number"
-                  size="small"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("minimumQuantity", {
-                    required: "Number min is required filed",
-                  })}
-                />
-                <TextField
-                  id="outlined-max"
-                  label="Number max"
-                  type="number"
-                  size="small"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("maximumQuantity", {
-                    required: "Number max is required filed",
-                  })}
-                />
-              </div>
+
+              <TextField
+                id="outlined-min"
+                label="Number min"
+                type="number"
+                size="small"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                {...register("minimumQuantity", {
+                  required: "Number min is required filed",
+                })}
+              />
+
               <TextField
                 id="outlined-prizes"
                 label="Number of prizes"
