@@ -189,7 +189,7 @@ const Classes = () => {
 
   const updateClassMutation = useMutation({
     mutationFn: (data) => updateClass(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["classes"]);
       toast.success("Update successfully!");
     },

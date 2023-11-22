@@ -6,10 +6,12 @@ import Table from "../../../components/Table/Table";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   createExamForm,
+  deleteExamForm,
   getExamForms,
   updateExamForm,
 } from "../../../services/examFormService";
 import { toast } from "react-toastify";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const ExamForms = () => {
   const {
@@ -21,6 +23,9 @@ const ExamForms = () => {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [classDelete, setExamFormDelete] = useState(false);
+
   const handleClose = () => {
     reset();
     setOpen(false);
@@ -81,7 +86,7 @@ const ExamForms = () => {
               xmlSpace="preserve"
               width={15}
               onClick={() => {
-                setClassDelete(params?.row);
+                setExamFormDelete(params?.row);
                 setOpenDelete(true);
               }}
             >
@@ -139,6 +144,18 @@ const ExamForms = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["exams"]);
       toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const deleteExamFormMutation = useMutation({
+    mutationFn: deleteExamForm,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["exams"]);
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Delete successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -248,6 +265,12 @@ const ExamForms = () => {
           </form>
         </Box>
       </Modal>
+      <ModalConfirmDelete
+        open={openDelete}
+        setOpen={setOpenDelete}
+        deleteMutation={deleteExamFormMutation}
+        deleteId={classDelete?.id}
+      />
     </>
   );
 };
