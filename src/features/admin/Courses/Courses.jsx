@@ -125,7 +125,6 @@ const Courses = () => {
   const createCourseMutation = useMutation({
     mutationFn: (data) => createCourse(data),
     onSuccess: (data) => {
-      console.log(data);
       setRows((state) => [data.data, ...state]);
       toast.success("Create successfully!");
     },
@@ -135,8 +134,8 @@ const Courses = () => {
   });
 
   const updateCourseMutation = useMutation({
-    mutationFn: (data) => updateCourse(data),
-    onSuccess: (data) => {
+    mutationFn: updateCourse,
+    onSuccess: () => {
       queryClient.invalidateQueries(["courses"]);
       // setRows((state) => [data.data, ...state]);
       toast.success("Update successfully!");
@@ -160,9 +159,7 @@ const Courses = () => {
 
   const onSubmit = (data) => {
     if (courseEdit) {
-      console.log(courseEdit?.id);
-      console.log({ ...data, id: courseEdit?.id });
-      updateCourseMutation.mutate({ ...data, id: courseEdit?.id });
+      updateCourseMutation.mutate({ course: data, id: courseEdit?.id });
     } else {
       createCourseMutation.mutate(data);
     }
