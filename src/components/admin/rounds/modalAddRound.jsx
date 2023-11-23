@@ -49,7 +49,7 @@ const ModalAddRound = ({
   const onSubmitAddRound = (data) => {
     const round = data;
     round.competitionId = competition.id;
-    round.roundNumber = 1;
+    // round.roundNumber = 1;
     createRoundMutation.mutate(round);
     handleCloseAddRound();
   };
