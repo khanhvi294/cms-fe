@@ -21,7 +21,7 @@ export const axiosClientPrivate = axios.create({
   baseURL,
   headers: {
     "Content-Type": "multipart/form-data",
-    "content-type": "application/json",
+    "Content-type": "application/json",
   },
   credentials: "include",
   timeout: 60000,

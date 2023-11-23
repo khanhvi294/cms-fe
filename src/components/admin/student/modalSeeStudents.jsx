@@ -226,10 +226,9 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
       {/* tobe */}
       <ModalConfirmDelete
         open={openDelete}
-        setOpenDelete={setOpenDelete}
+        setOpen={setOpenDelete}
         deleteMutation={deleteStudentInClassMutation}
-        deleteId={studentDelete?.id}
-        deleteParentId={classRoom?.id}
+        deleteId={{ studentId: studentDelete?.id, classId: classRoom?.id }}
       />
     </>
   );

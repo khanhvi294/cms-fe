@@ -1,12 +1,6 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 
-const ModalConfirmDelete = ({
-  open,
-  setOpen,
-  deleteMutation,
-  deleteId,
-  deleteParentId = null,
-}) => {
+const ModalConfirmDelete = ({ open, setOpen, deleteMutation, deleteId }) => {
   return (
     <div>
       <Modal

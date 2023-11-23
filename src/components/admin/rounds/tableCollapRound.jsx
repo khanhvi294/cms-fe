@@ -95,13 +95,12 @@ function Row(props) {
           {row?.id}
         </TableCell>
         <TableCell align="right">{row?.examFormId}</TableCell>
-        <TableCell align="right">{row?.roundId}</TableCell>
+        <TableCell align="right">{row?.roundNumber}</TableCell>
         <TableCell align="right">{row.timeStart}</TableCell>
         <TableCell align="right">
           <div className="flex justify-end gap-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              dataName="Layer 1"
               viewBox="0 0 24 24"
               id="Edit"
               width={15}
