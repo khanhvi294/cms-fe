@@ -9,12 +9,14 @@ import {
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { createJudges } from "../../../services/judgeService";
 import { getEmployees } from "../../../services/employeeService";
 
 const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
+  const queryClient = useQueryClient();
+
   const {
     register,
     control,
@@ -24,8 +26,9 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
   } = useForm();
   const createJudgesMutation = useMutation({
     mutationFn: (data) => createJudges(data),
-    onSuccess: (data) => {
-      setJudges((state) => [data.data, ...state]);
+    onSuccess: () => {
+      queryClient.invalidateQueries(["judges", roundId]);
+
       toast.success("Create successfully!");
     },
     onError: (err) => {
