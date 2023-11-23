@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import ModalJudge from "../../../components/admin/judges/modalJudge";
 import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import RoundTable from "../../../components/admin/rounds/tableCollapRound";
-import { getCompetitionById } from "../../../services/competitionService";
 import {
-  createExamForm
-} from "../../../services/examFormService";
+  getAllClassJoinCompetition,
+  getCompetitionById,
+} from "../../../services/competitionService";
+import { createExamForm } from "../../../services/examFormService";
 import { getRoundByCompetition } from "../../../services/roundService";
 
 const CompetitionDetail = () => {
@@ -141,6 +142,15 @@ const CompetitionDetail = () => {
     },
   });
 
+  useQuery({
+    queryKey: ["classes", id],
+    enabled: !!id,
+    queryFn: () => getAllClassJoinCompetition(id),
+    onSuccess: (data) => {
+      console.log("class", data);
+    },
+  });
+
   const createExamFormMutation = useMutation({
     mutationFn: (data) => createExamForm(data),
     onSuccess: (data) => {
@@ -151,7 +161,7 @@ const CompetitionDetail = () => {
       toast.error(err.message);
     },
   });
-  console.log(rows);
+
   return (
     <>
       <div>
