@@ -11,7 +11,10 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getJudgeByRound } from "../../../services/judgeService";
+import {
+  deleteJudgeInRound,
+  getJudgeByRound,
+} from "../../../services/judgeService";
 import ModalAddJudge from "../judges/modalAddJudge";
 import ModalConfirmDelete from "../../Modal/modalConfirmDelete";
 import { deleteRound } from "../../../services/roundService";
@@ -24,8 +27,11 @@ function Row(props) {
   const [openAddJudges, setOpenAddJudges] = React.useState(false);
   const [judges, setJudges] = React.useState([]);
   const [openDelete, setOpenDelete] = React.useState(false);
-  const [roundDelete, setRoundDelete] = React.useState(false);
+  const [itemDelete, setItemDelete] = React.useState();
+  const [funcDelete, setFuncDelete] = React.useState(false);
+
   const queryClient = useQueryClient();
+
   const { id } = useParams();
   useQuery({
     queryKey: ["judges", row?.id],
@@ -41,6 +47,19 @@ function Row(props) {
     mutationFn: deleteRound,
     onSuccess: () => {
       queryClient.invalidateQueries(["rounds", id]);
+      toast.success("Delete successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const deleteJudgeMutation = useMutation({
+    mutationFn: deleteJudgeInRound,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["teachers", row?.id]);
+      queryClient.invalidateQueries(["judges", row?.id]);
+
       toast.success("Delete successfully!");
     },
     onError: (err) => {
@@ -130,8 +149,9 @@ function Row(props) {
               xmlSpace="preserve"
               width={15}
               onClick={() => {
-                setRoundDelete(row);
+                setItemDelete(row?.id);
                 setOpenDelete(true);
+                setFuncDelete(deleteRoundMutation);
               }}
             >
               <path
@@ -208,6 +228,49 @@ function Row(props) {
                       </TableCell>
                       <TableCell>{item.employeeJudge.fullName}</TableCell>
                       <TableCell align="right">{item.amount}</TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          onClick={() => {
+                            setOpenDelete(true);
+                            setItemDelete({
+                              roundId: item.roundId,
+                              employeeId: item.employeeJudge.id,
+                            });
+                            setFuncDelete(deleteJudgeMutation);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            id="Delete"
+                            x="0"
+                            y="0"
+                            version="1.1"
+                            viewBox="0 0 29 29"
+                            xmlSpace="preserve"
+                            width={15}
+                            onClick={() => {
+                              // setClassDelete(params?.row);
+                              // setOpenDelete(true);
+                            }}
+                          >
+                            <path
+                              d="M19.795 27H9.205a2.99 2.99 0 0 1-2.985-2.702L4.505 7.099A.998.998 0 0 1 5.5 6h18a1 1 0 0 1 .995 1.099L22.78 24.297A2.991 2.991 0 0 1 19.795 27zM6.604 8 8.21 24.099a.998.998 0 0 0 .995.901h10.59a.998.998 0 0 0 .995-.901L22.396 8H6.604z"
+                              fill="#151515"
+                              className="color000000 svgShape"
+                            ></path>
+                            <path
+                              d="M26 8H3a1 1 0 1 1 0-2h23a1 1 0 1 1 0 2zM14.5 23a1 1 0 0 1-1-1V11a1 1 0 1 1 2 0v11a1 1 0 0 1-1 1zM10.999 23a1 1 0 0 1-.995-.91l-1-11a1 1 0 0 1 .905-1.086 1.003 1.003 0 0 1 1.087.906l1 11a1 1 0 0 1-.997 1.09zM18.001 23a1 1 0 0 1-.997-1.09l1-11c.051-.55.531-.946 1.087-.906a1 1 0 0 1 .905 1.086l-1 11a1 1 0 0 1-.995.91z"
+                              fill="#151515"
+                              className="color000000 svgShape"
+                            ></path>
+                            <path
+                              d="M19 8h-9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm-8-2h7V4h-7v2z"
+                              fill="#151515"
+                              className="color000000 svgShape"
+                            ></path>
+                          </svg>
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -225,8 +288,8 @@ function Row(props) {
       <ModalConfirmDelete
         open={openDelete}
         setOpen={setOpenDelete}
-        deleteMutation={deleteRoundMutation}
-        deleteId={roundDelete?.id}
+        deleteMutation={funcDelete}
+        deleteId={itemDelete}
       />
     </React.Fragment>
   );

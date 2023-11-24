@@ -4,8 +4,6 @@ import { useQuery } from "react-query";
 import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../Table/Table";
 const ModalJudge = ({ open, setOpenJudge, round }) => {
-  //   const [open, setOpen] = useState(false);
-  const [judges, setJudges] = useState([]);
   const columns = [
     {
       field: "id",
