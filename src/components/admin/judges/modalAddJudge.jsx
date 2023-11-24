@@ -12,7 +12,10 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { createJudges } from "../../../services/judgeService";
-import { getEmployees } from "../../../services/employeeService";
+import {
+  getAllTeacherAddJudge,
+  getEmployees,
+} from "../../../services/employeeService";
 
 const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
   const queryClient = useQueryClient();
@@ -28,6 +31,7 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
     mutationFn: (data) => createJudges(data),
     onSuccess: () => {
       queryClient.invalidateQueries(["judges", roundId]);
+      queryClient.invalidateQueries(["teachers", roundId]);
 
       toast.success("Create successfully!");
     },
@@ -48,8 +52,11 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
   };
 
   const { data: teachers } = useQuery({
-    queryKey: ["employees"],
-    queryFn: getEmployees,
+    queryKey: ["teachers", roundId],
+    queryFn: () => getAllTeacherAddJudge(roundId),
+    onSuccess: (data) => {
+      console.log(data);
+    },
   });
 
   return (
