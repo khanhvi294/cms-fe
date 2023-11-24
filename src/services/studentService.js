@@ -3,6 +3,8 @@ import { axiosClientPrivate } from "./axiosClient";
 const url = "/students";
 const studentApi = {
   getStudents: () => axiosClientPrivate.get(`${url}`),
+  getStudentAddClass: (classId) =>
+    axiosClientPrivate.get(`${url}/class/${classId}`),
   createStudent: (student) => axiosClientPrivate.post(`${url}`, student),
   getAllClassesByStudent: (id) =>
     axiosClientPrivate.get(`${url}/${id}/classes`),
@@ -14,5 +16,6 @@ export const {
   getStudents,
   getAllClassesByStudent,
   getCompetitionsForStudent,
+  getStudentAddClass,
 } = studentApi;
 export default studentApi;

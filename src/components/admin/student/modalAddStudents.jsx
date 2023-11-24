@@ -12,7 +12,10 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { addStudents } from "../../../services/classService";
-import { getStudents } from "../../../services/studentService";
+import {
+  getStudentAddClass,
+  getStudents,
+} from "../../../services/studentService";
 
 const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   const queryClient = useQueryClient();
@@ -26,9 +29,8 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   const addStudentsMutation = useMutation({
     mutationFn: (data) => addStudents(data),
     onSuccess: (data) => {
-      // console.log("data", data);
-      // setStudents((state) => [data.data, ...state]);
       queryClient.invalidateQueries(["students", classId]);
+      queryClient.invalidateQueries(["studentsAdd", classId]);
 
       toast.success("Add students successfully!");
     },
@@ -49,8 +51,11 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
   };
 
   const { data: students } = useQuery({
-    queryKey: ["students"],
-    queryFn: getStudents,
+    queryKey: ["studentsAdd", classId],
+    queryFn: () => getStudentAddClass(classId),
+    onSuccess: (data) => {
+      console.log(data.data);
+    },
   });
 
   return (
@@ -87,7 +92,7 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
                 defaultValue={[]}
                 render={({ field }) => (
                   <Select label="Select Items" multiple {...field}>
-                    {students?.data?.data.map((item) => (
+                    {students?.data?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
                         {item.fullName}
                       </MenuItem>
