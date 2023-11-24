@@ -17,11 +17,13 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import Table from "../../../components/Table/Table";
+
 import {
   createEmployee,
   getEmployees,
 } from "../../../services/employeeService";
 import { format } from "date-fns";
+import { ROLES } from "../../../configs/role";
 
 const Employees = () => {
   const {
@@ -40,7 +42,16 @@ const Employees = () => {
     },
 
     { field: "email", headerName: "email", width: 250 },
-    { field: "role", headerName: "role", width: 200 },
+    {
+      field: "role",
+      headerName: "role",
+      width: 200,
+      renderCell: (params) => {
+        const roleText =
+          params.row.role === ROLES.TEACHER ? "Teacher" : "Employee";
+        return <span>{roleText}</span>;
+      },
+    },
     { field: "fullName", headerName: "fullname", width: 200 },
     { field: "cccd", headerName: "CCCD", width: 150 },
     {

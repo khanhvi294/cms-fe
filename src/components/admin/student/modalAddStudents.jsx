@@ -94,7 +94,7 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
                   <Select label="Select Items" multiple {...field}>
                     {students?.data?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.fullName}
+                        {item.id} | {item.fullName}
                       </MenuItem>
                     ))}
                   </Select>

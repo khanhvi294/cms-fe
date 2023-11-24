@@ -58,10 +58,15 @@ const Classes = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 150,
+      width: 100,
     },
-
-    { field: "courseId", headerName: "courseid", width: 150 },
+    {
+      field: "courseClassName", // Thêm cột mới cho tên của courseClass
+      headerName: "Course ",
+      width: 200,
+      valueGetter: (params) => params.row.courseClass.name,
+    },
+    // { field: "courseClass.name", headerName: "courseid", width: 150 },
     { field: "name", headerName: "name", width: 250 },
     { field: "timeStart", headerName: "timestart", width: 200 },
     { field: "timeEnd", headerName: "timeend", width: 250 },

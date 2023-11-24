@@ -113,7 +113,7 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row?.id}
         </TableCell>
-        <TableCell align="right">{row?.examFormId}</TableCell>
+        <TableCell align="right">{row?.examFormRound.name}</TableCell>
         <TableCell align="right">{row?.roundNumber}</TableCell>
         <TableCell align="right">{row.timeStart}</TableCell>
         <TableCell align="right">
@@ -227,7 +227,6 @@ function Row(props) {
                         {item.id}
                       </TableCell>
                       <TableCell>{item.employeeJudge.fullName}</TableCell>
-                      <TableCell align="right">{item.amount}</TableCell>
                       <TableCell align="right">
                         <IconButton
                           onClick={() => {
@@ -304,7 +303,7 @@ export default function RoundTable({ rows }) {
             <TableCell />
             <TableCell className="!font-semibold">ID</TableCell>
             <TableCell className="!font-semibold" align="right">
-              EXAMFORM ID
+              EXAM FORM
             </TableCell>
             <TableCell className="!font-semibold" align="right">
               ROUND
