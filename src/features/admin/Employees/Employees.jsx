@@ -33,7 +33,8 @@ const Employees = () => {
     control,
     formState: { errors },
   } = useForm();
-
+  const today = new Date();
+  const formattedToday = format(today, "yyyy-MM-dd");
   const columns = [
     {
       field: "id",
@@ -148,7 +149,7 @@ const Employees = () => {
     reset();
     setOpen(false);
   };
-  const today = new Date();
+
   const onSubmit = (data) => {
     const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
     createEmployeeMutation.mutate(newEmployee);
@@ -331,6 +332,7 @@ const Employees = () => {
                 size="small"
                 label="DOB"
                 type="date"
+                defaultValue={formattedToday}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -341,12 +343,14 @@ const Employees = () => {
                 //   classEdit ? classEdit.timeStart : formattedTomorrow
                 // }
                 className="w-full"
-                {...register("dateOfBirth")}
+                {...register("dateOfBirth", {
+                  required: "Date of birth is require",
+                })}
               />
               <Controller
                 name="role"
                 control={control}
-                defaultValue=""
+                defaultValue={2}
                 render={({ field }) => (
                   <div className="self-start">
                     <FormLabel id="demo-row-radio-buttons-group-label">

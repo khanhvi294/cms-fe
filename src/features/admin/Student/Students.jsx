@@ -27,6 +27,7 @@ const Students = () => {
     setOpen(false);
   };
   const today = new Date();
+  const formattedToday = format(today, "yyyy-MM-dd");
   const [rows, setRows] = useState([]);
   const {
     register,
@@ -295,11 +296,11 @@ const Students = () => {
                 inputProps={{
                   max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
                 }}
-                // defaultValue={
-                //   classEdit ? classEdit.timeStart : formattedTomorrow
-                // }
+                defaultValue={formattedToday}
                 className="w-full"
-                {...register("dateOfBirth")}
+                {...register("dateOfBirth", {
+                  required: "Date of birth is require",
+                })}
               />
 
               <Controller
