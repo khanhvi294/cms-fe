@@ -1,6 +1,6 @@
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, IconButton, Tooltip } from "@mui/material";
 import { useMutation, useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCompetitionsForStudent } from "../../../services/studentService";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 const CompetitionListFetch = () => {
   const [competitions, setCompetitions] = useState([]);
   const user = useSelector((state) => state.user?.data?.info);
+  const navigate = useNavigate();
+
   useQuery({
     queryKey: ["competitions", user?.id],
     queryFn: () => getCompetitionsForStudent(user?.id),
@@ -77,79 +79,102 @@ const CompetitionListFetch = () => {
               <Button className="!bg-[#ec4848] !text-white">Results</Button>
             )}
           </div>
-          <p className="text-gray-500 flex gap-1 items-center hover:underline">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              id="List"
-              width={24}
-            >
-              <g
-                data-name="Layer 2"
-                fill="#a4a7a8"
-                className="color000000 svgShape"
+          <div className="flex justify-between">
+            <span className="text-gray-500 flex gap-1 items-center hover:underline">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                id="List"
+                width={24}
               >
                 <g
-                  data-name="list"
+                  data-name="Layer 2"
                   fill="#a4a7a8"
                   className="color000000 svgShape"
                 >
-                  <circle
-                    cx="4"
-                    cy="7"
-                    r="1"
+                  <g
+                    data-name="list"
                     fill="#a4a7a8"
                     className="color000000 svgShape"
-                  ></circle>
-                  <circle
-                    cx="4"
-                    cy="12"
-                    r="1"
-                    fill="#a4a7a8"
-                    className="color000000 svgShape"
-                  ></circle>
-                  <circle
-                    cx="4"
-                    cy="17"
-                    r="1"
-                    fill="#a4a7a8"
-                    className="color000000 svgShape"
-                  ></circle>
-                  <rect
-                    width="14"
-                    height="2"
-                    x="7"
-                    y="11"
-                    rx=".94"
-                    ry=".94"
-                    fill="#a4a7a8"
-                    className="color000000 svgShape"
-                  ></rect>
-                  <rect
-                    width="14"
-                    height="2"
-                    x="7"
-                    y="16"
-                    rx=".94"
-                    ry=".94"
-                    fill="#a4a7a8"
-                    className="color000000 svgShape"
-                  ></rect>
-                  <rect
-                    width="14"
-                    height="2"
-                    x="7"
-                    y="6"
-                    rx=".94"
-                    ry=".94"
-                    fill="#a4a7a8"
-                    className="color000000 svgShape"
-                  ></rect>
+                  >
+                    <circle
+                      cx="4"
+                      cy="7"
+                      r="1"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></circle>
+                    <circle
+                      cx="4"
+                      cy="12"
+                      r="1"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></circle>
+                    <circle
+                      cx="4"
+                      cy="17"
+                      r="1"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></circle>
+                    <rect
+                      width="14"
+                      height="2"
+                      x="7"
+                      y="11"
+                      rx=".94"
+                      ry=".94"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></rect>
+                    <rect
+                      width="14"
+                      height="2"
+                      x="7"
+                      y="16"
+                      rx=".94"
+                      ry=".94"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></rect>
+                    <rect
+                      width="14"
+                      height="2"
+                      x="7"
+                      y="6"
+                      rx=".94"
+                      ry=".94"
+                      fill="#a4a7a8"
+                      className="color000000 svgShape"
+                    ></rect>
+                  </g>
                 </g>
-              </g>
-            </svg>
-            <span>{cuocThi.people} participants</span>
-          </p>
+              </svg>
+              <span>{cuocThi.people} participants</span>
+            </span>
+            <Tooltip title="Go to detail" placement="top">
+              <IconButton
+                aria-label="fingerprint"
+                color="secondary"
+                className="!bg-[#e3faf1]"
+                onClick={() => navigate("/competition/detail/1")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 32 32"
+                  id="Right"
+                  width={20}
+                >
+                  <path
+                    d="m29.71 16.71-9 9a1 1 0 0 1-1.41-1.41l7.29-7.3H3a1 1 0 0 1 0-2h23.59l-7.3-7.29A1 1 0 0 1 20.7 6.3l9 9a1 1 0 0 1 0 1.41Z"
+                    fill="#4ef5b5"
+                    className="color000000 svgShape"
+                  ></path>
+                </svg>
+              </IconButton>
+            </Tooltip>
+          </div>
           <p className="text-xs uppercase font-medium ">DURATION</p>
           <div>
             <div className="flex w-[95%] justify-between mb-2">
