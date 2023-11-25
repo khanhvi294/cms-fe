@@ -34,48 +34,50 @@ const CompetitionListFetch = () => {
 
   return (
     <div className="flex flex-wrap gap-5">
-      {competitions.map((cuocThi, index) => (
+      {competitions.map((competition, index) => (
         <div
           key={index}
-          className="bg-white w-[416px] h-[330px] p-5 flex flex-col gap-8 drop-shadow-md rounded-lg"
+          className="bg-white w-[416px] h-[350px] p-5 flex flex-col gap-8 drop-shadow-md rounded-lg"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold mb-3">{cuocThi.name}</p>
-              {cuocThi.status === 0 && (
+              <p className="font-semibold mb-3">{competition.name}</p>
+              {competition.status === 0 && (
                 <Chip
                   label="Upcoming"
                   className="!bg-[#ddf3f9] !text-[#38c0e6] !font-medium"
                 />
               )}
-              {cuocThi.status === 1 && (
+              {competition.status === 1 && (
                 <Chip
                   label=" In progress"
                   className="!bg-[#ddf7ed] !text-[#28f2a5] !font-medium"
                 />
               )}
-              {cuocThi.status === 2 && (
+              {competition.status === 2 && (
                 <Chip
                   label="Completed"
                   className="!bg-[#e8fbbb] !text-[#c3ed4f] !font-medium"
                 />
               )}
-              {cuocThi.status === 3 && (
+              {competition.status === 3 && (
                 <Chip
                   label="Canceled"
                   className="!bg-[#f6b2a6] !text-[#f54323] !font-medium"
                 />
               )}
             </div>
-            {cuocThi.status === 0 && (
+            {competition.status === 0 && (
               <Button
                 className="!bg-[#44badc] !text-white"
-                onClick={() => registerCompetitionMutation.mutate(cuocThi.id)}
+                onClick={() =>
+                  registerCompetitionMutation.mutate(competition.id)
+                }
               >
                 Registration
               </Button>
             )}
-            {cuocThi.status === 2 && (
+            {competition.status === 2 && (
               <Button className="!bg-[#ec4848] !text-white">Results</Button>
             )}
           </div>
@@ -151,14 +153,14 @@ const CompetitionListFetch = () => {
                   </g>
                 </g>
               </svg>
-              <span>{cuocThi.people} participants</span>
+              <span>{competition.people} participants</span>
             </span>
             <Tooltip title="Go to detail" placement="top">
               <IconButton
                 aria-label="fingerprint"
                 color="secondary"
                 className="!bg-[#e3faf1]"
-                onClick={() => navigate("/competition/detail/1")}
+                onClick={() => navigate(`/competition/${competition.id}`)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,13 +180,13 @@ const CompetitionListFetch = () => {
           <p className="text-xs uppercase font-medium ">DURATION</p>
           <div>
             <div className="flex w-[95%] justify-between mb-2">
-              <p>{cuocThi.timeStart}</p>
-              <p>{cuocThi.timeEnd}</p>
+              <p>{competition.timeStart}</p>
+              <p>{competition.timeEnd}</p>
             </div>
             <div className="w-[95%] h-[6px] bg-slate-400 rounded-3xl"></div>
           </div>
 
-          <p>{cuocThi.numberOfRound} rounds</p>
+          <p>{competition.numberOfRound} rounds</p>
         </div>
       ))}
     </div>
