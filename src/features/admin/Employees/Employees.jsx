@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Chip,
-  FormControl,
   FormControlLabel,
   FormLabel,
   Modal,
@@ -14,16 +13,17 @@ import {
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import Table from "../../../components/Table/Table";
 
+import { format } from "date-fns";
+import { ROLES } from "../../../configs/role";
 import {
   createEmployee,
   getEmployees,
+  updateEmployee,
 } from "../../../services/employeeService";
-import { format } from "date-fns";
-import { ROLES } from "../../../configs/role";
 
 const Employees = () => {
   const {
@@ -86,6 +86,33 @@ const Employees = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              dataName="Layer 1"
+              viewBox="0 0 24 24"
+              id="Edit"
+              width={15}
+              onClick={() => {
+                handleOpen();
+                setEmployeeEdit(params.row);
+              }}
+            >
+              <path
+                d="M3.5,24h15A3.51,3.51,0,0,0,22,20.487V12.95a1,1,0,0,0-2,0v7.537A1.508,1.508,0,0,1,18.5,22H3.5A1.508,1.508,0,0,1,2,20.487V5.513A1.508,1.508,0,0,1,3.5,4H11a1,1,0,0,0,0-2H3.5A3.51,3.51,0,0,0,0,5.513V20.487A3.51,3.51,0,0,0,3.5,24Z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M9.455,10.544l-.789,3.614a1,1,0,0,0,.271.921,1.038,1.038,0,0,0,.92.269l3.606-.791a1,1,0,0,0,.494-.271l9.114-9.114a3,3,0,0,0,0-4.243,3.07,3.07,0,0,0-4.242,0l-9.1,9.123A1,1,0,0,0,9.455,10.544Zm10.788-8.2a1.022,1.022,0,0,1,1.414,0,1.009,1.009,0,0,1,0,1.413l-.707.707L19.536,3.05Zm-8.9,8.914,6.774-6.791,1.4,1.407-6.777,6.793-1.795.394Z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+            </svg>
+          }
+          label="Block"
+        />,
+        <GridActionsCellItem
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               id="Lock"
               width={15}
@@ -99,25 +126,12 @@ const Employees = () => {
           }
           label="Block"
         />,
-        <GridActionsCellItem
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              data-name="Layer 1"
-              viewBox="0 0 32 32"
-              id="notification"
-              width={30}
-            >
-              <path d="M26.59 21.17a2 2 0 0 1-.59-1.41V14a10 10 0 0 0-7.64-9.71 2.47 2.47 0 0 0 .14-.79 2.5 2.5 0 0 0-5 0 2.47 2.47 0 0 0 .14.79A10 10 0 0 0 6 14v5.76a2 2 0 0 1-.59 1.41A4.79 4.79 0 0 0 4 24.59V25a2 2 0 0 0 2 2h7.18a3 3 0 0 0-.18 1 3 3 0 0 0 6 0 3 3 0 0 0-.18-1H26a2 2 0 0 0 2-2v-.41a4.79 4.79 0 0 0-1.41-3.42ZM15.5 3.5a.5.5 0 1 1 .5.5.5.5 0 0 1-.5-.5Z"></path>
-            </svg>
-          }
-          label="Print"
-          showInMenu
-        />,
       ],
     },
   ];
   const [rows, setRows] = useState([]);
+  const queryClient = useQueryClient();
+  const [employeeEdit, setEmployeeEdit] = useState(null);
 
   const handleSpreed = (oriObject, key) => {
     let subObject = oriObject[key];
@@ -148,11 +162,17 @@ const Employees = () => {
   const handleClose = () => {
     reset();
     setOpen(false);
+    setEmployeeEdit(null);
   };
 
   const onSubmit = (data) => {
-    const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
-    createEmployeeMutation.mutate(newEmployee);
+    if (employeeEdit) {
+      updateEmployeeMutation.mutate(data);
+    } else {
+      const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
+      createEmployeeMutation.mutate(newEmployee);
+    }
+
     handleClose();
   };
   const handleCollectKeys = (keyArr, newKey, dataOri) => {
@@ -177,6 +197,17 @@ const Employees = () => {
       ]);
       // handleClose();
       toast.success("Create successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const updateEmployeeMutation = useMutation({
+    mutationFn: (data) => updateEmployee(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["employees"]);
+      toast.success("Update successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -236,7 +267,7 @@ const Employees = () => {
         aria-describedby="modal-modal-description"
         className="flex items-center justify-center "
       >
-        <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl">
+        <Box className="bg-white w-[550px] min-h-[300px]  rounded-2xl">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className=" flex flex-col p-4 gap-5"
@@ -247,14 +278,27 @@ const Employees = () => {
               component="h2"
               className="font-bold "
             >
-              Add Employee
+              {employeeEdit ? "Edit Employee" : "Add Employee"}
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
+              {employeeEdit && (
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  label="Id*"
+                  disabled
+                  variant="outlined"
+                  defaultValue={employeeEdit?.id}
+                  className="w-full !text-black bg-slate-200"
+                />
+              )}
+
               <TextField
                 id="outlined-basic"
                 size="small"
                 label="FullName*"
                 variant="outlined"
+                defaultValue={employeeEdit?.fullName}
                 error={!!errors.fullName}
                 helperText={errors.fullName ? errors.fullName.message : ``}
                 className="w-full"
@@ -268,6 +312,7 @@ const Employees = () => {
                 label="Email*"
                 variant="outlined"
                 className="w-full"
+                defaultValue={employeeEdit?.email}
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
@@ -280,6 +325,7 @@ const Employees = () => {
                 variant="outlined"
                 className="w-full"
                 type="number"
+                defaultValue={employeeEdit?.phone}
                 error={!!errors.phone}
                 helperText={errors.phone ? errors.phone.message : ``}
                 {...register("phone", {
@@ -299,6 +345,7 @@ const Employees = () => {
                 label="address"
                 variant="outlined"
                 className="w-full"
+                defaultValue={employeeEdit?.address}
                 error={!!errors.address}
                 helperText={errors.address ? errors.address.message : ``}
                 {...register("address")}
@@ -308,6 +355,7 @@ const Employees = () => {
                 size="small"
                 label="CCCD*"
                 type="number"
+                defaultValue={employeeEdit?.cccd}
                 variant="outlined"
                 className="w-full"
                 error={!!errors.cccd}
@@ -332,7 +380,9 @@ const Employees = () => {
                 size="small"
                 label="DOB"
                 type="date"
-                defaultValue={formattedToday}
+                defaultValue={
+                  employeeEdit ? employeeEdit?.dateOfBirth : formattedToday
+                }
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -350,7 +400,7 @@ const Employees = () => {
               <Controller
                 name="role"
                 control={control}
-                defaultValue={2}
+                defaultValue={employeeEdit ? employeeEdit?.role : ROLES.TEACHER}
                 render={({ field }) => (
                   <div className="self-start">
                     <FormLabel id="demo-row-radio-buttons-group-label">
@@ -375,7 +425,7 @@ const Employees = () => {
               <Controller
                 name="gender" // Tên của trường trong form
                 control={control}
-                defaultValue={true}
+                defaultValue={employeeEdit ? !!employeeEdit?.gender : true}
                 render={({ field }) => (
                   <div className="self-start">
                     <FormLabel id="demo-row-radio-buttons-group-label">
