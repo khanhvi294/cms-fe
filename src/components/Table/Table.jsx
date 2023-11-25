@@ -7,8 +7,6 @@ import {
 
 import { useEffect, useState } from "react";
 
-const VISIBLE_FIELDS = ["name", "rating", "country", "dateCreated", "isAdmin"];
-
 function CustomToolbar() {
   return (
     <GridToolbarContainer className=" mr-3 justify-end">
@@ -35,8 +33,13 @@ const Table = ({ rows, columns }) => {
             className="!rounded-3xl "
             rows={tableData}
             columns={columns}
-            pageSize={12}
-            pageSizeOptions={[7, 10, 25, 50, 100]}
+            pageSize={7}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 7 },
+              },
+            }}
+            // pageSizeOptions={[7, 10, 25, 50, 100]}
             slots={{ toolbar: CustomToolbar }}
             sx={{
               ".MuiDataGrid-columnHeaderTitle": {
