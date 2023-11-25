@@ -25,9 +25,12 @@ const Students = () => {
   const handleClose = () => {
     reset();
     setOpen(false);
+    setStudentEdit(null);
   };
   const today = new Date();
   const formattedToday = format(today, "yyyy-MM-dd");
+  const [studentEdit, setStudentEdit] = useState(null);
+
   const [rows, setRows] = useState([]);
   const {
     register,
@@ -77,6 +80,33 @@ const Students = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              dataName="Layer 1"
+              viewBox="0 0 24 24"
+              id="Edit"
+              width={15}
+              onClick={() => {
+                handleOpen();
+                setStudentEdit(params.row);
+              }}
+            >
+              <path
+                d="M3.5,24h15A3.51,3.51,0,0,0,22,20.487V12.95a1,1,0,0,0-2,0v7.537A1.508,1.508,0,0,1,18.5,22H3.5A1.508,1.508,0,0,1,2,20.487V5.513A1.508,1.508,0,0,1,3.5,4H11a1,1,0,0,0,0-2H3.5A3.51,3.51,0,0,0,0,5.513V20.487A3.51,3.51,0,0,0,3.5,24Z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M9.455,10.544l-.789,3.614a1,1,0,0,0,.271.921,1.038,1.038,0,0,0,.92.269l3.606-.791a1,1,0,0,0,.494-.271l9.114-9.114a3,3,0,0,0,0-4.243,3.07,3.07,0,0,0-4.242,0l-9.1,9.123A1,1,0,0,0,9.455,10.544Zm10.788-8.2a1.022,1.022,0,0,1,1.414,0,1.009,1.009,0,0,1,0,1.413l-.707.707L19.536,3.05Zm-8.9,8.914,6.774-6.791,1.4,1.407-6.777,6.793-1.795.394Z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+            </svg>
+          }
+          label="Block"
+        />,
+        <GridActionsCellItem
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               id="Lock"
               width={15}
@@ -89,21 +119,6 @@ const Students = () => {
             </svg>
           }
           label="Block"
-        />,
-        <GridActionsCellItem
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              data-name="Layer 1"
-              viewBox="0 0 32 32"
-              id="notification"
-              width={30}
-            >
-              <path d="M26.59 21.17a2 2 0 0 1-.59-1.41V14a10 10 0 0 0-7.64-9.71 2.47 2.47 0 0 0 .14-.79 2.5 2.5 0 0 0-5 0 2.47 2.47 0 0 0 .14.79A10 10 0 0 0 6 14v5.76a2 2 0 0 1-.59 1.41A4.79 4.79 0 0 0 4 24.59V25a2 2 0 0 0 2 2h7.18a3 3 0 0 0-.18 1 3 3 0 0 0 6 0 3 3 0 0 0-.18-1H26a2 2 0 0 0 2-2v-.41a4.79 4.79 0 0 0-1.41-3.42ZM15.5 3.5a.5.5 0 1 1 .5.5.5.5 0 0 1-.5-.5Z"></path>
-            </svg>
-          }
-          label="Print"
-          showInMenu
         />,
       ],
     },
@@ -225,19 +240,31 @@ const Students = () => {
               component="h2"
               className="font-bold "
             >
-              Add Student
+              {studentEdit ? "Edit Student" : "Add Student"}
             </Typography>
             <div className="flex flex-col !justify-center !items-center gap-4">
+              {studentEdit && (
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  label="Id*"
+                  disabled
+                  variant="outlined"
+                  defaultValue={studentEdit?.id}
+                  className="w-full !text-black bg-slate-200"
+                />
+              )}
               <TextField
                 id="outlined-basic"
                 size="small"
                 label="FullName*"
                 variant="outlined"
+                defaultValue={studentEdit?.fullName}
                 error={!!errors.fullName}
                 helperText={errors.fullName ? errors.fullName.message : ``}
                 className="w-full"
                 {...register("fullName", {
-                  required: "fullname is required filed",
+                  required: "Fullname is required filed",
                 })}
               />
               <TextField
@@ -246,6 +273,7 @@ const Students = () => {
                 label="Email*"
                 variant="outlined"
                 className="w-full"
+                defaultValue={studentEdit?.email}
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
@@ -258,6 +286,7 @@ const Students = () => {
                 variant="outlined"
                 className="w-full"
                 type="number"
+                defaultValue={studentEdit?.phone}
                 error={!!errors.phone}
                 helperText={errors.phone ? errors.phone.message : ``}
                 {...register("phone", {
@@ -278,6 +307,7 @@ const Students = () => {
                 variant="outlined"
                 className="w-full"
                 error={!!errors.address}
+                defaultValue={studentEdit?.address}
                 helperText={errors.address ? errors.address.message : ``}
                 {...register("address")}
               />
@@ -286,6 +316,9 @@ const Students = () => {
                 error={!!errors.dateOfBirth}
                 helperText={
                   errors.dateOfBirth ? errors.dateOfBirth.message : ``
+                }
+                defaultValue={
+                  studentEdit ? studentEdit?.dateOfBirth : formattedToday
                 }
                 size="small"
                 label="DOB"
@@ -296,7 +329,6 @@ const Students = () => {
                 inputProps={{
                   max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
                 }}
-                defaultValue={formattedToday}
                 className="w-full"
                 {...register("dateOfBirth", {
                   required: "Date of birth is require",
@@ -306,7 +338,7 @@ const Students = () => {
               <Controller
                 name="gender"
                 control={control}
-                defaultValue={true}
+                defaultValue={studentEdit ? !!studentEdit.gender : true}
                 render={({ field }) => (
                   <div className="self-start">
                     <FormLabel id="demo-row-radio-buttons-group-label">
