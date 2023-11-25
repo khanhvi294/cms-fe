@@ -183,10 +183,7 @@ const CompetitionDetail = () => {
                 <p className="font-bold">Name</p>
                 <p>{competition?.name}</p>
               </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">EmpoyeeId</p>
-                <p>{competition?.employeeId}</p>
-              </div>
+
               <div className="flex justify-between w-full">
                 <p className="font-bold">Number of prizes</p>
                 <p>{competition?.numOfPrizes}</p>
@@ -194,19 +191,29 @@ const CompetitionDetail = () => {
             </div>
             <div className="w-[250px] flex flex-col gap-2">
               <div className="flex justify-between w-full">
-                <p className="font-bold">Number min</p>
-                <p>{competition?.minimumQuantity}</p>
+                <p className="font-bold">Time Start</p>
+                <p>{competition?.timeStart}</p>
               </div>
               <div className="flex justify-between w-full">
-                <p className="font-bold">Number max</p>
-                <p>{competition?.maximumQuantity}</p>
+                <p className="font-bold">Time End</p>
+                <p>{competition?.timeEnd}</p>
               </div>
+
               <div className="flex justify-between w-full">
                 <p className="font-bold">Rounds</p>
                 <p>{competition?.numberOfRound}</p>
               </div>
             </div>
             <div className="w-[250px] flex flex-col gap-2">
+              <div className="flex justify-between w-full">
+                <p className="font-bold">Minimum number of students</p>
+                <p>{competition?.minimumQuantity}</p>
+              </div>
+
+              <div className="flex justify-between w-full">
+                <p className="font-bold">EmpoyeeId</p>
+                <p>{competition?.employeeId}</p>
+              </div>
               <div className="flex justify-between w-full">
                 <p className="font-bold">Status</p>
                 <Chip
@@ -215,15 +222,6 @@ const CompetitionDetail = () => {
                   variant="outlined"
                   className="w-20 !h-7"
                 />
-              </div>
-
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Time Start</p>
-                <p>{competition?.timeStart}</p>
-              </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Time End</p>
-                <p>{competition?.timeEnd}</p>
               </div>
             </div>
           </div>
@@ -273,7 +271,9 @@ const CompetitionDetail = () => {
               Add
             </Button>
           </div>
-          <RoundTable rows={rows} />
+          <div className="overflow-auto h-[400px]">
+            <RoundTable rows={rows} />
+          </div>
         </div>
       </div>
 

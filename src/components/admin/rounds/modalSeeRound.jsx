@@ -65,10 +65,7 @@ const ModalSeeRound = ({ competition }) => {
                 <p className="font-bold">Time Start</p>
                 <p>{round.timeStart}</p>
               </div>
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Number max</p>
-                <p>{round.maximumQuantity}</p>
-              </div>
+
               <div className="flex justify-between w-full">
                 <p className="font-bold">Exam</p>
                 <p>{round.exam}</p>

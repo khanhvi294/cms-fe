@@ -41,10 +41,7 @@ const ModalSeeCompetition = ({ competition, open, handleClose }) => {
             <p className="font-bold">Number min</p>
             <p>{competition.minimumQuantity}</p>
           </div>
-          <div className="flex justify-between w-full">
-            <p className="font-bold">Number max</p>
-            <p>{competition.maximumQuantity}</p>
-          </div>
+
           <div className="flex justify-between w-full">
             <p className="font-bold">Rounds</p>
             <p>{competition.numberOfRound}</p>

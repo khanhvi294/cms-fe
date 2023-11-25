@@ -1,4 +1,11 @@
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -262,6 +269,11 @@ const Courses = () => {
                 size="small"
                 label="Time Trainee*"
                 defaultValue={courseEdit?.trainingTime}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">month</InputAdornment>
+                  ),
+                }}
                 variant="outlined"
                 className="w-full"
                 type="number"

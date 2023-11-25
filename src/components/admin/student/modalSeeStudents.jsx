@@ -139,9 +139,9 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
                   id="modal-modal-title"
                   variant="h6"
                   component="h2"
-                  className="font-bold self-center"
+                  className="text-2xl font-semibold"
                 >
-                  Class
+                  List of students in the class
                 </Typography>
                 <div className=" flex justify-between mt-4 w-[60%]">
                   <div className="w-[250px] flex flex-col gap-2">
@@ -170,7 +170,7 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
 
               <div>
                 <div className="flex gap-2 justify-between items-center">
-                  <span className="text-2xl font-semibold">Students</span>
+                  <span className="text-2xl font-semibold"></span>
                   <Button
                     variant="contained flex-end !bg-[#000] !text-white !rounded-md"
                     onClick={() => setOpenAddStudent(true)}
