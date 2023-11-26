@@ -1,17 +1,21 @@
 import { Button, Chip, IconButton, Tooltip } from "@mui/material";
-import { useMutation, useQuery } from "react-query";
-import { Link, useNavigate } from "react-router-dom";
-import { getCompetitionsForStudent } from "../../../services/studentService";
+import { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { registerCompetition } from "../../../services/registerService";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  getAllCompetitionByStudentId,
+  registerCompetition,
+  unRegisterCompetition,
+} from "../../../services/registerService";
+import { getCompetitionsForStudent } from "../../../services/studentService";
 
 const CompetitionListFetch = () => {
   const [competitions, setCompetitions] = useState([]);
   const user = useSelector((state) => state.user?.data?.info);
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   useQuery({
     queryKey: ["competitions", user?.id],
     queryFn: () => getCompetitionsForStudent(user?.id),
@@ -21,16 +25,45 @@ const CompetitionListFetch = () => {
     },
     onError: (err) => console.log(err),
   });
+
   const registerCompetitionMutation = useMutation({
     mutationFn: registerCompetition,
     onSuccess: (data) => {
       //setRows((state) => [data.data, ...state]);
+      queryClient.invalidateQueries(["competition", user?.id]);
       toast.success("Register successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
     },
   });
+
+  const unRegisterCompetitionMutation = useMutation({
+    mutationFn: unRegisterCompetition,
+    onSuccess: (data) => {
+      //setRows((state) => [data.data, ...state]);
+      queryClient.invalidateQueries(["competition", user?.id]);
+
+      toast.success("Register successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const { data: competitionUser } = useQuery({
+    queryKey: ["competition", user?.id],
+    enabled: !!user?.id,
+    queryFn: getAllCompetitionByStudentId,
+  });
+
+  // const competitionIds = competitionUser?.data?.data.map(
+  //   (item) => item.competitionId
+  // );
+
+  const competitionIds = useMemo(() => {
+    return competitionUser?.data?.data.map((item) => item.competitionId);
+  }, [competitionUser?.data?.data]);
 
   return (
     <div className="flex flex-wrap gap-5">
@@ -68,14 +101,27 @@ const CompetitionListFetch = () => {
               )}
             </div>
             {competition.status === 0 && (
-              <Button
-                className="!bg-[#44badc] !text-white"
-                onClick={() =>
-                  registerCompetitionMutation.mutate(competition.id)
-                }
-              >
-                Registration
-              </Button>
+              <>
+                {competitionIds?.includes(competition.id) ? (
+                  <Button
+                    className="!bg-[#f09b5e] !text-white"
+                    onClick={() =>
+                      unRegisterCompetitionMutation.mutate(competition.id)
+                    }
+                  >
+                    UnRegister
+                  </Button>
+                ) : (
+                  <Button
+                    className="!bg-[#44badc] !text-white"
+                    onClick={() =>
+                      registerCompetitionMutation.mutate(competition.id)
+                    }
+                  >
+                    Register
+                  </Button>
+                )}
+              </>
             )}
             {competition.status === 2 && (
               <Button className="!bg-[#ec4848] !text-white">Results</Button>

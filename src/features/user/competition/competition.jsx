@@ -226,6 +226,7 @@ const Competition = () => {
                 key={index}
                 className="border rounded-md w-[200px] h-[300px] p-6"
               >
+                <p>Test IQ</p>
                 <p>exam form {item?.examFormRound.name}</p>
                 <p>round {item?.roundNumber}</p>
                 <p>{item?.time} minutes</p>
