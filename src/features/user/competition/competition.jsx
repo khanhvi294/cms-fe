@@ -1,23 +1,71 @@
 import {
+  Box,
+  Tab,
   Table,
   TableBody,
   TableContainer,
   TableHead,
   TableRow,
+  Tabs,
 } from "@mui/material";
-import Paper from "@mui/material/Paper";
+import PropTypes from "prop-types";
+import Typography from "@mui/material/Typography";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import {
+  getAllClassJoinCompetition,
+  getCompetitionById,
+} from "../../../services/competitionService";
+import { useState } from "react";
 
-const cuocThi = {
-  name: "Kiểm thử phần mềm",
-  status: 2,
-  timeStart: "01-11-2023",
-  timeEnd: "11-11-2023",
-  soVong: 2,
-  people: 12,
+// const competition = {
+//   name: "Kiểm thử phần mềm",
+//   status: 2,
+//   timeStart: "01-11-2023",
+//   timeEnd: "11-11-2023",
+//   soVong: 2,
+//   people: 12,
+// };
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
 const Competition = () => {
+  const { id } = useParams();
+
+  const [competition, setCompetition] = useState(null);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -27,6 +75,14 @@ const Competition = () => {
       fontSize: 14,
     },
   }));
+  useQuery({
+    queryKey: ["competition", id],
+    enabled: !!id,
+    queryFn: () => getCompetitionById(id),
+    onSuccess: (data) => {
+      setCompetition(data?.data);
+    },
+  });
 
   const rows = [
     createData(1, 1, "Phạm Thiên An", 9.0),
@@ -42,7 +98,11 @@ const Competition = () => {
   function createData(name, calories, fat, carbs) {
     return { name, calories, fat, carbs };
   }
+  const [value, setValue] = useState(0);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -52,10 +112,18 @@ const Competition = () => {
       border: 0,
     },
   }));
+  const { data: classes } = useQuery({
+    queryKey: ["classes", id],
+    enabled: !!id,
+    queryFn: () => getAllClassJoinCompetition(id),
+    // onSuccess: (data) => {
+    //   console.log("class", data);
+    // },
+  });
   return (
     <div>
       <div>
-        <p className="font-semibold text-xl mb-3">Cuộc thi</p>
+        <p className="font-semibold text-xl mb-3">Competition</p>
       </div>
       <div className="bg-[#f9bc0d] flex p-5">
         <svg
@@ -74,29 +142,82 @@ const Competition = () => {
         </svg>
         <div className="text-white ">
           <div>
-            <p className="font-medium text-lg">{cuocThi.name}</p>
-            <p className="text-sm opacity-60">{cuocThi.people} participants</p>
+            <p className="font-medium text-lg">{competition?.name}</p>
+            <p className="text-sm opacity-60">
+              {competition?.people} participants
+            </p>
           </div>
           <div className="flex gap-6 mt-4">
             <div>
-              <p>{cuocThi.timeStart}</p>
+              <p>{competition?.timeStart}</p>
               <p className="text-sm opacity-60">Start Time</p>
             </div>
             <div>
-              {cuocThi.status === 0 && <p>Upcoming</p>}
-              {cuocThi.status === 1 && <p>In progress</p>}
-              {cuocThi.status === 2 && <p>Completed</p>}
-              {cuocThi.status === 3 && <p>Canceled</p>}
+              <p>{competition?.timeEnd}</p>
+              <p className="text-sm opacity-60">End Time</p>
+            </div>
+            <div>
+              {competition?.status === 0 && <p>Upcoming</p>}
+              {competition?.status === 1 && <p>In progress</p>}
+              {competition?.status === 2 && <p>Completed</p>}
+              {competition?.status === 3 && <p>Canceled</p>}
               <p className="text-sm opacity-60">Status</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-white w-full px-5 flex flex-col gap-1 py-3 text-[#838c96]">
-        <p>Number of prizes: 3</p>
-        <p>Maximum number of participants: 20</p>
-        <p> Minimum number of participants: 4</p>
-      </div>
+      <Box sx={{ width: "100%" }} className="bg-white">
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            inkBarStyle={{ background: "blue" }}
+          >
+            <Tab
+              sx={{
+                color:
+                  value === 0 ? "#ff0000 !important" : "rgba(0, 0, 0, 0.54)",
+              }}
+              label="Description"
+              {...a11yProps(0)}
+            />
+            <Tab label="Rounds" {...a11yProps(1)} />
+            <Tab label="Item Three" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <div className="h-10 bg-[#eef2f7] flex items-center">Introduc</div>
+          <div className="bg-white w-full px-5 flex flex-col gap-1 py-3 ">
+            <p>Number of prizess157: {competition?.numOfPrizes}</p>
+            <p>
+              Maximum number of participants: {competition?.minimumQuantity}
+            </p>
+            <p> Round: {competition?.numberOfRound}</p>
+          </div>
+          <div className="h-10 bg-[#eef2f7] flex items-center">
+            classes are allowed{" "}
+          </div>
+          <div className="mt-4">
+            <table style={{ border: "1px solid black" }}>
+              <tbody>
+                {classes?.data?.data.map((item, index) => (
+                  <tr key={index}>
+                    <td className="p-3">{item?.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          Item Two
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={2}>
+          Item Three
+        </CustomTabPanel>
+      </Box>
+      {/*
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
@@ -123,7 +244,7 @@ const Competition = () => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import Competition from "../../features/user/competition/competition";
+import Competition from "../../features/user/competition/Competition";
 
 const CompetitionPage = () => {
   return (
