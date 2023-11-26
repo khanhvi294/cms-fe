@@ -19,6 +19,7 @@ import {
   getCompetitionById,
 } from "../../../services/competitionService";
 import { useState } from "react";
+import { getRoundByCompetition } from "../../../services/roundService";
 
 // const competition = {
 //   name: "Kiểm thử phần mềm",
@@ -120,6 +121,14 @@ const Competition = () => {
     //   console.log("class", data);
     // },
   });
+  const { data: rounds } = useQuery({
+    queryKey: ["rounds", id],
+    enabled: !!id,
+    queryFn: () => getRoundByCompetition(id),
+    // onSuccess: (data) => {
+    //   setRows(data.data.data);
+    // },
+  });
   return (
     <div>
       <div>
@@ -189,7 +198,7 @@ const Competition = () => {
         <CustomTabPanel value={value} index={0}>
           <div className="h-10 bg-[#eef2f7] flex items-center">Introduc</div>
           <div className="bg-white w-full px-5 flex flex-col gap-1 py-3 ">
-            <p>Number of prizess157: {competition?.numOfPrizes}</p>
+            <p>Number of prizes: {competition?.numOfPrizes}</p>
             <p>
               Maximum number of participants: {competition?.minimumQuantity}
             </p>
@@ -211,7 +220,19 @@ const Competition = () => {
           </div>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          <div className="flex gap-20">
+            {rounds?.data?.data?.map((item, index) => (
+              <div
+                key={index}
+                className="border rounded-md w-[200px] h-[300px] p-6"
+              >
+                <p>exam form {item?.examFormRound.name}</p>
+                <p>round {item?.roundNumber}</p>
+                <p>{item?.time} minutes</p>
+                <p>{item?.timeStart}</p>
+              </div>
+            ))}
+          </div>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           Item Three
