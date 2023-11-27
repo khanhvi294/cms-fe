@@ -14,10 +14,15 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import Table from "../../../components/Table/Table";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
-import { createStudent, getStudents } from "../../../services/studentService";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  createStudent,
+  deleteStudent,
+  getStudents,
+} from "../../../services/studentService";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const Students = () => {
   const [open, setOpen] = useState(false);
@@ -30,7 +35,8 @@ const Students = () => {
   const today = new Date();
   const formattedToday = format(today, "yyyy-MM-dd");
   const [studentEdit, setStudentEdit] = useState(null);
-
+  const [openDelete, setOpenDelete] = useState(false);
+  const [studentDelete, setStudentDelete] = useState(false);
   const [rows, setRows] = useState([]);
   const {
     register,
@@ -46,7 +52,13 @@ const Students = () => {
       headerName: "ID",
       width: 150,
     },
-    { field: "email", headerName: "email", width: 300 },
+    {
+      field: "accountStudent", // Thêm cột mới cho tên của courseClass
+      headerName: "email ",
+      width: 200,
+      valueGetter: (params) => params.row.accountStudent.email,
+    },
+    // { field: "email", headerName: "email", width: 300 },
 
     { field: "fullName", headerName: "fullName", width: 300 },
     {
@@ -107,6 +119,41 @@ const Students = () => {
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              id="Delete"
+              x="0"
+              y="0"
+              version="1.1"
+              viewBox="0 0 29 29"
+              xmlSpace="preserve"
+              width={15}
+              onClick={() => {
+                setStudentDelete(params?.row);
+                setOpenDelete(true);
+              }}
+            >
+              <path
+                d="M19.795 27H9.205a2.99 2.99 0 0 1-2.985-2.702L4.505 7.099A.998.998 0 0 1 5.5 6h18a1 1 0 0 1 .995 1.099L22.78 24.297A2.991 2.991 0 0 1 19.795 27zM6.604 8 8.21 24.099a.998.998 0 0 0 .995.901h10.59a.998.998 0 0 0 .995-.901L22.396 8H6.604z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M26 8H3a1 1 0 1 1 0-2h23a1 1 0 1 1 0 2zM14.5 23a1 1 0 0 1-1-1V11a1 1 0 1 1 2 0v11a1 1 0 0 1-1 1zM10.999 23a1 1 0 0 1-.995-.91l-1-11a1 1 0 0 1 .905-1.086 1.003 1.003 0 0 1 1.087.906l1 11a1 1 0 0 1-.997 1.09zM18.001 23a1 1 0 0 1-.997-1.09l1-11c.051-.55.531-.946 1.087-.906a1 1 0 0 1 .905 1.086l-1 11a1 1 0 0 1-.995.91z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+              <path
+                d="M19 8h-9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm-8-2h7V4h-7v2z"
+                fill="#151515"
+                className="color000000 svgShape"
+              ></path>
+            </svg>
+          }
+          label="Delete"
+        />,
+        <GridActionsCellItem
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               id="Lock"
               width={15}
@@ -140,11 +187,11 @@ const Students = () => {
     queryKey: ["students"],
     queryFn: getStudents,
     onSuccess: (data) => {
-      const processArray = data.data.data.map((item) =>
-        handleSpreed(item, "accountStudent")
-      );
+      // const processArray = data.data.data.map((item) =>
+      //   handleSpreed(item, "accountStudent")
+      // );
 
-      setRows(processArray);
+      setRows(data.data.data);
     },
   });
 
@@ -165,7 +212,8 @@ const Students = () => {
     mutationFn: (data) => createStudent(data),
     onSuccess: (data) => {
       toast.success("Create successfully!");
-      setRows((state) => [handleSpreed(data.data, "accountStudent"), ...state]);
+      queryClient.invalidateQueries(["students"]);
+      // setRows((state) => [handleSpreed(data.data, "accountStudent"), ...state]);
     },
     onError: (err) => {
       toast.error(err.message);
@@ -177,6 +225,19 @@ const Students = () => {
     createStudentMutation.mutate(newStudent);
     handleClose();
   };
+  const queryClient = useQueryClient();
+  const deleteStudentMutation = useMutation({
+    mutationFn: deleteStudent,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["students"]);
+
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Delete successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
   return (
     <>
       <div className="flex gap-2 justify-between items-center">
@@ -372,6 +433,12 @@ const Students = () => {
           </form>
         </Box>
       </Modal>
+      <ModalConfirmDelete
+        open={openDelete}
+        setOpen={setOpenDelete}
+        deleteMutation={deleteStudentMutation}
+        deleteId={studentDelete?.id}
+      />
     </>
   );
 };

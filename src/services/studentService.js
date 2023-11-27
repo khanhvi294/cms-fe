@@ -10,6 +10,7 @@ const studentApi = {
     axiosClientPrivate.get(`${url}/${id}/classes`),
   getCompetitionsForStudent: (id) =>
     axiosClientPrivate.get(`${url}/${id}/competitions`),
+  deleteStudent: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 };
 export const {
   createStudent,
@@ -17,5 +18,6 @@ export const {
   getAllClassesByStudent,
   getCompetitionsForStudent,
   getStudentAddClass,
+  deleteStudent,
 } = studentApi;
 export default studentApi;
