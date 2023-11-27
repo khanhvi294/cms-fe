@@ -11,10 +11,14 @@ const registersApi = {
   unRegisterCompetition: (competitionId) => {
     return axiosClientPrivate.delete(`${url}/${competitionId}`);
   },
+  getRegisterByCompetition: (competitionId) => {
+    return axiosClientPrivate.get(`${url}/${competitionId}`);
+  },
 };
 export const {
   registerCompetition,
   getAllCompetitionByStudentId,
   unRegisterCompetition,
+  getRegisterByCompetition,
 } = registersApi;
 export default registersApi;

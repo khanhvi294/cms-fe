@@ -379,7 +379,7 @@ const CompetitionDetail = () => {
 
         <div>
           <Box sx={{ width: "100%" }} className="bg-white">
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box className="h-10 border-b">
               <Tabs
                 value={value}
                 onChange={handleChange}
