@@ -7,11 +7,14 @@ import {
   MenuItem,
   Modal,
   Select,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,6 +32,39 @@ import { createExamForm } from "../../../services/examFormService";
 import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../../components/Table/Table";
 import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 const CompetitionDetail = () => {
   const { id } = useParams();
@@ -269,6 +305,11 @@ const CompetitionDetail = () => {
       toast.error(err.message);
     },
   });
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <>
@@ -337,6 +378,124 @@ const CompetitionDetail = () => {
         </div>
 
         <div>
+          <Box sx={{ width: "100%" }} className="bg-white">
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+                inkBarStyle={{ background: "blue" }}
+              >
+                <Tab
+                  sx={{
+                    bgcolor:
+                      value === 0
+                        ? "#ff0000 !important"
+                        : "rgba(0, 0, 0, 0.54)",
+                  }}
+                  label="Rounds & Judges"
+                  {...a11yProps(0)}
+                />
+                <Tab label="Classes" {...a11yProps(1)} />
+              </Tabs>
+            </Box>
+            <CustomTabPanel value={value} index={0}>
+              <div className="flex gap-2 justify-between items-center mb-4">
+                <span className="text-xl font-semibold">Rounds</span>
+                <Button
+                  variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+                  onClick={handleOpen}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    id="plus"
+                    width={22}
+                    height={22}
+                  >
+                    <g
+                      data-name="Layer 2"
+                      fill="#ffffff"
+                      className="color000000 svgShape"
+                    >
+                      <g
+                        data-name="plus"
+                        fill="#ffffff"
+                        className="color000000 svgShape"
+                      >
+                        <rect
+                          width="24"
+                          height="24"
+                          opacity="0"
+                          transform="rotate(180 12 12)"
+                          fill="#ffffff"
+                          className="color000000 svgShape"
+                        ></rect>
+                        <path
+                          d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
+                          fill="#ffffff"
+                          className="color000000 svgShape"
+                        ></path>
+                      </g>
+                    </g>
+                  </svg>
+                  Add
+                </Button>
+              </div>
+              <div className="overflow-auto h-[400px]">
+                <RoundTable rows={rows} />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+              <div className="flex gap-2 justify-between items-center mb-4">
+                <span className="text-xl font-semibold">Classes</span>
+                <Button
+                  variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+                  onClick={() => {
+                    setOpenAddClass(true);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    id="plus"
+                    width={22}
+                    height={22}
+                  >
+                    <g
+                      data-name="Layer 2"
+                      fill="#ffffff"
+                      className="color000000 svgShape"
+                    >
+                      <g
+                        data-name="plus"
+                        fill="#ffffff"
+                        className="color000000 svgShape"
+                      >
+                        <rect
+                          width="24"
+                          height="24"
+                          opacity="0"
+                          transform="rotate(180 12 12)"
+                          fill="#ffffff"
+                          className="color000000 svgShape"
+                        ></rect>
+                        <path
+                          d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
+                          fill="#ffffff"
+                          className="color000000 svgShape"
+                        ></path>
+                      </g>
+                    </g>
+                  </svg>
+                  Add
+                </Button>
+              </div>
+              <div>
+                <Table columns={columnsClass} rows={rowsClass} />
+              </div>
+            </CustomTabPanel>
+          </Box>
           {/* <div className="flex gap-2 justify-between items-center mb-4">
             <span className="text-xl font-semibold">Rounds</span>
             <Button
@@ -383,53 +542,6 @@ const CompetitionDetail = () => {
             <RoundTable rows={rows} />
           </div> */}
           {/* class */}
-          <div className="flex gap-2 justify-between items-center mb-4">
-            <span className="text-xl font-semibold">Classes</span>
-            <Button
-              variant="contained flex-end !bg-[#000] !text-white !rounded-md"
-              onClick={() => {
-                setOpenAddClass(true);
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                id="plus"
-                width={22}
-                height={22}
-              >
-                <g
-                  data-name="Layer 2"
-                  fill="#ffffff"
-                  className="color000000 svgShape"
-                >
-                  <g
-                    data-name="plus"
-                    fill="#ffffff"
-                    className="color000000 svgShape"
-                  >
-                    <rect
-                      width="24"
-                      height="24"
-                      opacity="0"
-                      transform="rotate(180 12 12)"
-                      fill="#ffffff"
-                      className="color000000 svgShape"
-                    ></rect>
-                    <path
-                      d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
-                      fill="#ffffff"
-                      className="color000000 svgShape"
-                    ></path>
-                  </g>
-                </g>
-              </svg>
-              Add
-            </Button>
-          </div>
-          <div>
-            <Table columns={columnsClass} rows={rowsClass} />
-          </div>
         </div>
       </div>
 
