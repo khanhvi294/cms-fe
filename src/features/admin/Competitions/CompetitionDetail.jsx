@@ -13,13 +13,14 @@ import {
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import ModalJudge from "../../../components/admin/judges/modalJudge";
 import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import RoundTable from "../../../components/admin/rounds/tableCollapRound";
 import {
+  deleteClassCompetition,
   getAllClassCanJoinCompetition,
   getAllClassJoinCompetition,
   getCompetitionById,
@@ -27,6 +28,7 @@ import {
 import { createExamForm } from "../../../services/examFormService";
 import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../../components/Table/Table";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const CompetitionDetail = () => {
   const { id } = useParams();
@@ -202,8 +204,11 @@ const CompetitionDetail = () => {
               xmlSpace="preserve"
               width={15}
               onClick={() => {
-                // setClassDelete(params?.row);
-                //setOpenDelete(true);
+                setClassDelete({
+                  classId: params?.row?.id,
+                  competitionId: competition?.id,
+                });
+                setOpenDeleteClass(true);
               }}
             >
               <path
@@ -230,7 +235,13 @@ const CompetitionDetail = () => {
   ];
   const [rowsClass, setRowsClass] = useState([]);
   const [openAddClass, setOpenAddClass] = useState(false);
-
+  const [openDeleteClass, setOpenDeleteClass] = useState(false);
+  const [classDelete, setClassDelete] = useState(false);
+  const queryClient = useQueryClient();
+  const onSubmitAddClass = (data) => {
+    createExamFormMutation.mutate(data);
+    handleClose();
+  };
   useQuery({
     queryKey: ["classCompetition", id],
     enabled: !!id,
@@ -245,6 +256,18 @@ const CompetitionDetail = () => {
     queryKey: ["classesJoin", competition?.timeStart],
     enabled: !!competition?.timeStart,
     queryFn: () => getAllClassCanJoinCompetition(competition?.timeStart),
+  });
+
+  const deleteClassCompetitionMutation = useMutation({
+    mutationFn: deleteClassCompetition,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["classesJoin", competition?.timeStart]);
+      // setRows((state) => [data.data, ...state]);
+      toast.success("Delete successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
   });
 
   return (
@@ -476,6 +499,12 @@ const CompetitionDetail = () => {
           </Box>
         </Modal>
       )}
+      <ModalConfirmDelete
+        open={openDeleteClass}
+        setOpen={setOpenDeleteClass}
+        deleteMutation={deleteClassCompetitionMutation}
+        deleteId={classDelete}
+      />
     </>
   );
 };

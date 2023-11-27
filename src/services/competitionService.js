@@ -10,6 +10,10 @@ const CompetitionApi = {
   getCompetitionById: (id) => axiosClientPrivate.get(`${url}/${id}`),
   getAllClassJoinCompetition: (id) =>
     axiosClientPrivate.get(`${url}/${id}/allclass`),
+  deleteClassCompetition: (data) =>
+    axiosClientPrivate.delete(
+      `${url}/${data.competitionId}/class/${data.classId}`
+    ),
 };
 export const {
   createCompetition,
@@ -17,5 +21,6 @@ export const {
   getAllClassCanJoinCompetition,
   getCompetitionById,
   getAllClassJoinCompetition,
+  deleteClassCompetition,
 } = CompetitionApi;
 export default CompetitionApi;

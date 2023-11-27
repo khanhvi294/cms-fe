@@ -237,7 +237,6 @@ const Competitions = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("daatta", data);
     createCompetitionMutation.mutate(data);
     handleClose();
   };
