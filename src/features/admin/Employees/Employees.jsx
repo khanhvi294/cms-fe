@@ -45,8 +45,13 @@ const Employees = () => {
       headerName: "ID",
       width: 100,
     },
-
-    { field: "email", headerName: "email", width: 250 },
+    {
+      field: "accountEmployee", // Thêm cột mới cho tên của courseClass
+      headerName: "email ",
+      width: 250,
+      valueGetter: (params) => params.row.accountEmployee.email,
+    },
+    // { field: "email", headerName: "email", width: 250 },
     {
       field: "role",
       headerName: "role",
@@ -172,27 +177,11 @@ const Employees = () => {
   const queryClient = useQueryClient();
   const [employeeEdit, setEmployeeEdit] = useState(null);
 
-  const handleSpreed = (oriObject, key) => {
-    let subObject = oriObject[key];
-    let modifiedObject = {
-      ...oriObject,
-      ...subObject,
-    };
-
-    delete modifiedObject[key];
-
-    return modifiedObject;
-  };
-
   useQuery({
     queryKey: ["employees"],
     queryFn: getEmployees,
     onSuccess: (data) => {
-      const processArray = data.data.data.map((item) =>
-        handleSpreed(item, "accountEmployee")
-      );
-
-      setRows(processArray);
+      setRows(data.data.data);
     },
   });
 
@@ -229,12 +218,9 @@ const Employees = () => {
   };
   const createEmployeeMutation = useMutation({
     mutationFn: (data) => createEmployee(data),
-    onSuccess: (data) => {
-      setRows((state) => [
-        handleSpreed(data.data, "accountEmployee"),
-        ...state,
-      ]);
-      // handleClose();
+    onSuccess: () => {
+      queryClient.invalidateQueries(["employees"]);
+
       toast.success("Create successfully!");
     },
     onError: (err) => {

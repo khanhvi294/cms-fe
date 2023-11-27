@@ -55,10 +55,9 @@ const Students = () => {
     {
       field: "accountStudent", // Thêm cột mới cho tên của courseClass
       headerName: "email ",
-      width: 200,
+      width: 300,
       valueGetter: (params) => params.row.accountStudent.email,
     },
-    // { field: "email", headerName: "email", width: 300 },
 
     { field: "fullName", headerName: "fullName", width: 300 },
     {
