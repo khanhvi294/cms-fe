@@ -85,34 +85,12 @@ const Competition = () => {
     },
   });
 
-  const rows = [
-    createData(1, 1, "Phạm Thiên An", 9.0),
-    createData(2, 6, "Trần Ngọc Bảo", 8.3),
-    createData(3, 3, "Trần Đình Hưng", 8.0),
-    createData(4, 5, "Võ Tiến Khoa", 7.3),
-    createData(5, 7, "Võ Thị Bích Loan", 6.9),
-    createData(6, 2, "Nguyễn Lê Minh", 6.6),
-    createData(7, 8, "Nguyễn Thị Thùy Linh", 6.59),
-    createData(8, 9, "Vũ Trung Kiên", 5.9),
-  ];
-
-  function createData(name, calories, fat, carbs) {
-    return { name, calories, fat, carbs };
-  }
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
+
   const { data: classes } = useQuery({
     queryKey: ["classes", id],
     enabled: !!id,

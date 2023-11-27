@@ -1,7 +1,18 @@
-import { Button, Chip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,6 +20,7 @@ import ModalJudge from "../../../components/admin/judges/modalJudge";
 import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import RoundTable from "../../../components/admin/rounds/tableCollapRound";
 import {
+  getAllClassCanJoinCompetition,
   getAllClassJoinCompetition,
   getCompetitionById,
 } from "../../../services/competitionService";
@@ -32,6 +44,7 @@ const CompetitionDetail = () => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -189,8 +202,8 @@ const CompetitionDetail = () => {
               xmlSpace="preserve"
               width={15}
               onClick={() => {
-                setClassDelete(params?.row);
-                setOpenDelete(true);
+                // setClassDelete(params?.row);
+                //setOpenDelete(true);
               }}
             >
               <path
@@ -216,6 +229,7 @@ const CompetitionDetail = () => {
     },
   ];
   const [rowsClass, setRowsClass] = useState([]);
+  const [openAddClass, setOpenAddClass] = useState(false);
 
   useQuery({
     queryKey: ["classCompetition", id],
@@ -225,6 +239,12 @@ const CompetitionDetail = () => {
       // console.log(data);
       setRowsClass(data.data.data);
     },
+  });
+
+  const { data: classesJoin } = useQuery({
+    queryKey: ["classesJoin", competition?.timeStart],
+    enabled: !!competition?.timeStart,
+    queryFn: () => getAllClassCanJoinCompetition(competition?.timeStart),
   });
 
   return (
@@ -276,7 +296,7 @@ const CompetitionDetail = () => {
               </div>
 
               <div className="flex justify-between w-full">
-                <p className="font-bold">EmpoyeeId</p>
+                <p className="font-bold">EmployeeId</p>
                 <p>{competition?.employeeId}</p>
               </div>
               <div className="flex justify-between w-full">
@@ -340,7 +360,50 @@ const CompetitionDetail = () => {
             <RoundTable rows={rows} />
           </div> */}
           {/* class */}
-          <p>Class</p>
+          <div className="flex gap-2 justify-between items-center mb-4">
+            <span className="text-xl font-semibold">Classes</span>
+            <Button
+              variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+              onClick={() => {
+                setOpenAddClass(true);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                id="plus"
+                width={22}
+                height={22}
+              >
+                <g
+                  data-name="Layer 2"
+                  fill="#ffffff"
+                  className="color000000 svgShape"
+                >
+                  <g
+                    data-name="plus"
+                    fill="#ffffff"
+                    className="color000000 svgShape"
+                  >
+                    <rect
+                      width="24"
+                      height="24"
+                      opacity="0"
+                      transform="rotate(180 12 12)"
+                      fill="#ffffff"
+                      className="color000000 svgShape"
+                    ></rect>
+                    <path
+                      d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
+                      fill="#ffffff"
+                      className="color000000 svgShape"
+                    ></path>
+                  </g>
+                </g>
+              </svg>
+              Add
+            </Button>
+          </div>
           <div>
             <Table columns={columnsClass} rows={rowsClass} />
           </div>
@@ -360,6 +423,58 @@ const CompetitionDetail = () => {
           setOpenJudge={setOpenJudge}
           round={roundChoose}
         />
+      )}
+      {openAddClass && (
+        <Modal
+          open={openAddClass}
+          onClose={() => {
+            setOpenAddClass(false);
+          }}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          className="flex items-center justify-center "
+        >
+          <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className=" flex flex-col p-4 gap-5"
+            >
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="font-bold "
+              >
+                Add Classes for competition
+              </Typography>
+
+              <FormControl>
+                <InputLabel id="demo-mutiple-name-label">Classes</InputLabel>
+                <Controller
+                  name="competitionClass"
+                  control={control}
+                  defaultValue={[]}
+                  render={({ field }) => (
+                    <Select label="Select Items" multiple {...field}>
+                      {classesJoin?.data?.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+                />
+              </FormControl>
+              <Button
+                variant="contained"
+                className="self-end !normal-case !rounded-lg !bg-black"
+                type="submit"
+              >
+                Save
+              </Button>
+            </form>
+          </Box>
+        </Modal>
       )}
     </>
   );
