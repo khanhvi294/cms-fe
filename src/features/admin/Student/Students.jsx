@@ -171,26 +171,10 @@ const Students = () => {
     },
   ];
 
-  const handleSpreed = (oriObject, key) => {
-    let subObject = oriObject[key];
-    let modifiedObject = {
-      ...oriObject,
-      ...subObject,
-    };
-
-    delete modifiedObject[key];
-
-    return modifiedObject;
-  };
-
   useQuery({
     queryKey: ["students"],
     queryFn: getStudents,
     onSuccess: (data) => {
-      // const processArray = data.data.data.map((item) =>
-      //   handleSpreed(item, "accountStudent")
-      // );
-
       setRows(data.data.data);
     },
   });
@@ -210,10 +194,9 @@ const Students = () => {
   };
   const createStudentMutation = useMutation({
     mutationFn: (data) => createStudent(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Create successfully!");
       queryClient.invalidateQueries(["students"]);
-      // setRows((state) => [handleSpreed(data.data, "accountStudent"), ...state]);
     },
     onError: (err) => {
       toast.error(err.message);
