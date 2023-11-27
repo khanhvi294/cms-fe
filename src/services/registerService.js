@@ -12,7 +12,7 @@ const registersApi = {
     return axiosClientPrivate.delete(`${url}/${competitionId}`);
   },
   getRegisterByCompetition: (competitionId) => {
-    return axiosClientPrivate.get(`${url}/${competitionId}`);
+    return axiosClientPrivate.get(`${url}/competition/${competitionId}`);
   },
 };
 export const {

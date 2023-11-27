@@ -12,5 +12,6 @@ export const appRoutes = {
   ACOMPETITIONS: "/admin/competitions",
   ACOMPETITIONS_DETAIL: "/admin/competitions/:id",
   AROUNDS: "/admin/rounds",
+  AREGISTER: "/admin/register",
   LOGIN: "/login",
 };

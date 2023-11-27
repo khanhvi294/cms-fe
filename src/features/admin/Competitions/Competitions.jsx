@@ -222,12 +222,10 @@ const Competitions = () => {
     enabled: !!timeStart,
     queryFn: () => getAllClassCanJoinCompetition(timeStart),
   });
-  console.log("vooo", classesJoin);
 
   const createCompetitionMutation = useMutation({
     mutationFn: (data) => createCompetition(data),
     onSuccess: (data) => {
-      console.log(data);
       setRows((state) => [data.data, ...state]);
       toast.success("Create successfully!");
     },

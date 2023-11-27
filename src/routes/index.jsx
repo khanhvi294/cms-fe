@@ -16,6 +16,7 @@ import CompetitionDetail from "../features/admin/Competitions/CompetitionDetail"
 import { appRoutes } from "./appRouter";
 import ExamForms from "../features/admin/ExamForm/ExamForm";
 import CollapsibleTable from "../features/admin/demo";
+import Register from "../features/admin/Register/Register";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -47,6 +48,7 @@ export const AppRouter = () => {
         <Route path={appRoutes.ACLASSES} element={<Classes />} />
         <Route path={appRoutes.ACOURSES} element={<Courses />} />
         <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
+        <Route path={appRoutes.AREGISTER} element={<Register />} />
         <Route
           path={appRoutes.ACOMPETITIONS_DETAIL}
           element={<CompetitionDetail />}
