@@ -8,11 +8,13 @@ const employeeApi = {
 
   createEmployee: (employee) => axiosClientPrivate.post(`${url}`, employee),
   updateEmployee: (employee) => axiosClientPrivate.patch(`${url}`, employee),
+  deleteEmployee: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 };
 export const {
   createEmployee,
   getEmployees,
   getAllTeacherAddJudge,
   updateEmployee,
+  deleteEmployee,
 } = employeeApi;
 export default employeeApi;
