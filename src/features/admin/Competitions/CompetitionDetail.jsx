@@ -25,6 +25,7 @@ import RoundTable from "../../../components/admin/rounds/tableCollapRound";
 import {
   deleteClassCompetition,
   getAllClassCanJoinCompetition,
+  getAllClassCanJoinCompetitionUpdate,
   getAllClassJoinCompetition,
   getCompetitionById,
 } from "../../../services/competitionService";
@@ -291,7 +292,7 @@ const CompetitionDetail = () => {
   const { data: classesJoin } = useQuery({
     queryKey: ["classesJoin", competition?.timeStart],
     enabled: !!competition?.timeStart,
-    queryFn: () => getAllClassCanJoinCompetition(competition?.timeStart),
+    queryFn: () => getAllClassCanJoinCompetitionUpdate(competition?.id),
   });
 
   const deleteClassCompetitionMutation = useMutation({
