@@ -12,12 +12,12 @@ import {
 import Input from "@mui/material/Input";
 import { useState } from "react";
 import { useMutation } from "react-query";
-import { login } from "../../services/authService";
 import { useDispatch, useSelector } from "react-redux";
-import { setAccessToken } from "../../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../configs/role";
+import { setAccessToken } from "../../redux/slices/userSlice";
 import { appRoutes } from "../../routes/appRouter";
+import { login } from "../../services/authService";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
@@ -25,9 +25,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const roleUser = useSelector(
-    (state) => state.user?.data?.info?.accountStudent?.role
-  );
+  const roleUser = useSelector((state) => state.user?.data?.info?.role);
 
   const style = {
     position: "absolute",
@@ -49,19 +47,31 @@ const Login = () => {
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   const navigate = useNavigate();
   const handleRedirect = () => {
+    // console.log("voo");
     if (roleUser === ROLES.STUDENT) {
       navigate("/");
-    } else {
+    } else if (roleUser === ROLES.EMPLOYEE) {
+      console.log("object");
       navigate(appRoutes.ACLASSES);
+    } else if (roleUser === ROLES.TEACHER) {
+      console.log("hii");
+      navigate("/demo");
     }
   };
+
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
+      console.log("cmmmm");
       if (!data.data.token) return;
+      console.log(data.data.token);
       dispatch(setAccessToken(data.data.token));
+      console.log("đmmmmm");
       handleRedirect();
     },
   });
+  // useEffect(() => {
+  //   handleRedirect;
+  // }, [roleUser]);
   const handleLogin = (account) => {
     loginMutation.mutate(account);
   };

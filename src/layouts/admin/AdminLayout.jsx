@@ -7,7 +7,7 @@ import { appRoutes } from "../../routes/appRouter";
 
 const AdminLayout = () => {
   const userRole = useSelector((state) => state.user?.data?.info?.role);
-  const isAdmin = userRole !== ROLES.STUDENT;
+  const isAdmin = userRole === ROLES.EMPLOYEE;
 
   return (
     <div className="flex flex-col overflow-hidden h-screen ">
@@ -19,7 +19,11 @@ const AdminLayout = () => {
             <Header />
           </div>
           <div className="w-[1120px] m-auto py-6">
-            {isAdmin ? <Outlet /> : <Navigate to={appRoutes.HOME} replace />}
+            {isAdmin && <Outlet />}
+            {userRole === ROLES.STUDENT && (
+              <Navigate to={appRoutes.HOME} replace />
+            )}
+            {userRole === ROLES.TEACHER && <Navigate to="/demo" replace />}
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
-import { Navigate, Outlet, redirect, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, Outlet } from "react-router-dom";
+import { ROLES } from "../../configs/role";
 import Header from "./components/Header";
 import HeaderMenu from "./components/HeaderMenu";
-import { useSelector } from "react-redux";
-import { ROLES } from "../../configs/role";
 
 import { appRoutes } from "../../routes/appRouter";
 
@@ -19,7 +19,11 @@ const UserLayout = () => {
           <HeaderMenu />
         </div>
         <div className="w-[1289px] m-auto  h-[1000px]  py-5">
-          {isUser ? <Outlet /> : <Navigate to={appRoutes.ACLASSES} replace />}
+          {isUser && <Outlet />}
+          {userRole === ROLES.EMPLOYEE && (
+            <Navigate to={appRoutes.ACLASSES} replace />
+          )}
+          {userRole === ROLES.TEACHER && <Navigate to="/demo" replace />}
         </div>
       </div>
     </div>

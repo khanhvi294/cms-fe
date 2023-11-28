@@ -153,28 +153,49 @@ const Competition = () => {
           </div>
         </div>
       </div>
-      <Box sx={{ width: "100%" }} className="bg-white">
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ width: "100%" }} className="bg-white mt-6">
+        <Box className="px-6 pt-6">
           <Tabs
             value={value}
             onChange={handleChange}
             aria-label="basic tabs example"
-            inkBarStyle={{ background: "blue" }}
+            className="bg-[#f6f7fb] !normal-case"
+            sx={{
+              ".Mui-selected": {
+                color: `white !important`,
+              },
+            }}
           >
             <Tab
               sx={{
-                color:
-                  value === 0 ? "#ff0000 !important" : "rgba(0, 0, 0, 0.54)",
+                bgcolor: value === 0 ? "#2ab7ca" : "",
               }}
               label="Description"
               {...a11yProps(0)}
+              className=" !normal-case"
             />
-            <Tab label="Rounds" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
+            <Tab
+              label="Rounds"
+              sx={{
+                bgcolor: value === 1 ? "#2ab7ca" : "",
+              }}
+              {...a11yProps(1)}
+              className=" !normal-case"
+            />
+            <Tab
+              label="Item Three"
+              sx={{
+                bgcolor: value === 2 ? "#2ab7ca" : "",
+              }}
+              {...a11yProps(2)}
+              className=" !normal-case"
+            />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <div className="h-10 bg-[#eef2f7] flex items-center">Introduc</div>
+          <div className="h-10 bg-[#eef2f7] flex items-center pl-4">
+            INTRODUCT
+          </div>
           <div className="bg-white w-full px-5 flex flex-col gap-1 py-3 ">
             <p>Number of prizes: {competition?.numOfPrizes}</p>
             <p>
@@ -182,10 +203,10 @@ const Competition = () => {
             </p>
             <p> Round: {competition?.numberOfRound}</p>
           </div>
-          <div className="h-10 bg-[#eef2f7] flex items-center">
-            classes are allowed{" "}
+          <div className="h-10 bg-[#eef2f7] flex items-center pl-4">
+            CLASSES ARE ALLOW
           </div>
-          <div className="mt-4">
+          <div className="mt-4 px-5">
             <table style={{ border: "1px solid black" }}>
               <tbody>
                 {classes?.data?.data.map((item, index) => (

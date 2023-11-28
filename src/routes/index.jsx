@@ -17,6 +17,8 @@ import { appRoutes } from "./appRouter";
 import ExamForms from "../features/admin/ExamForm/ExamForm";
 import CollapsibleTable from "../features/admin/demo";
 import Register from "../features/admin/Register/Register";
+import TeacherLayout from "../layouts/teacher/TeacherLayout";
+import Demo from "../features/teacher/demo";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -56,6 +58,9 @@ export const AppRouter = () => {
         <Route path="/admin/demo" element={<CollapsibleTable />} />
         <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
         {/* <Route path={appRoutes.AROUNDS} element={<Rounds />} /> */}
+      </Route>
+      <Route element={<TeacherLayout />}>
+        <Route path="/demo" element={<Demo />} />
       </Route>
     </Routes>
   );

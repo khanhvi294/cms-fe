@@ -10,6 +10,13 @@ const JudgesApi = {
       `${url}/${data.roundId}/employee/${data.employeeId}`
     );
   },
+  getAllRoundByJudge: (judgeId) =>
+    axiosClientPrivate.get(`${url}/${judgeId}/rounds`),
 };
-export const { createJudges, getJudgeByRound, deleteJudgeInRound } = JudgesApi;
+export const {
+  createJudges,
+  getJudgeByRound,
+  deleteJudgeInRound,
+  getAllRoundByJudge,
+} = JudgesApi;
 export default JudgesApi;
