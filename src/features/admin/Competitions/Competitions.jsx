@@ -63,7 +63,6 @@ const Competitions = () => {
   };
   const defaultTimeStart = new Date().toISOString().slice(0, 10);
   const timeStartI = watch("timeStart", defaultTimeStart);
-  console.log("time", timeStart);
 
   const [classesChoose, setClassesChoose] = useState([]);
 

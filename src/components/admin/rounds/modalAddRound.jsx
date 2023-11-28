@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   FormHelperText,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Modal,
@@ -84,6 +85,11 @@ const ModalAddRound = ({
               label="Time*"
               type="number"
               variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">minute</InputAdornment>
+                ),
+              }}
               error={!!errors.time}
               helperText={errors.time ? errors.time.message : ``}
               className="w-full"
