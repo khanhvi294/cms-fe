@@ -92,7 +92,7 @@ const ModalJudge = ({ open, setOpenJudge, round }) => {
     enabled: !!round?.id,
     queryFn: (competitionId) => getRoundByCompetition(competitionId),
     onSuccess: (data) => {
-      console.log(data.data);
+      console.log("voo", data.data);
       setRows(data.data.data);
     },
   });

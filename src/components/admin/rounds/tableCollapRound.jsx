@@ -33,12 +33,13 @@ function Row(props) {
   const queryClient = useQueryClient();
 
   const { id } = useParams();
+  console.log("hhh", row?.id);
   useQuery({
     queryKey: ["judges", row?.id],
     enabled: !!row?.id,
     queryFn: () => getJudgeByRound(row?.id),
     onSuccess: (data) => {
-      console.log(data);
+      console.log("hhhhhhhhhh", data);
       setJudges(data?.data?.data);
     },
   });

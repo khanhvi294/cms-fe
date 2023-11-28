@@ -34,6 +34,7 @@ const Competitions = () => {
 
   const [openSee, setOpenSee] = useState(false);
   const [openAddRound, setOpenAddRound] = useState(false);
+  const [timeStart, setTimeStart] = useState();
   const handleOpenAddRound = () => setOpenAddRound(true);
   const handleCloseAddRound = () => {
     setOpenAddRound(false);
@@ -60,7 +61,9 @@ const Competitions = () => {
     reset();
     setOpen(false);
   };
-  const timeStart = watch("timeStart");
+  const defaultTimeStart = new Date().toISOString().slice(0, 10);
+  const timeStartI = watch("timeStart", defaultTimeStart);
+  console.log("time", timeStart);
 
   const [classesChoose, setClassesChoose] = useState([]);
 
@@ -203,12 +206,10 @@ const Competitions = () => {
     },
   ];
 
-  const fieldValue = watch("competitionClass");
-
   useEffect(() => {
     // Xử lý khi giá trị thay đổi
-    console.log("Giá trị đã thay đổi:", fieldValue);
-  }, [fieldValue]);
+    setTimeStart(timeStartI);
+  }, [timeStartI]);
   useQuery({
     queryKey: ["competitions"],
     queryFn: getCompetitions,
@@ -327,7 +328,7 @@ const Competitions = () => {
                   size="small"
                   label="Time Start"
                   type="date"
-                  defaultValue={new Date().toISOString().slice(0, 10)}
+                  defaultValue={defaultTimeStart}
                   className="w-full"
                   {...register("timeStart", {
                     required: "Time start is required filed",

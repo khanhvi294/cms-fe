@@ -51,21 +51,18 @@ const Login = () => {
     if (roleUser === ROLES.STUDENT) {
       navigate("/");
     } else if (roleUser === ROLES.EMPLOYEE) {
-      console.log("object");
       navigate(appRoutes.ACLASSES);
     } else if (roleUser === ROLES.TEACHER) {
-      console.log("hii");
       navigate("/demo");
     }
   };
 
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
-      console.log("cmmmm");
       if (!data.data.token) return;
       console.log(data.data.token);
       dispatch(setAccessToken(data.data.token));
-      console.log("đmmmmm");
+
       handleRedirect();
     },
   });

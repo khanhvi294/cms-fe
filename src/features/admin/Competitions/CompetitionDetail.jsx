@@ -310,6 +310,7 @@ const CompetitionDetail = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log("round", roundChoose);
 
   return (
     <>
@@ -552,13 +553,13 @@ const CompetitionDetail = () => {
         competition={competition}
         setRows={setRows}
       />
-      {openJudge && (
+      {/* {openJudge && (
         <ModalJudge
           open={openJudge}
           setOpenJudge={setOpenJudge}
           round={roundChoose}
         />
-      )}
+      )} */}
       {openAddClass && (
         <Modal
           open={openAddClass}
