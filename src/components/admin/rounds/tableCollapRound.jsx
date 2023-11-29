@@ -17,7 +17,7 @@ import {
 } from "../../../services/judgeService";
 import ModalAddJudge from "../judges/modalAddJudge";
 import ModalConfirmDelete from "../../Modal/modalConfirmDelete";
-import { deleteRound } from "../../../services/roundService";
+import { deleteRound, updateRound } from "../../../services/roundService";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import {
@@ -90,11 +90,25 @@ function Row(props) {
     queryKey: ["exams"],
     queryFn: getExamForms,
   });
-
+  const updateRoundMutation = useMutation({
+    mutationFn: (data) => updateRound(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["rounds", id]);
+      setOpenEditRound(false);
+      toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
   const onSubmit = (data) => {
+    updateRoundMutation.mutate({
+      ...data,
+      id: row?.id,
+      competitionId: row?.competitionId,
+    });
     reset();
   };
-  console.log(row?.examFormRound);
 
   return (
     <React.Fragment>
