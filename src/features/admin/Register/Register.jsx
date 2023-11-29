@@ -1,11 +1,13 @@
-import { Button } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import Table from "../../../components/Table/Table";
+import { getCompetitions } from "../../../services/competitionService";
 import { getRegisterByCompetition } from "../../../services/registerService";
 
 const Register = () => {
   const [rows, setRows] = useState([]);
+  const [competition, setCompetition] = useState();
 
   const columns = [
     {
@@ -94,13 +96,26 @@ const Register = () => {
   //     handleClose();
   //   };
 
-  useQuery({
-    queryKey: ["exams"],
-    queryFn: () => getRegisterByCompetition(1),
+  const { data: competitions } = useQuery({
+    queryKey: ["competitions"],
+    queryFn: getCompetitions,
     onSuccess: (data) => {
       setRows(data.data.data);
     },
   });
+
+  useQuery({
+    queryKey: ["registers", competition?.id],
+    enabled: competition?.id,
+    queryFn: () => getRegisterByCompetition(competition?.id),
+    onSuccess: (data) => {
+      setRows(data.data.data);
+    },
+  });
+
+  const handleChange = (event) => {
+    setCompetition(event.target.value);
+  };
 
   return (
     <>
@@ -146,7 +161,25 @@ const Register = () => {
           Add
         </Button> */}
       </div>
+      <FormControl className="w-full" size="small" onChange={handleChange}>
+        <InputLabel id="demo-select-small-label">Course*</InputLabel>
 
+        <Select
+          labelId="demo-select-small-label"
+          id="demo-select-small"
+          // value={age}
+          label="Role"
+          // onChange={handleChange}
+          defaultValue={competitions?.data?.data[0]?.id}
+          size="small"
+        >
+          {competitions?.data?.data.map((item, index) => (
+            <MenuItem key={index} value={item.id}>
+              {item.id} | {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <Table columns={columns} rows={rows} />
     </>
   );

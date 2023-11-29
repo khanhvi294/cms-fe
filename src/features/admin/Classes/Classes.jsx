@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   FormControl,
@@ -11,8 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import Table from "../../../components/Table/Table";
@@ -51,6 +52,8 @@ const Classes = () => {
     register,
     handleSubmit,
     reset,
+    control,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -176,8 +179,23 @@ const Classes = () => {
     },
   });
 
+  const [coursesOptions, setCoursesOptions] = useState([]);
+  // useEffect(() => {
+
+  // }, [courses])
+
   const { data: courses } = useQuery({
     queryKey: ["courses"],
+    onSuccess: (data) => {
+      const options = data?.data?.data?.map((item) => {
+        return {
+          label: item.name,
+          id: item.id,
+        };
+      });
+
+      setCoursesOptions(options);
+    },
     queryFn: getCourses,
   });
 
@@ -216,10 +234,12 @@ const Classes = () => {
   });
 
   const onSubmit = (data) => {
+    console.log("dât ", data);
     if (classEdit) {
-      updateClassMutation.mutate({ ...data, id: classEdit?.id });
+      // updateClassMutation.mutate({ ...data, id: classEdit?.id });
     } else {
-      createClassMutation.mutate(data);
+      console.log(data);
+      // createClassMutation.mutate(data);
     }
     handleClose();
   };
@@ -359,7 +379,9 @@ const Classes = () => {
                   ))}
                 </Select>
                 {!!errors.courseId && (
-                  <FormHelperText>{errors.courseId.message}</FormHelperText>
+                  <FormHelperText className="text-[#f64242]">
+                    {errors.courseId.message}
+                  </FormHelperText>
                 )}
               </FormControl>
             </div>

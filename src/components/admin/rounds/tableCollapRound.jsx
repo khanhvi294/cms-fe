@@ -114,10 +114,11 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row?.id}
         </TableCell>
+        <TableCell align="right">{row?.name}</TableCell>
         <TableCell align="right">{row?.roundNumber}</TableCell>
-        <TableCell align="right">{row?.examFormRound.name}</TableCell>
-        <TableCell align="right">{row.timeStart}</TableCell>
-        <TableCell align="right">{row.time}</TableCell>
+        <TableCell align="right">{row?.examFormRound?.name}</TableCell>
+        <TableCell align="right">{row?.timeStart}</TableCell>
+        <TableCell align="right">{row?.time}</TableCell>
         <TableCell align="right">
           <div className="flex justify-end gap-4">
             <svg
@@ -304,6 +305,9 @@ export default function RoundTable({ rows }) {
           <TableRow>
             <TableCell />
             <TableCell className="!font-semibold">ID</TableCell>
+            <TableCell className="!font-semibold" align="right">
+              NAME
+            </TableCell>
             <TableCell className="!font-semibold" align="right">
               ROUND
             </TableCell>

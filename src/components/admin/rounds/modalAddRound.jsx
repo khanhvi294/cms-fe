@@ -13,17 +13,15 @@ import {
 } from "@mui/material";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { createRound } from "../../../services/roundService";
-import { toast } from "react-toastify";
-import { useMutation, useQuery } from "react-query";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
 import { getExamForms } from "../../../services/examFormService";
 
 const ModalAddRound = ({
   openAddRound,
   handleCloseAddRound,
   competition,
-  setRows,
+  addMutate,
 }) => {
   const {
     register,
@@ -36,23 +34,13 @@ const ModalAddRound = ({
     queryFn: getExamForms,
   });
 
-  const createRoundMutation = useMutation({
-    mutationFn: (data) => createRound(data),
-    onSuccess: (data) => {
-      setRows((state) => [data.data, ...state]);
-      toast.success("Create successfully!");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-
   const onSubmitAddRound = (data) => {
     const round = data;
     round.competitionId = competition.id;
     // round.roundNumber = 1;
-    createRoundMutation.mutate(round);
+    addMutate.mutate(round);
     handleCloseAddRound();
+    reset();
   };
   return (
     <Modal
@@ -79,6 +67,19 @@ const ModalAddRound = ({
             Add Round
           </Typography>
           <div className="flex flex-col !justify-center !items-center gap-4">
+            <TextField
+              id="outlined-basic"
+              size="small"
+              label="Name*"
+              variant="outlined"
+              //defaultValue={examFormEdit?.name}
+              error={!!errors.name}
+              helperText={errors.name ? errors.name.message : ``}
+              className="w-full"
+              {...register("name", {
+                required: "Name is required filed",
+              })}
+            />
             <TextField
               id="outlined-basic"
               size="small"
