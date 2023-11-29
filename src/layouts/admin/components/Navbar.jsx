@@ -339,7 +339,7 @@ const Navbar = () => {
       <div>
         <img src={logo} alt="logo" className="" />
       </div>
-      <div className="flex w-full flex-col gap-3 text-center mt-2">
+      <div className="flex w-full flex-col gap-3 justify-center text-center mt-2">
         {navbarItems.map((item) => {
           const isActive = matchPath(item.path, pathname);
 
