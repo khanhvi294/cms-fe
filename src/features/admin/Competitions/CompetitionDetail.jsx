@@ -9,22 +9,22 @@ import {
   Select,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import React, { useState } from "react";
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import ModalJudge from "../../../components/admin/judges/modalJudge";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
+import Table from "../../../components/Table/Table";
 import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import RoundTable from "../../../components/admin/rounds/tableCollapRound";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 import {
   deleteClassCompetition,
-  getAllClassCanJoinCompetition,
   getAllClassCanJoinCompetitionUpdate,
   getAllClassJoinCompetition,
   getCompetitionById,
@@ -34,9 +34,6 @@ import {
   createRound,
   getRoundByCompetition,
 } from "../../../services/roundService";
-import Table from "../../../components/Table/Table";
-import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
-import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,14 +72,12 @@ const CompetitionDetail = () => {
   const { id } = useParams();
   const [competition, setCompetition] = useState();
   const [open, setOpen] = useState(false);
-  const [openJudge, setOpenJudge] = useState(false);
-  const [roundChoose, setRoundChoose] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     reset();
     setOpen(false);
   };
-  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -139,8 +134,7 @@ const CompetitionDetail = () => {
 
   const createRoundMutation = useMutation({
     mutationFn: (data) => createRound(data),
-    onSuccess: (data) => {
-      // setRows((state) => [data.data, ...state]);
+    onSuccess: () => {
       queryClient.invalidateQueries(["rounds", id]);
 
       toast.success("Create successfully!");
@@ -219,7 +213,6 @@ const CompetitionDetail = () => {
     enabled: !!id,
     queryFn: () => getAllClassJoinCompetition(id),
     onSuccess: (data) => {
-      // console.log(data);
       setRowsClass(data.data.data);
     },
   });
@@ -232,9 +225,8 @@ const CompetitionDetail = () => {
 
   const deleteClassCompetitionMutation = useMutation({
     mutationFn: deleteClassCompetition,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["classesJoin", competition?.timeStart]);
-      // setRows((state) => [data.data, ...state]);
       toast.success("Delete successfully!");
     },
     onError: (err) => {
@@ -246,7 +238,6 @@ const CompetitionDetail = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log("round", roundChoose);
 
   return (
     <>
@@ -466,69 +457,17 @@ const CompetitionDetail = () => {
               </div>
             </CustomTabPanel>
           </Box>
-          {/* <div className="flex gap-2 justify-between items-center mb-4">
-            <span className="text-xl font-semibold">Rounds</span>
-            <Button
-              variant="contained flex-end !bg-[#000] !text-white !rounded-md"
-              onClick={handleOpen}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                id="plus"
-                width={22}
-                height={22}
-              >
-                <g
-                  data-name="Layer 2"
-                  fill="#ffffff"
-                  className="color000000 svgShape"
-                >
-                  <g
-                    data-name="plus"
-                    fill="#ffffff"
-                    className="color000000 svgShape"
-                  >
-                    <rect
-                      width="24"
-                      height="24"
-                      opacity="0"
-                      transform="rotate(180 12 12)"
-                      fill="#ffffff"
-                      className="color000000 svgShape"
-                    ></rect>
-                    <path
-                      d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z"
-                      fill="#ffffff"
-                      className="color000000 svgShape"
-                    ></path>
-                  </g>
-                </g>
-              </svg>
-              Add
-            </Button>
-          </div>
-          <div className="overflow-auto h-[400px]">
-            <RoundTable rows={rows} />
-          </div> */}
           {/* class */}
         </div>
       </div>
 
-      {/* <Table columns={columns} rows={rows} /> */}
       <ModalAddRound
         openAddRound={open}
         handleCloseAddRound={handleClose}
         competition={competition}
         addMutate={createRoundMutation}
       />
-      {/* {openJudge && (
-        <ModalJudge
-          open={openJudge}
-          setOpenJudge={setOpenJudge}
-          round={roundChoose}
-        />
-      )} */}
+
       {openAddClass && (
         <Modal
           open={openAddClass}
