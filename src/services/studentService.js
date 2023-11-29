@@ -11,6 +11,7 @@ const studentApi = {
   getCompetitionsForStudent: (id) =>
     axiosClientPrivate.get(`${url}/${id}/competitions`),
   deleteStudent: (id) => axiosClientPrivate.delete(`${url}/${id}`),
+  updateStudent: (student) => axiosClientPrivate.update(`${url}`, student),
 };
 export const {
   createStudent,
@@ -19,5 +20,6 @@ export const {
   getCompetitionsForStudent,
   getStudentAddClass,
   deleteStudent,
+  updateStudent,
 } = studentApi;
 export default studentApi;

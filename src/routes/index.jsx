@@ -19,6 +19,7 @@ import CollapsibleTable from "../features/admin/demo";
 import Register from "../features/admin/Register/Register";
 import TeacherLayout from "../layouts/teacher/TeacherLayout";
 import Demo from "../features/teacher/demo";
+import Profile from "../features/admin/Profile/Profile";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -51,6 +52,8 @@ export const AppRouter = () => {
         <Route path={appRoutes.ACOURSES} element={<Courses />} />
         <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
         <Route path={appRoutes.AREGISTER} element={<Register />} />
+        <Route path="admin/profile" element={<Profile />} />
+
         <Route
           path={appRoutes.ACOMPETITIONS_DETAIL}
           element={<CompetitionDetail />}

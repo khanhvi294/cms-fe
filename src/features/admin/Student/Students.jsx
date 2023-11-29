@@ -19,6 +19,7 @@ import {
   createStudent,
   deleteStudent,
   getStudents,
+  updateStudent,
 } from "../../../services/studentService";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
@@ -38,6 +39,7 @@ const Students = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [studentDelete, setStudentDelete] = useState(false);
   const [rows, setRows] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -208,6 +210,7 @@ const Students = () => {
     handleClose();
   };
   const queryClient = useQueryClient();
+
   const deleteStudentMutation = useMutation({
     mutationFn: deleteStudent,
     onSuccess: () => {
@@ -220,6 +223,18 @@ const Students = () => {
       toast.error(err.message);
     },
   });
+
+  const updateStudentMutation = useMutation({
+    mutationFn: updateStudent,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["students"]);
+      toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
   return (
     <>
       <div className="flex gap-2 justify-between items-center">

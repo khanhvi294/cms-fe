@@ -18,7 +18,7 @@ const AdminLayout = () => {
           <div className="h-16 bg-white px-5 border shadow-sm">
             <Header />
           </div>
-          <div className="w-[1120px] m-auto py-6">
+          <div className="w-[1120px] bg-white m-auto py-6">
             {isAdmin && <Outlet />}
             {userRole === ROLES.STUDENT && (
               <Navigate to={appRoutes.HOME} replace />
