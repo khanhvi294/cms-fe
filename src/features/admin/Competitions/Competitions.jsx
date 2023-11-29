@@ -88,6 +88,7 @@ const Competitions = () => {
       headerName: "Active",
       width: 100,
       renderCell: (params) => {
+        console.log(params.row);
         return params.row.active ? (
           <Chip
             label="Active"

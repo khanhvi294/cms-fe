@@ -381,24 +381,28 @@ const CompetitionDetail = () => {
 
         <div>
           <Box sx={{ width: "100%" }} className="bg-white">
-            <Box className="h-10 border-b">
+            <Box className="h-8 border-b rounded-md">
               <Tabs
                 value={value}
                 onChange={handleChange}
                 aria-label="basic tabs example"
-                inkBarStyle={{ background: "blue" }}
+                className="bg-[#e7e5e5] !normal-case"
+                sx={{
+                  ".Mui-selected": {
+                    color: `black !important`,
+                  },
+                }}
               >
                 <Tab
-                  sx={{
-                    bgcolor:
-                      value === 0
-                        ? "#ff0000 !important"
-                        : "rgba(0, 0, 0, 0.54)",
-                  }}
+                  className=" !normal-case"
                   label="Rounds & Judges"
                   {...a11yProps(0)}
                 />
-                <Tab label="Classes" {...a11yProps(1)} />
+                <Tab
+                  className=" !normal-case"
+                  label="Classes"
+                  {...a11yProps(1)}
+                />
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
