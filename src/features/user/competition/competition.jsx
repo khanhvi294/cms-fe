@@ -20,6 +20,7 @@ import {
 } from "../../../services/competitionService";
 import { useState } from "react";
 import { getRoundByCompetition } from "../../../services/roundService";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
 // const competition = {
 //   name: "Kiểm thử phần mềm",
@@ -144,10 +145,18 @@ const Competition = () => {
               <p className="text-sm opacity-60">End Time</p>
             </div>
             <div>
-              {competition?.status === 0 && <p>Upcoming</p>}
-              {competition?.status === 1 && <p>In progress</p>}
-              {competition?.status === 2 && <p>Completed</p>}
-              {competition?.status === 3 && <p>Canceled</p>}
+              {competition?.status === STATUS_COMPETITION.CREATED && (
+                <p>Upcoming</p>
+              )}
+              {competition?.status === STATUS_COMPETITION.STARTED && (
+                <p>In progress</p>
+              )}
+              {competition?.status === STATUS_COMPETITION.ENDED && (
+                <p>Completed</p>
+              )}
+              {competition?.status === STATUS_COMPETITION.CANCEL && (
+                <p>Canceled</p>
+              )}
               <p className="text-sm opacity-60">Status</p>
             </div>
           </div>

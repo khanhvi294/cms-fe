@@ -33,6 +33,7 @@ import { createExamForm } from "../../../services/examFormService";
 import { getRoundByCompetition } from "../../../services/roundService";
 import Table from "../../../components/Table/Table";
 import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -367,12 +368,41 @@ const CompetitionDetail = () => {
               </div>
               <div className="flex justify-between w-full">
                 <p className="font-bold">Status</p>
-                <Chip
-                  label="Active"
-                  color="success"
-                  variant="outlined"
-                  className="w-20 !h-7"
-                />
+                <div>
+                  {competition?.status === STATUS_COMPETITION.CREATED && (
+                    <Chip
+                      label="Upcoming"
+                      color="info"
+                      variant="outlined"
+                      className="w-32 h-7"
+                    />
+                  )}
+                  {competition?.status === STATUS_COMPETITION.STARTED && (
+                    <Chip
+                      label="In progress"
+                      color="success"
+                      variant="outlined"
+                      className="w-32 h-7"
+                    />
+                  )}
+
+                  {competition?.status === STATUS_COMPETITION.ENDED && (
+                    <Chip
+                      label="Completed"
+                      color="secondary"
+                      variant="outlined"
+                      className="w-32 h-7"
+                    />
+                  )}
+                  {competition?.status === STATUS_COMPETITION.CANCEL && (
+                    <Chip
+                      label="Canceled"
+                      color="error"
+                      variant="outlined"
+                      className="w-32 h-7"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

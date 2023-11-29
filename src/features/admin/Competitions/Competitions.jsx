@@ -27,6 +27,7 @@ import {
   getAllClassCanJoinCompetition,
   getCompetitions,
 } from "../../../services/competitionService";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
@@ -78,31 +79,52 @@ const Competitions = () => {
     {
       field: "id",
       headerName: "ID",
-      width: 150,
+      width: 100,
     },
     { field: "name", headerName: "name", width: 250 },
     { field: "employeeId", headerName: "employeeid", width: 200 },
-    { field: "timeStart", headerName: "timeStart", width: 250 },
+    { field: "timeStart", headerName: "timeStart", width: 200 },
     {
-      field: "active",
-      headerName: "Active",
-      width: 100,
+      field: "status",
+      headerName: "status",
+      width: 200,
       renderCell: (params) => {
-        console.log(params.row);
-        return params.row.active ? (
-          <Chip
-            label="Active"
-            color="success"
-            variant="outlined"
-            className="w-20 !h-7"
-          />
-        ) : (
-          <Chip
-            label="Active"
-            color="success"
-            variant="outlined"
-            className="w-20 !h-7"
-          />
+        return (
+          <div>
+            {params.row.status === STATUS_COMPETITION.CREATED && (
+              <Chip
+                label="Upcoming"
+                color="info"
+                variant="outlined"
+                className="w-32 h-7"
+              />
+            )}
+            {params.row.status === STATUS_COMPETITION.STARTED && (
+              <Chip
+                label="In progress"
+                color="success"
+                variant="outlined"
+                className="w-32 h-7"
+              />
+            )}
+
+            {params.row.status === STATUS_COMPETITION.ENDED && (
+              <Chip
+                label="Completed"
+                color="secondary"
+                variant="outlined"
+                className="w-32 h-7"
+              />
+            )}
+            {params.row.status === STATUS_COMPETITION.CANCEL && (
+              <Chip
+                label="Canceled"
+                color="error"
+                variant="outlined"
+                className="w-32 h-7"
+              />
+            )}
+          </div>
         );
       },
     },
