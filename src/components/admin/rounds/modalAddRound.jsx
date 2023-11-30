@@ -16,6 +16,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { getExamForms } from "../../../services/examFormService";
+import { uploadFile } from "../../../utils/cloundinaryFns";
+import { useState } from "react";
 
 const ModalAddRound = ({
   openAddRound,
@@ -33,14 +35,24 @@ const ModalAddRound = ({
     queryKey: ["exams"],
     queryFn: getExamForms,
   });
+  const [fileExam, setFileExam] = useState();
 
   const onSubmitAddRound = (data) => {
     const round = data;
+
     round.competitionId = competition.id;
-    // round.roundNumber = 1;
     addMutate.mutate(round);
+  };
+  const handleSave = async (data) => {
+    try {
+      const url = await uploadFile(fileExam);
+      data.exam = url;
+    } catch (error) {
+      console.log(error);
+    }
     handleCloseAddRound();
     reset();
+    onSubmitAddRound(data);
   };
   return (
     <Modal
@@ -55,7 +67,7 @@ const ModalAddRound = ({
     >
       <Box className="bg-white w-[400px] min-h-[300px]  rounded-2xl ">
         <form
-          onSubmit={handleSubmit(onSubmitAddRound)}
+          onSubmit={handleSubmit(handleSave)}
           className=" flex flex-col p-4 gap-5"
         >
           <Typography
@@ -99,6 +111,26 @@ const ModalAddRound = ({
               })}
             />
           </div>
+          <div>
+            <label
+              className="block  text-sm mb-1 text-[#666666] "
+              // for="default_size"
+            >
+              Exam
+            </label>
+            <input
+              className="block w-full h-10  pl-1 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white  focus:outline-none"
+              {...register("exam", {
+                required: "Exam is required filed",
+              })}
+              type="file"
+              onChange={(e) => setFileExam(e.target.files[0])}
+            />
+            <p className="text-red-400 text-xs mt-1">
+              {errors.exam ? errors.exam.message : ``}
+            </p>
+          </div>
+
           <FormControl className="w-full" size="small" error={!!errors.role}>
             <InputLabel id="demo-select-small-label">Exam Form*</InputLabel>
 

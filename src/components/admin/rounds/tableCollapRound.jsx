@@ -19,7 +19,7 @@ import ModalAddJudge from "../judges/modalAddJudge";
 import ModalConfirmDelete from "../../Modal/modalConfirmDelete";
 import { deleteRound, updateRound } from "../../../services/roundService";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Button,
   FormControl,
@@ -30,6 +30,7 @@ import {
   Modal,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { getExamForms } from "../../../services/examFormService";
@@ -156,12 +157,22 @@ function Row(props) {
         <TableCell component="th" scope="row">
           {row?.id}
         </TableCell>
-        <TableCell align="right">{row?.name}</TableCell>
-        <TableCell align="right">{row?.roundNumber}</TableCell>
-        <TableCell align="right">{row?.examFormRound?.name}</TableCell>
-        <TableCell align="right">{row?.timeStart}</TableCell>
-        <TableCell align="right">{row?.time}</TableCell>
-        <TableCell align="right">
+        <TableCell align="left">{row?.name}</TableCell>
+
+        <TableCell align="left">{row?.examFormRound?.name}</TableCell>
+        <TableCell align="left">{row?.timeStart}</TableCell>
+        <TableCell align="left">{row?.time}</TableCell>
+        <TableCell align="left" className="w-[100px] overflow-hidden">
+          {/* <Tooltip
+            title={<p className="text-base">{row?.exam}</p>}
+            placement="top"
+          > */}
+          <div className="truncate" style={{ maxWidth: "100px" }}>
+            <Link to={row?.exam}>{row?.exam}</Link>
+          </div>
+          {/* </Tooltip> */}
+        </TableCell>
+        <TableCell align="left">
           <div className="flex justify-end gap-4">
             <IconButton
               onClick={() => {
@@ -465,22 +476,23 @@ export default function RoundTable({ rows }) {
           <TableRow>
             <TableCell />
             <TableCell className="!font-semibold">ID</TableCell>
-            <TableCell className="!font-semibold" align="right">
+            <TableCell className="!font-semibold" align="left">
               NAME
             </TableCell>
-            <TableCell className="!font-semibold" align="right">
-              ROUND
-            </TableCell>
-            <TableCell className="!font-semibold" align="right">
+
+            <TableCell className="!font-semibold" align="left">
               EXAM FORM
             </TableCell>
-            <TableCell className="!font-semibold" align="right">
+            <TableCell className="!font-semibold" align="left">
               TIME START
             </TableCell>
-            <TableCell className="!font-semibold" align="right">
+            <TableCell className="!font-semibold" align="left">
               EXAM TIME
             </TableCell>
-            <TableCell className="!font-semibold" align="right">
+            <TableCell className="!font-semibold" align="left">
+              EXAM
+            </TableCell>
+            <TableCell className="!font-semibold" align="left">
               ACTIONS
             </TableCell>
           </TableRow>
