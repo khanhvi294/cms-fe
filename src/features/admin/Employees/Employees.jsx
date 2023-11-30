@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Chip,
   FormControlLabel,
   FormLabel,
   Modal,
@@ -18,6 +17,7 @@ import { toast } from "react-toastify";
 import Table from "../../../components/Table/Table";
 
 import { format } from "date-fns";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 import { ROLES } from "../../../configs/role";
 import {
   createEmployee,
@@ -25,7 +25,6 @@ import {
   getEmployees,
   updateEmployee,
 } from "../../../services/employeeService";
-import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const Employees = () => {
   const {
@@ -195,7 +194,9 @@ const Employees = () => {
 
   const onSubmit = (data) => {
     if (employeeEdit) {
-      updateEmployeeMutation.mutate(data);
+      const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
+      updateEmployeeMutation.mutate(newEmployee);
+      console.log(newEmployee);
     } else {
       const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
       createEmployeeMutation.mutate(newEmployee);
@@ -251,6 +252,7 @@ const Employees = () => {
       toast.error(err.message);
     },
   });
+  console.log(employeeEdit);
 
   return (
     <>
@@ -350,7 +352,7 @@ const Employees = () => {
                 label="Email*"
                 variant="outlined"
                 className="w-full"
-                defaultValue={employeeEdit?.email}
+                defaultValue={employeeEdit?.accountEmployee.email}
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
@@ -438,7 +440,11 @@ const Employees = () => {
               <Controller
                 name="role"
                 control={control}
-                defaultValue={employeeEdit ? employeeEdit?.role : ROLES.TEACHER}
+                defaultValue={
+                  employeeEdit
+                    ? employeeEdit?.accountEmployee?.role
+                    : ROLES.TEACHER
+                }
                 render={({ field }) => (
                   <div className="self-start">
                     <FormLabel id="demo-row-radio-buttons-group-label">

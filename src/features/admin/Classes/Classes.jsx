@@ -364,7 +364,9 @@ const Classes = () => {
                   // value={age}
                   label="Role"
                   // onChange={handleChange}
-                  defaultValue={courses?.data?.data[0]?.id}
+                  defaultValue={
+                    classEdit ? classEdit.courseId : courses?.data?.data[0]?.id
+                  }
                   size="small"
                   {...register("courseId", {
                     required: "Course is required filed",

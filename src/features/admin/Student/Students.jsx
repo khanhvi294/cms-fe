@@ -331,7 +331,7 @@ const Students = () => {
                 label="Email*"
                 variant="outlined"
                 className="w-full"
-                defaultValue={studentEdit?.email}
+                defaultValue={studentEdit?.accountStudent?.email}
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ``}
                 {...register("email", { required: "email is required filed" })}
