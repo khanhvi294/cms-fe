@@ -56,9 +56,13 @@ const Employees = () => {
       headerName: "role",
       width: 200,
       renderCell: (params) => {
-        const roleText =
-          params.row.role === ROLES.TEACHER ? "Teacher" : "Employee";
-        return <span>{roleText}</span>;
+        return (
+          <span>
+            {params.row.accountEmployee.role === ROLES.TEACHER
+              ? "Teacher"
+              : "Employee"}
+          </span>
+        );
       },
     },
     { field: "fullName", headerName: "fullname", width: 200 },
@@ -194,8 +198,13 @@ const Employees = () => {
 
   const onSubmit = (data) => {
     if (employeeEdit) {
-      const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
-      updateEmployeeMutation.mutate(newEmployee);
+      const newEmployee = handleCollectKeys(
+        ["email", "role"],
+        "accountEmployee",
+        data
+      );
+      console.log(newEmployee);
+      updateEmployeeMutation.mutate({ ...newEmployee, id: employeeEdit?.id });
       console.log(newEmployee);
     } else {
       const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);

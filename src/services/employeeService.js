@@ -7,7 +7,8 @@ const employeeApi = {
     axiosClientPrivate.get(`${url}/judges/round/${roundId}`),
 
   createEmployee: (employee) => axiosClientPrivate.post(`${url}`, employee),
-  updateEmployee: (employee) => axiosClientPrivate.patch(`${url}`, employee),
+  updateEmployee: (employee) =>
+    axiosClientPrivate.patch(`${url}/byad`, employee),
   deleteEmployee: (id) => axiosClientPrivate.delete(`${url}/${id}`),
 };
 export const {
