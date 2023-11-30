@@ -21,6 +21,7 @@ import TeacherLayout from "../layouts/teacher/TeacherLayout";
 import Demo from "../features/teacher/demo";
 import Profile from "../features/admin/Profile/Profile";
 import MyCompetition from "../features/user/myCompetition/MyCompetition";
+import RoundJudge from "../features/teacher/round";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -67,6 +68,7 @@ export const AppRouter = () => {
       </Route>
       <Route element={<TeacherLayout />}>
         <Route path="/demo" element={<Demo />} />
+        <Route path="/demo2" element={<RoundJudge />} />
       </Route>
     </Routes>
   );
