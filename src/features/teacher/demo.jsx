@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import { getAllRoundByJudge } from "../../services/judgeService";
 
-import { uploadImg } from "../../utils/cloundinaryFns";
+import { uploadFile } from "../../utils/cloundinaryFns";
 
 const Demo = () => {
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ const Demo = () => {
   });
   const submit = async () => {
     console.log(file);
-    await uploadImg(file);
+    await uploadFile(file);
   };
   return (
     <div>
