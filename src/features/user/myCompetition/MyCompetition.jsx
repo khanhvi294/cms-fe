@@ -1,40 +1,24 @@
-import { Button, Chip, IconButton, Tooltip } from "@mui/material";
-import { useMemo, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import {
   getAllCompetitionByStudentId,
-  registerCompetition,
   unRegisterCompetition,
 } from "../../../services/registerService";
-import { getCompetitionsForStudent } from "../../../services/studentService";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useState } from "react";
+import { Button, Chip, IconButton, Tooltip } from "@mui/material";
+import { toast } from "react-toastify";
 
-const CompetitionListFetch = () => {
-  const [competitions, setCompetitions] = useState([]);
+const MyCompetition = () => {
   const user = useSelector((state) => state.user?.data?.info);
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
-  useQuery({
-    queryKey: ["competitions", user?.id],
-    queryFn: () => getCompetitionsForStudent(user?.id),
-    enabled: !!user?.id,
-    onSuccess: (data) => {
-      setCompetitions(data?.data);
-    },
-    onError: (err) => console.log(err),
-  });
 
-  const registerCompetitionMutation = useMutation({
-    mutationFn: registerCompetition,
+  const [competitions, setCompetitions] = useState([]);
+  const { data: competitionUser } = useQuery({
+    queryKey: ["competition", user?.id],
+    enabled: !!user?.id,
+    queryFn: getAllCompetitionByStudentId,
     onSuccess: (data) => {
-      //setRows((state) => [data.data, ...state]);
-      queryClient.invalidateQueries(["competition", user?.id]);
-      toast.success("Register successfully!");
-    },
-    onError: (err) => {
-      toast.error(err.message);
+      setCompetitions(data.data.data);
     },
   });
 
@@ -51,22 +35,6 @@ const CompetitionListFetch = () => {
     },
   });
 
-  const { data: competitionUser } = useQuery({
-    queryKey: ["competition", user?.id],
-    enabled: !!user?.id,
-    queryFn: getAllCompetitionByStudentId,
-  });
-
-  // const competitionIds = competitionUser?.data?.data.map(
-  //   (item) => item.competitionId
-  // );
-
-  const competitionIds = useMemo(() => {
-    return competitionUser?.data?.data.map(
-      (item) => item.competitionRegister?.id
-    );
-  }, [competitionUser?.data?.data]);
-
   return (
     <div className="flex flex-wrap gap-5">
       {competitions.map((competition, index) => (
@@ -76,55 +44,45 @@ const CompetitionListFetch = () => {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold mb-3">{competition.name}</p>
-              {competition.status === 0 && (
+              <p className="font-semibold mb-3">
+                {competition.competitionRegister.name}
+              </p>
+              {competition.competitionRegister.status === 0 && (
                 <Chip
                   label="Upcoming"
                   className="!bg-[#ddf3f9] !text-[#38c0e6] !font-medium"
                 />
               )}
-              {competition.status === 1 && (
+              {competition.competitionRegister.status === 1 && (
                 <Chip
                   label=" In progress"
                   className="!bg-[#ddf7ed] !text-[#28f2a5] !font-medium"
                 />
               )}
-              {competition.status === 2 && (
+              {competition.competitionRegister.status === 2 && (
                 <Chip
                   label="Completed"
                   className="!bg-[#e8fbbb] !text-[#c3ed4f] !font-medium"
                 />
               )}
-              {competition.status === 3 && (
+              {competition.competitionRegister.status === 3 && (
                 <Chip
                   label="Canceled"
                   className="!bg-[#f6b2a6] !text-[#f54323] !font-medium"
                 />
               )}
             </div>
-            {competition.status === 0 && (
-              <>
-                {competitionIds?.includes(competition.id) ? (
-                  <Button
-                    className="!bg-[#f09b5e] !text-white"
-                    onClick={() =>
-                      unRegisterCompetitionMutation.mutate(competition.id)
-                    }
-                  >
-                    UnRegister
-                  </Button>
-                ) : (
-                  <Button
-                    className="!bg-[#44badc] !text-white"
-                    onClick={() =>
-                      registerCompetitionMutation.mutate(competition.id)
-                    }
-                  >
-                    Register
-                  </Button>
-                )}
-              </>
+            {competition.competitionRegister.status === 0 && (
+              <Button
+                className="!bg-[#f09b5e] !text-white"
+                onClick={() =>
+                  unRegisterCompetitionMutation.mutate(competition.id)
+                }
+              >
+                UnRegister
+              </Button>
             )}
+
             {competition.status === 2 && (
               <Button className="!bg-[#ec4848] !text-white">Results</Button>
             )}
@@ -208,7 +166,7 @@ const CompetitionListFetch = () => {
                 aria-label="fingerprint"
                 color="secondary"
                 className="!bg-[#e3faf1]"
-                onClick={() => navigate(`/competition/${competition.id}`)}
+                //  onClick={() => navigate(`/competition/${competition.id}`)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -228,17 +186,17 @@ const CompetitionListFetch = () => {
           <p className="text-xs uppercase font-medium ">DURATION</p>
           <div>
             <div className="flex w-[95%] justify-between mb-2">
-              <p>{competition.timeStart}</p>
-              <p>{competition.timeEnd}</p>
+              <p>{competition.competitionRegister.timeStart}</p>
+              <p>{competition.competitionRegister.timeEnd}</p>
             </div>
             <div className="w-[95%] h-[6px] bg-slate-400 rounded-3xl"></div>
           </div>
 
-          <p>{competition.numberOfRound} rounds</p>
+          <p>{competition.competitionRegister.numberOfRound} rounds</p>
         </div>
       ))}
     </div>
   );
 };
 
-export default CompetitionListFetch;
+export default MyCompetition;

@@ -4,6 +4,7 @@ export const appRoutes = {
   AEXAMFORMS: "/admin/examforms",
   CLASSES: "/classes",
   COMPETITION_DETAIL: "/competition/:id",
+  MYCOMPETITION: "/mycompetition",
   // DETAIL: "/detail",
   ACLASSES: "/admin/classes",
   ACOURSES: "/admin/courses",

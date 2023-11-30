@@ -20,6 +20,7 @@ import Register from "../features/admin/Register/Register";
 import TeacherLayout from "../layouts/teacher/TeacherLayout";
 import Demo from "../features/teacher/demo";
 import Profile from "../features/admin/Profile/Profile";
+import MyCompetition from "../features/user/myCompetition/MyCompetition";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -35,6 +36,8 @@ export const AppRouter = () => {
       <Route path={appRoutes.LOGIN} element={<LoginPage />} />
       <Route element={<UserLayout />}>
         <Route path={appRoutes.HOME} element={<HomePage />} />
+        <Route path={appRoutes.MYCOMPETITION} element={<MyCompetition />} />
+
         <Route
           path={appRoutes.COMPETITIONS}
           element={<CompetitionListPage />}

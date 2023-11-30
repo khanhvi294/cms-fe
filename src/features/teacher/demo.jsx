@@ -4,10 +4,13 @@ import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import { getAllRoundByJudge } from "../../services/judgeService";
 
+import { uploadImg } from "../../utils/cloundinaryFns";
+
 const Demo = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const user = useSelector((state) => state.user?.data?.info);
+  const [file, setFile] = useState();
   const handleClose = () => {
     setOpen(false);
   };
@@ -22,8 +25,21 @@ const Demo = () => {
       // setRows(data.data.data);
     },
   });
+  const submit = async () => {
+    console.log(file);
+    await uploadImg(file);
+  };
   return (
     <div>
+      <input
+        type="file"
+        onChange={(e) => {
+          console.log(e.target.files[0]);
+          setFile(e.target.files[0]);
+        }}
+      />
+      <button onClick={submit}>lcickk</button>
+
       <Button onClick={handleOpen}>open</Button>
       <Modal
         open={open}

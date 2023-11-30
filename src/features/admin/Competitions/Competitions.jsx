@@ -137,7 +137,6 @@ const Competitions = () => {
       type: "actions",
       headerName: "Actions",
       getActions: (params) => {
-        console.log("params: ", params);
         return [
           <GridActionsCellItem
             icon={
