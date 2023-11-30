@@ -13,7 +13,7 @@ import {
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import Table from "../../../components/Table/Table";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,6 +26,7 @@ import {
   createCompetition,
   getAllClassCanJoinCompetition,
   getCompetitions,
+  updateCompetition,
 } from "../../../services/competitionService";
 import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
@@ -61,9 +62,11 @@ const Competitions = () => {
   const handleClose = () => {
     reset();
     setOpen(false);
+    setCompetitionEdit(null);
   };
   const defaultTimeStart = new Date().toISOString().slice(0, 10);
   const timeStartI = watch("timeStart", defaultTimeStart);
+  const [competitionEdit, setCompetitionEdit] = useState(null);
 
   const [classesChoose, setClassesChoose] = useState([]);
 
@@ -74,6 +77,7 @@ const Competitions = () => {
     setClassesChoose(value);
   };
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const columns = [
     {
@@ -185,37 +189,22 @@ const Competitions = () => {
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
+                dataName="Layer 1"
                 viewBox="0 0 24 24"
-                id="Lock"
-                width={15}
-              >
-                <path
-                  d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
-                  fill="#151515"
-                  className="color000000 svgShape"
-                ></path>
-              </svg>
-            }
-            label="Block"
-          />,
-          <GridActionsCellItem
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                id="Add"
-                x="0"
-                y="0"
-                version="1.1"
-                viewBox="0 0 29 29"
-                xml:space="preserve"
+                id="Edit"
                 width={15}
                 onClick={() => {
-                  setCompetitionSee(params.row);
-                  handleOpenAddRound();
+                  handleOpen();
+                  setCompetitionEdit(params.row);
                 }}
               >
                 <path
-                  d="M14.5 2C7.596 2 2 7.596 2 14.5S7.596 27 14.5 27 27 21.404 27 14.5 21.404 2 14.5 2zM21 15.5h-5.5V21a1 1 0 1 1-2 0v-5.5H8a1 1 0 1 1 0-2h5.5V8a1 1 0 1 1 2 0v5.5H21a1 1 0 1 1 0 2z"
+                  d="M3.5,24h15A3.51,3.51,0,0,0,22,20.487V12.95a1,1,0,0,0-2,0v7.537A1.508,1.508,0,0,1,18.5,22H3.5A1.508,1.508,0,0,1,2,20.487V5.513A1.508,1.508,0,0,1,3.5,4H11a1,1,0,0,0,0-2H3.5A3.51,3.51,0,0,0,0,5.513V20.487A3.51,3.51,0,0,0,3.5,24Z"
+                  fill="#151515"
+                  className="color000000 svgShape"
+                ></path>
+                <path
+                  d="M9.455,10.544l-.789,3.614a1,1,0,0,0,.271.921,1.038,1.038,0,0,0,.92.269l3.606-.791a1,1,0,0,0,.494-.271l9.114-9.114a3,3,0,0,0,0-4.243,3.07,3.07,0,0,0-4.242,0l-9.1,9.123A1,1,0,0,0,9.455,10.544Zm10.788-8.2a1.022,1.022,0,0,1,1.414,0,1.009,1.009,0,0,1,0,1.413l-.707.707L19.536,3.05Zm-8.9,8.914,6.774-6.791,1.4,1.407-6.777,6.793-1.795.394Z"
                   fill="#151515"
                   className="color000000 svgShape"
                 ></path>
@@ -223,6 +212,48 @@ const Competitions = () => {
             }
             label="Block"
           />,
+          // <GridActionsCellItem
+          //   icon={
+          //     <svg
+          //       xmlns="http://www.w3.org/2000/svg"
+          //       viewBox="0 0 24 24"
+          //       id="Lock"
+          //       width={15}
+          //     >
+          //       <path
+          //         d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
+          //         fill="#151515"
+          //         className="color000000 svgShape"
+          //       ></path>
+          //     </svg>
+          //   }
+          //   label="Block"
+          // />,
+          // <GridActionsCellItem
+          //   icon={
+          //     <svg
+          //       xmlns="http://www.w3.org/2000/svg"
+          //       id="Add"
+          //       x="0"
+          //       y="0"
+          //       version="1.1"
+          //       viewBox="0 0 29 29"
+          //       xml:space="preserve"
+          //       width={15}
+          //       onClick={() => {
+          //         setCompetitionSee(params.row);
+          //         handleOpenAddRound();
+          //       }}
+          //     >
+          //       <path
+          //         d="M14.5 2C7.596 2 2 7.596 2 14.5S7.596 27 14.5 27 27 21.404 27 14.5 21.404 2 14.5 2zM21 15.5h-5.5V21a1 1 0 1 1-2 0v-5.5H8a1 1 0 1 1 0-2h5.5V8a1 1 0 1 1 2 0v5.5H21a1 1 0 1 1 0 2z"
+          //         fill="#151515"
+          //         className="color000000 svgShape"
+          //       ></path>
+          //     </svg>
+          //   }
+          //   label="Block"
+          // />,
         ];
       },
     },
@@ -257,8 +288,24 @@ const Competitions = () => {
     },
   });
 
+  const updateCompetitionMutation = useMutation({
+    mutationFn: (data) => updateCompetition(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["competitions"]);
+      toast.success("Update successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
   const onSubmit = (data) => {
-    createCompetitionMutation.mutate(data);
+    if (competitionEdit) {
+      updateCompetitionMutation.mutate({ ...data, id: competitionEdit?.id });
+    } else {
+      createCompetitionMutation.mutate(data);
+    }
+
     handleClose();
   };
 
@@ -326,8 +373,19 @@ const Competitions = () => {
                 component="h2"
                 className="font-bold "
               >
-                Add Competition
+                {competitionEdit ? "Edit Competition" : "Add Competition"}
               </Typography>
+              {competitionEdit && (
+                <TextField
+                  id="outlined-basic"
+                  size="small"
+                  label="Id*"
+                  disabled
+                  variant="outlined"
+                  defaultValue={competitionEdit?.id}
+                  className="w-full !text-black bg-slate-200"
+                />
+              )}
               <div className="flex flex-col !justify-center !items-center gap-4">
                 <TextField
                   id="outlined-basic"
@@ -335,6 +393,7 @@ const Competitions = () => {
                   name="name"
                   label="Name*"
                   variant="outlined"
+                  defaultValue={competitionEdit?.name}
                   error={!!errors.name}
                   helperText={errors.name ? errors.name.message : ``}
                   className="w-full"
@@ -350,7 +409,11 @@ const Competitions = () => {
                   size="small"
                   label="Time Start"
                   type="date"
-                  defaultValue={defaultTimeStart}
+                  defaultValue={
+                    competitionEdit
+                      ? competitionEdit?.timeStart
+                      : defaultTimeStart
+                  }
                   className="w-full"
                   {...register("timeStart", {
                     required: "Time start is required filed",
@@ -361,7 +424,11 @@ const Competitions = () => {
                   helperText={errors.timeEnd ? errors.timeEnd.message : ``}
                   size="small"
                   label="Time End"
-                  defaultValue={new Date().toISOString().slice(0, 10)}
+                  defaultValue={
+                    competitionEdit
+                      ? competitionEdit?.timeEnd
+                      : defaultTimeStart
+                  }
                   type="date"
                   className="w-full"
                   {...register("timeEnd", {
@@ -375,6 +442,7 @@ const Competitions = () => {
                 label="Number min"
                 type="number"
                 size="small"
+                defaultValue={competitionEdit?.minimumQuantity}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -389,6 +457,7 @@ const Competitions = () => {
                 type="number"
                 size="small"
                 className="w-full"
+                defaultValue={competitionEdit?.numOfPrizes}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -402,6 +471,7 @@ const Competitions = () => {
                 type="number"
                 size="small"
                 className="w-full"
+                defaultValue={competitionEdit?.numberOfRound}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -409,24 +479,26 @@ const Competitions = () => {
                   required: "Rounds is required filed",
                 })}
               />
+              {!competitionEdit && (
+                <FormControl>
+                  <InputLabel id="demo-mutiple-name-label">Classes</InputLabel>
+                  <Controller
+                    name="competitionClass"
+                    control={control}
+                    defaultValue={[]}
+                    render={({ field }) => (
+                      <Select label="Select Items" multiple {...field}>
+                        {classesJoin?.data?.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                  />
+                </FormControl>
+              )}
 
-              <FormControl>
-                <InputLabel id="demo-mutiple-name-label">Classes</InputLabel>
-                <Controller
-                  name="competitionClass"
-                  control={control}
-                  defaultValue={[]}
-                  render={({ field }) => (
-                    <Select label="Select Items" multiple {...field}>
-                      {classesJoin?.data?.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  )}
-                />
-              </FormControl>
               <Button
                 variant="contained"
                 className="self-end !normal-case !rounded-lg !bg-black"

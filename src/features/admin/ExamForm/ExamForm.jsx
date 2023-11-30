@@ -29,6 +29,7 @@ const ExamForms = () => {
   const handleClose = () => {
     reset();
     setOpen(false);
+    setExamFormClassEdit(null);
   };
   const [examFormEdit, setExamFormClassEdit] = useState(null);
   const queryClient = useQueryClient();
