@@ -16,6 +16,7 @@ const CompetitionApi = {
     axiosClientPrivate.delete(
       `${url}/${data.competitionId}/class/${data.classId}`
     ),
+  // updateCompetition: (competition) => axiosClientPrivate.patch()
 };
 export const {
   createCompetition,
@@ -25,5 +26,6 @@ export const {
   getAllClassJoinCompetition,
   deleteClassCompetition,
   getAllClassCanJoinCompetitionUpdate,
+  updateCompetition,
 } = CompetitionApi;
 export default CompetitionApi;
