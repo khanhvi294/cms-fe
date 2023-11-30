@@ -206,9 +206,15 @@ const Students = () => {
 
   const onSubmit = (data) => {
     const newStudent = handleCollectKeys(["email"], "accountStudent", data);
-    createStudentMutation.mutate(newStudent);
+    if (studentEdit) {
+      updateStudentMutation.mutate({ id: studentEdit?.id, ...newStudent });
+    } else {
+      createStudentMutation.mutate(newStudent);
+    }
+
     handleClose();
   };
+
   const queryClient = useQueryClient();
 
   const deleteStudentMutation = useMutation({
