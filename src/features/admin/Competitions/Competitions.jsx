@@ -441,6 +441,10 @@ const Competitions = () => {
                 label="Number min"
                 type="number"
                 size="small"
+                error={!!errors.minimumQuantity}
+                helperText={
+                  errors.minimumQuantity ? errors.minimumQuantity.message : ``
+                }
                 defaultValue={competitionEdit?.minimumQuantity}
                 InputLabelProps={{
                   shrink: true,
@@ -457,6 +461,10 @@ const Competitions = () => {
                 size="small"
                 className="w-full"
                 defaultValue={competitionEdit?.numOfPrizes}
+                error={!!errors.numOfPrizes}
+                helperText={
+                  errors.numOfPrizes ? errors.numOfPrizes.message : ``
+                }
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -470,6 +478,10 @@ const Competitions = () => {
                 type="number"
                 size="small"
                 className="w-full"
+                error={!!errors.numberOfRound}
+                helperText={
+                  errors.numberOfRound ? errors.numberOfRound.message : ``
+                }
                 defaultValue={competitionEdit?.numberOfRound}
                 InputLabelProps={{
                   shrink: true,
