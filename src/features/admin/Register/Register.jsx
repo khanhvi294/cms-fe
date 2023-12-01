@@ -4,10 +4,12 @@ import { useQuery } from "react-query";
 import Table from "../../../components/Table/Table";
 import { getCompetitions } from "../../../services/competitionService";
 import { getRegisterByCompetition } from "../../../services/registerService";
+import SelectRegister from "../../../components/admin/register/SelectRegister";
 
 const Register = () => {
   const [rows, setRows] = useState([]);
   const [competition, setCompetition] = useState();
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const columns = [
     {
@@ -36,23 +38,20 @@ const Register = () => {
     onSuccess: (data) => {
       setSelectedOption({
         value: data?.data?.data[0]?.id,
-        lable: data?.data?.data[0]?.name,
+        label: data?.data?.data[0]?.name,
       });
       // setRows(data.data.data);
     },
   });
 
   useQuery({
-    queryKey: ["registers", competition],
-    enabled: competition,
-    queryFn: () => getRegisterByCompetition(1),
+    queryKey: ["registers", selectedOption?.value],
+    enabled: !!selectedOption?.value,
+    queryFn: () => getRegisterByCompetition(selectedOption?.value),
     onSuccess: (data) => {
       setRows(data.data.data);
     },
   });
-
-  const [selectedOption, setSelectedOption] = useState(null);
-  console.log(selectedOption);
 
   // Xử lý sự kiện khi giá trị được chọn thay đổi
   const handleSelectChange = (selected) => {
@@ -103,18 +102,27 @@ const Register = () => {
           Add
         </Button> */}
       </div>
-      <label>Chọn một mục:</label>
-      {selectedOption?.lable && (
-        <Select
-          defaultValue={selectedOption}
-          options={competitions?.data?.data?.map((item) => ({
-            value: item.id,
-            label: item.name,
-          }))}
-          value={selectedOption}
-          onChange={handleSelectChange}
-        />
-      )}
+      <div className="my-4">
+        <label>Select competition:</label>
+        <div className="w-[300px] self-end mt-1">
+          <SelectRegister
+            selectedOption={selectedOption}
+            competitions={competitions?.data?.data}
+            handleSelectChange={handleSelectChange}
+          />
+        </div>
+      </div>
+
+      {/* <Select
+        defaultValue={selectedOption}
+        options={competitions?.data?.data?.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }))}
+        value={selectedOption}
+        onChange={handleSelectChange}
+      /> */}
+
       <Table columns={columns} rows={rows} />
     </>
   );
