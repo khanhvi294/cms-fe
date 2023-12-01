@@ -232,13 +232,24 @@ const Competition = () => {
             {rounds?.data?.data?.map((item, index) => (
               <div
                 key={index}
-                className="border rounded-md w-[200px] h-[300px] p-6"
+                className="border rounded-md w-[250px] h-[300px] p-6 shadow-md bg-amber-100 "
               >
-                <p>Test IQ</p>
-                <p>exam form {item?.examFormRound.name}</p>
-                <p>round {item?.roundNumber}</p>
-                <p>{item?.time} minutes</p>
-                <p>{item?.timeStart}</p>
+                <p className="text-red-500 text-lg mb-5 mx-auto">
+                  Round {item?.name}
+                </p>
+                <div className="flex justify-between my-4 ">
+                  <p className="font-semibold">exam form: </p>
+                  <p>{item?.examFormRound.name}</p>
+                </div>
+                {/* <p>round {item?.roundNumber}</p> */}
+                <div className="flex justify-between my-4">
+                  <p className="font-semibold">Time</p>
+                  <p>{item?.time} minutes</p>
+                </div>
+                <div className="flex justify-between my-4">
+                  <p className="font-semibold">Date</p>
+                  <p>{item?.timeStart}</p>
+                </div>
               </div>
             ))}
           </div>

@@ -5,17 +5,14 @@ const HomePage = () => {
     <div>
       <h1 className="font-semibold text-[#f9bd28] text-2xl">Competition</h1>
       <p className="mb-10 mt-6">
-        Hệ thống được xây dựng để giúp tổ chức các cuộc thi lập trình trực
-        tuyến, dành cho sinh viên, nhà phát triển và các chuyên gia trên khắp
-        thế giới. Các cuộc thi của chúng tôi tập trung vào giải quyết vấn đề, tư
-        duy tính toán, suy luận logic và tối ưu thuật toán, vì vậy chúng tôi
-        chọn C#, Javascript, Python làm các ngôn ngữ lập trình chính để bạn giải
-        quyết các bài toán phức tạp do các kỹ sư của chúng tôi thiết kế. Tham
-        gia một cuộc thi lập trình như thế này cần có thời gian và năng lượng,
-        ngoài điểm số và giải thưởng, đây là một vài lý do tại sao nỗ lực của
-        bạn sẽ xứng đáng: Cơ hội kiểm tra và phát triển khả năng lập trình Cơ
-        hội học hỏi và cọ xát cùng các tài năng lập trình Giúp các công ty tìm
-        kiếm các tài năng lập trình
+        Web application built to help organize global online coding challenges,
+        for students, developers and professionals around the world. Our coding
+        challenges focus on problem solving, computational thinking, logical
+        reasoning and code optimization, so we pick C#, Javascript, Python as
+        primary programming language for you to solve complex algorithmic
+        challenges designed by our engineers. Joining a programming competition
+        like this takes time and energy, apart from scores and prizes, here are
+        a few reasons why your efforts will be worth it:
       </p>
       <div className="flex flex-col items-center mb-10">
         <svg
