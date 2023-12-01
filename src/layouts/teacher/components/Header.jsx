@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userName = useSelector(
-    (state) => state.user?.data?.info?.accountStudent?.fullName
+    (state) => state.user?.data?.info?.accountEmployee?.fullName
   );
 
   const handleClick = (event) => {

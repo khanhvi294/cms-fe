@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import Table from "../../components/Table/Table";
-import { useQuery } from "react-query";
-import { getAllRoundByJudge } from "../../services/judgeService";
-import { useSelector } from "react-redux";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import TableScore from "../../components/teacher/table/TableScore";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Table from "../../components/Table/Table";
+import { getAllRoundByJudge } from "../../services/judgeService";
 
 const RoundJudge = () => {
   const [rows, setRows] = useState([]);
@@ -19,14 +18,14 @@ const RoundJudge = () => {
       headerName: "ID",
       width: 250,
     },
-
+    { field: "name", headerName: "Name", width: 200 },
     {
       field: "examFormRound",
       headerName: "Exam Form",
       width: 250,
       valueGetter: (params) => params?.row?.examFormRound?.name,
     },
-    { field: "roundNumber", headerName: "round", width: 200 },
+
     { field: "timeStart", headerName: "time Start", width: 250 },
 
     {

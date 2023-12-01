@@ -1,86 +1,183 @@
 import React from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-const onSubmit = () => {};
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation } from "react-query";
+import { updateEmployee } from "../../../services/employeeService";
+import { setUser } from "../../../redux/slices/userSlice";
+import { toast } from "react-toastify";
+import PhotoUpload from "../../../components/Profile/PhotoUpload";
+import { uploadImg } from "../../../utils/cloundinaryFns";
 
+// import { uploadImg } from "../../../../utils/firebaseFns";
+
+const BIO_MAX_LENGTH = 160;
 const Profile = () => {
-  const { register, handleSubmit } = useForm();
-  return (
-    <div>
-      <div className="xl:min-h-[550px]">
-        <form
-          className="mx-auto mb-5 w-[90%] rounded-md bg-white p-4 "
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <h6 className="mb-5 text-lg font-bold">Thông tin cá nhân</h6>
-          <div className="flex gap-2">
-            <label className="relative h-6 w-12">
-              <input
-                type="checkbox"
-                onChange={(e) => {
-                  // setEdit(e.target.checked);
-                }}
-                className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0"
-                id="custom_switch_checkbox1"
-              />
-              <span className="outline_checkbox bg-icon block h-full rounded-full border-2 border-[#ebedf2] before:absolute before:bottom-1 before:left-1 before:h-4 before:w-4 before:rounded-full before:bg-[#ebedf2] before:bg-[url(/assets/images/close.svg)] before:bg-center before:bg-no-repeat before:transition-all before:duration-300 peer-checked:border-primary peer-checked:before:left-7 peer-checked:before:bg-primary peer-checked:before:bg-[url(/assets/images/checked.svg)] dark:border-white-dark dark:before:bg-white-dark"></span>
-            </label>
-            <span> Chỉnh sửa</span>
-          </div>
-          <div className="mx-auto mt-12 flex  w-[80%] flex-col sm:flex-row">
-            <div className="grid  flex-1 grid-cols-1 gap-5 sm:grid-cols-2">
-              <div>
-                <label htmlFor="name">Họ tên</label>
-                <input
-                  {...register("fullName", { required: true })}
-                  id="name"
-                  //  disabled={!edit}
-                  type="text"
-                  //  className={`${!edit ? "bg-slate-200" : ""} form-input`}
-                />
-              </div>
+  const user = useSelector((state) => state.user.data.info);
+  const dispatch = useDispatch();
+  const updateProfileMutation = useMutation({
+    mutationFn: updateEmployee,
+    onSuccess: (data) => {
+      dispatch(setUser(data.data.data));
 
-              <div>
-                <label htmlFor="email">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  //  value={user?.account?.email}
-                  className="form-input bg-slate-200"
-                  disabled={true}
-                />
+      toast.success("Update profile successfully");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [upLoadData, setUploadData] = useState({
+    previewImg: user?.avatar,
+    file: null,
+  });
+
+  const handleSave = async (data) => {
+    if (upLoadData.file) {
+      try {
+        const url = await uploadImg(upLoadData.file);
+        data.avatar = url;
+      } catch (error) {
+        console.log(error);
+      }
+    } else data.avatar = user.avatar;
+
+    //onSubmit(data);
+  };
+
+  return (
+    <Box className="container absolute inset-1/2 flex h-[500px] w-[554px] min-w-fit  translate-x-[-50%] translate-y-[-50%] flex-col justify-around rounded border-none bg-white p-8 shadow-xl">
+      <Typography
+        id="modal-modal-title"
+        variant="h6"
+        component="h2"
+        className="mb-5 font-bold"
+      >
+        Profile information
+      </Typography>
+      <div>
+        <div>
+          <label className="text-[13px] text-slate-500">Photo</label>
+          <div className="flex min-w-min justify-between py-3.5">
+            <div>
+              <div className="flex items-center justify-center">
+                <PhotoUpload onUpload={setUploadData}>
+                  <Avatar
+                    sx={{ width: 70, height: 70 }}
+                    src={upLoadData?.previewImg}
+                  />
+                </PhotoUpload>
               </div>
-              <div>
-                <label htmlFor="phone">SĐT</label>
-                <input
-                  {...register("phoneNumber", { required: false })}
-                  id="phone"
-                  //  disabled={!edit}
-                  type="text"
-                  //  className={`${!edit ? "bg-slate-200" : ""} form-input`}
-                />
-              </div>
-              <div>
-                <label htmlFor="address">Địa chỉ</label>
-                <input
-                  {...register("address", { required: true })}
-                  id="address"
-                  //disabled={!edit}
-                  type="text"
-                  // className={`${!edit ? "bg-slate-200" : ""} form-input`}
-                />
-              </div>
-              {/* {edit && (
-                <div className="mt-3 sm:col-span-2">
-                  <button type="submit" className="btn btn-primary">
-                    Lưu
-                  </button>
-                </div>
-              )} */}
+            </div>
+            <div className="px-2.5">
+              <Button
+                variant="text"
+                component="label"
+                className="min-w-min px-0 text-xs font-normal text-lime-600 hover:bg-white"
+              >
+                <p>Upload</p>
+                {/* <PhotoUpload onUpload={setUploadData}></PhotoUpload> */}
+              </Button>
+
+              <Button
+                variant="text"
+                component="label"
+                className="ml-3 min-w-min px-0 text-xs font-normal text-red-600 hover:bg-white"
+                onClick={() => setUploadData("")}
+              >
+                Remove
+              </Button>
+              <Typography className="= text-xs text-gray-400">
+                Recommended: Square JPG, PNG, or GIF, at least 1,000 pixels per
+                side.
+              </Typography>
             </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+      <TextField
+        error={!!errors?.username}
+        label="Name*"
+        variant="standard"
+        defaultValue={user.username}
+        helperText={errors?.username?.message}
+        {...register("username", {
+          required: "user name is required filed",
+          maxLength: 60,
+        })}
+      />
+
+      <TextField
+        id="standard-helperText"
+        label="Bio"
+        {...register("bio", {
+          maxLength: BIO_MAX_LENGTH,
+        })}
+        defaultValue={user?.bio}
+        variant="standard"
+      />
+
+      <FormControl>
+        <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue={user.gender}
+          name="radio-buttons-group"
+          row
+        >
+          <FormControlLabel
+            {...register("gender")}
+            value={true}
+            control={<Radio />}
+            label="Female"
+          />
+          <FormControlLabel
+            {...register("gender")}
+            value={false}
+            control={<Radio />}
+            label="Male"
+          />
+        </RadioGroup>
+      </FormControl>
+      <div className="flex justify-end">
+        <Button
+          variant="outlined"
+          className="btn rounded-full normal-case text-lime-600"
+          color="success"
+          size="medium"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          className="btn ml-3 rounded-full normal-case"
+          size="medium"
+          color="success"
+          disableElevation
+          onClick={handleSubmit(handleSave)}
+        >
+          Save
+        </Button>
+      </div>
+    </Box>
   );
 };
 

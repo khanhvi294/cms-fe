@@ -21,3 +21,20 @@ export const uploadFile = async (file) => {
     console.log(error);
   }
 };
+export const uploadImg = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", presetName);
+  formData.append("cloud_name", cloudName);
+
+  try {
+    const res = await axios.post(
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      formData
+    );
+    console.log(res.data.url);
+    return res.data.url;
+  } catch (error) {
+    console.log(error);
+  }
+};
