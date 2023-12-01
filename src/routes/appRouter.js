@@ -16,4 +16,5 @@ export const appRoutes = {
   AREGISTER: "/admin/register",
   LOGIN: "/login",
   TROUND: "/teacher/rounds",
+  TSCORE: "/teacher/scores/:roundId",
 };

@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { getAllRoundByJudge } from "../../services/judgeService";
 import { useSelector } from "react-redux";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import TableScore from "../../components/teacher/table/TableScore";
 
 const RoundJudge = () => {
   const [rows, setRows] = useState([]);
@@ -72,6 +73,7 @@ const RoundJudge = () => {
   return (
     <div className="w-[80%] mx-auto mt-20 bg-white">
       <h2>Your Round </h2>
+      {/* <TableScore /> */}
       <Table rows={rows} columns={columns} />
     </div>
   );
