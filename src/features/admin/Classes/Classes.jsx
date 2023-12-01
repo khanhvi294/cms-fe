@@ -202,7 +202,8 @@ const Classes = () => {
   const createClassMutation = useMutation({
     mutationFn: (data) => createClass(data),
     onSuccess: (data) => {
-      setRows((state) => [data.data, ...state]);
+      queryClient.invalidateQueries(["classes"]);
+
       toast.success("Create successfully!");
     },
     onError: (err) => {

@@ -77,7 +77,6 @@ export default function TableScore({ roundId }) {
     enabled: !!roundId,
     queryFn: () => getRoundResultByRound(roundId),
     onSuccess: (data) => {
-      console.log("voo", data.data);
       setRows(data.data.data);
     },
   });
