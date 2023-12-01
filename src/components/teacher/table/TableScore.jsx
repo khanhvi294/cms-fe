@@ -254,6 +254,12 @@ export default function TableScore() {
         slotProps={{
           toolbar: { setRows, setRowModesModel },
         }}
+        pageSize={10}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
       />
     </Box>
   );

@@ -5,9 +5,12 @@ import { getAllRoundByJudge } from "../../services/judgeService";
 import { useSelector } from "react-redux";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import TableScore from "../../components/teacher/table/TableScore";
+import { useNavigate } from "react-router-dom";
 
 const RoundJudge = () => {
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
+
   const user = useSelector((state) => state.user?.data?.info);
 
   const columns = [
@@ -36,18 +39,13 @@ const RoundJudge = () => {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              id="Judge"
-              width={15}
+              id="edit"
+              width={18}
               onClick={() => {
-                // setOpenJudge(true);
-                // setRoundChoose(params?.row);
+                navigate(`/teacher/scores/${params.row?.id}`);
               }}
             >
-              <path
-                d="M12.3,12.22A4.92,4.92,0,0,0,14,8.5a5,5,0,0,0-10,0,4.92,4.92,0,0,0,1.7,3.72A8,8,0,0,0,1,19.5a1,1,0,0,0,2,0,6,6,0,0,1,12,0,1,1,0,0,0,2,0A8,8,0,0,0,12.3,12.22ZM9,11.5a3,3,0,1,1,3-3A3,3,0,0,1,9,11.5Zm9.74.32A5,5,0,0,0,15,3.5a1,1,0,0,0,0,2,3,3,0,0,1,3,3,3,3,0,0,1-1.5,2.59,1,1,0,0,0-.5.84,1,1,0,0,0,.45.86l.39.26.13.07a7,7,0,0,1,4,6.38,1,1,0,0,0,2,0A9,9,0,0,0,18.74,11.82Z"
-                fill="#151515"
-                className="color000000 svgShape"
-              ></path>
+              <path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path>
             </svg>
           }
           label="Judge"
