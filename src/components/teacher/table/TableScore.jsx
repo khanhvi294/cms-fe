@@ -13,28 +13,22 @@ import {
   GridActionsCellItem,
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
-// import {
-//   randomCreatedDate,
-//   randomTraderName,
-//   randomId,
-//   randomArrayItem,
-// } from "@mui/x-data-grid-generator";
+import { useQuery } from "react-query";
+import { getRoundResultByRound } from "../../../services/roundResultService";
 
-const roles = ["Market", "Finance", "Development"];
-
-const initialRows = [
-  {
-    id: 1,
-    name: "hâhh",
-    age: 25,
-    // joinDate: randomCreatedDate(),
-    // role: randomRole(),
-  },
-  {
-    id: 2,
-    name: "alalal",
-  },
-];
+// const initialRows = [
+//   {
+//     id: 18,
+//     name: "hâhh",
+//     age: 25,
+//     // joinDate: randomCreatedDate(),
+//     // role: randomRole(),
+//   },
+//   {
+//     id: 21,
+//     name: "alalal",
+//   },
+// ];
 
 // function EditToolbar(props) {
 //   const { setRows, setRowModesModel } = props;
@@ -74,9 +68,19 @@ const initialRows = [
 //   );
 // }
 
-export default function TableScore() {
-  const [rows, setRows] = React.useState(initialRows);
+export default function TableScore({ roundId }) {
+  const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState({});
+
+  useQuery({
+    queryKey: ["roundResult", roundId],
+    enabled: !!roundId,
+    queryFn: () => getRoundResultByRound(roundId),
+    onSuccess: (data) => {
+      console.log("voo", data.data);
+      setRows(data.data.data);
+    },
+  });
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -90,10 +94,6 @@ export default function TableScore() {
 
   const handleSaveClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id) => () => {
@@ -163,7 +163,7 @@ export default function TableScore() {
                 >
                   <path
                     d="m20.71 9.29-6-6a1 1 0 0 0-.32-.21A1.09 1.09 0 0 0 14 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-8a1 1 0 0 0-.29-.71ZM9 5h4v2H9Zm6 14H9v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1Zm4-1a1 1 0 0 1-1 1h-1v-3a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3v3H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.41l4 4Z"
-                    fill="#8718ff"
+                    fill="#000000"
                     className="color000000 svgShape"
                   ></path>
                 </svg>
@@ -185,7 +185,7 @@ export default function TableScore() {
                 >
                   <path
                     d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
-                    fill="#f3493c"
+                    fill="#000000"
                     className="color000000 svgShape"
                   ></path>
                 </svg>
@@ -210,12 +210,12 @@ export default function TableScore() {
               >
                 <path
                   d="M3.5,24h15A3.51,3.51,0,0,0,22,20.487V12.95a1,1,0,0,0-2,0v7.537A1.508,1.508,0,0,1,18.5,22H3.5A1.508,1.508,0,0,1,2,20.487V5.513A1.508,1.508,0,0,1,3.5,4H11a1,1,0,0,0,0-2H3.5A3.51,3.51,0,0,0,0,5.513V20.487A3.51,3.51,0,0,0,3.5,24Z"
-                  fill="#f5773b"
+                  fill="#00000"
                   className="color000000 svgShape"
                 ></path>
                 <path
                   d="M9.455,10.544l-.789,3.614a1,1,0,0,0,.271.921,1.038,1.038,0,0,0,.92.269l3.606-.791a1,1,0,0,0,.494-.271l9.114-9.114a3,3,0,0,0,0-4.243,3.07,3.07,0,0,0-4.242,0l-9.1,9.123A1,1,0,0,0,9.455,10.544Zm10.788-8.2a1.022,1.022,0,0,1,1.414,0,1.009,1.009,0,0,1,0,1.413l-.707.707L19.536,3.05Zm-8.9,8.914,6.774-6.791,1.4,1.407-6.777,6.793-1.795.394Z"
-                  fill="#f5773b"
+                  fill="#000000"
                   className="color000000 svgShape"
                 ></path>
               </svg>

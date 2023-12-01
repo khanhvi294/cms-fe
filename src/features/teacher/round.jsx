@@ -69,7 +69,9 @@ const RoundJudge = () => {
 
   return (
     <div className="w-[80%] mx-auto mt-20 bg-white">
-      <h2>Your Round </h2>
+      <h2 className="text-xl font-semibold text-zinc-950">
+        Rounds that you are the judge
+      </h2>
       {/* <TableScore /> */}
       <Table rows={rows} columns={columns} />
     </div>

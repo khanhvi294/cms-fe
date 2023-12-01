@@ -44,6 +44,7 @@ const Employees = () => {
       headerName: "ID",
       width: 100,
     },
+    { field: "fullName", headerName: "fullname", width: 200 },
     {
       field: "accountEmployee", // Thêm cột mới cho tên của courseClass
       headerName: "email ",
@@ -65,7 +66,7 @@ const Employees = () => {
         );
       },
     },
-    { field: "fullName", headerName: "fullname", width: 200 },
+
     { field: "cccd", headerName: "CCCD", width: 150 },
     // {
     //   field: "active",

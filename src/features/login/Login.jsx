@@ -48,6 +48,7 @@ const Login = () => {
   const navigate = useNavigate();
   const handleRedirect = () => {
     console.log("voo");
+    console.log(roleUser);
     if (roleUser === ROLES.STUDENT) {
       navigate("/");
     } else if (roleUser === ROLES.EMPLOYEE) {
