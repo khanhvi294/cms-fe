@@ -68,7 +68,7 @@ export const AppRouter = () => {
       </Route>
       <Route element={<TeacherLayout />}>
         <Route path="/demo" element={<Demo />} />
-        <Route path="/demo2" element={<RoundJudge />} />
+        <Route path={appRoutes.TROUND} element={<RoundJudge />} />
       </Route>
     </Routes>
   );

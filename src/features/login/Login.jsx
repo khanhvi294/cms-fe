@@ -44,16 +44,16 @@ const Login = () => {
     event.preventDefault();
   };
   const dispatch = useDispatch();
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
   const navigate = useNavigate();
   const handleRedirect = () => {
-    // console.log("voo");
+    console.log("voo");
     if (roleUser === ROLES.STUDENT) {
       navigate("/");
     } else if (roleUser === ROLES.EMPLOYEE) {
-      navigate(appRoutes.ACLASSES);
+      navigate(appRoutes.ACOURSES);
     } else if (roleUser === ROLES.TEACHER) {
-      navigate("/demo");
+      navigate(appRoutes.TROUND);
     }
   };
 
@@ -156,10 +156,10 @@ const Login = () => {
             </FormControl>
           </div>
           <div className="flex justify-between items-center">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <Checkbox {...label} size="small" />
               <p className="ml-[2px] text-xs">Remember me</p>
-            </div>
+            </div> */}
             <p
               className=" text-xs hover:underline cursor-pointer"
               onClick={handleOpen}

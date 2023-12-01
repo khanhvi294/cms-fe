@@ -15,4 +15,5 @@ export const appRoutes = {
   AROUNDS: "/admin/rounds",
   AREGISTER: "/admin/register",
   LOGIN: "/login",
+  TROUND: "/teacher/rounds",
 };

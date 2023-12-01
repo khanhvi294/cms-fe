@@ -3,9 +3,9 @@ import Header from "./components/Header";
 
 const TeacherLayout = () => {
   return (
-    <div>
+    <div className="flex flex-col h-screen bg-white">
       <Header />
-      <div>
+      <div className="flex-1 overflow-scroll">
         <Outlet />
       </div>
     </div>
