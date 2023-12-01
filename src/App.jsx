@@ -18,6 +18,7 @@ function App() {
     queryFn: getInfo,
     enabled: !!isLogin,
     onSuccess: (data) => {
+      console.log(data);
       dispatch(updateUserInfo(data.data));
     },
   });
