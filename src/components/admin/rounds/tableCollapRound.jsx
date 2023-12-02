@@ -44,6 +44,7 @@ function Row(props) {
   const [itemDelete, setItemDelete] = React.useState();
   const [funcDelete, setFuncDelete] = React.useState(false);
   const [openEditRound, setOpenEditRound] = React.useState(false);
+  const [fileExam, setFileExam] = React.useState();
 
   const queryClient = useQueryClient();
 
@@ -416,6 +417,95 @@ function Row(props) {
                   required: "Time is required filed",
                 })}
               />
+              <div className="w-full ">
+                <label
+                  className="block  text-sm mb-1 text-[#666666] w-full"
+                  // for="default_size"
+                >
+                  Exam
+                </label>
+                <div className="flex items-center gap-3">
+                  {row?.exam && !fileExam ? (
+                    <a
+                      href={row?.exam}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="py-2 px-2 w-[260px] flex items-center gap-1 cursor-pointer text-xs bg-gray-200 rounded-full rounded-md"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        id="document"
+                        width={24}
+                      >
+                        <g data-name="katman 2">
+                          <path
+                            fill="none"
+                            stroke="#2c2c2c"
+                            d="M14,1H6A2,2,0,0,0,4,3V21a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V7"
+                          ></path>
+                          <path
+                            fill="none"
+                            stroke="#2c2c2c"
+                            d="M14,1V5a2,2,0,0,0,2,2h4Z"
+                          ></path>
+                          <line
+                            x1="10"
+                            x2="8"
+                            y1="7"
+                            y2="7"
+                            fill="none"
+                            stroke="#2c2c2c"
+                          ></line>
+                          <line
+                            x1="16"
+                            x2="8"
+                            y1="11"
+                            y2="11"
+                            fill="none"
+                            stroke="#2c2c2c"
+                          ></line>
+                          <line
+                            x1="16"
+                            x2="8"
+                            y1="15"
+                            y2="15"
+                            fill="none"
+                            stroke="#2c2c2c"
+                          ></line>
+                          <line
+                            x1="16"
+                            x2="14"
+                            y1="19"
+                            y2="19"
+                            fill="none"
+                            stroke="#2c2c2c"
+                          ></line>
+                          <g>
+                            <rect width="24" height="24" fill="none"></rect>
+                          </g>
+                        </g>
+                      </svg>{" "}
+                      <p className="underline text-blue-800">exam round</p>
+                    </a>
+                  ) : (
+                    ""
+                  )}
+
+                  <input
+                    className="block flex-1 h-10 !min-w-[40px] pl-1 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white  focus:outline-none"
+                    {...register("exam", {
+                      required: "Exam is required filed",
+                    })}
+                    type="file"
+                    onChange={(e) => setFileExam(e.target.files[0])}
+                  />
+                </div>
+
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.exam ? errors.exam.message : ``}
+                </p>
+              </div>
             </div>
             <FormControl className="w-full" size="small" error={!!errors.role}>
               <InputLabel id="demo-select-small-label">Exam Form*</InputLabel>
