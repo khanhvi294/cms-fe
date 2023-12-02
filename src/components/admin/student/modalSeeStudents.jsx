@@ -87,6 +87,8 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
     mutationFn: deleteStudentInClass,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["students", classRoom?.id]);
+      queryClient.invalidateQueries(["studentsAdd", classRoom?.id]);
+
       // setRows((state) => [data.data, ...state]);
       toast.success("Delete successfully!");
     },
