@@ -12,6 +12,7 @@ import {
   GridToolbarContainer,
   GridActionsCellItem,
   GridRowEditStopReasons,
+  GridToolbar,
 } from "@mui/x-data-grid";
 import { useQuery } from "react-query";
 import { getRoundResultByRound } from "../../../services/roundResultService";
@@ -119,15 +120,22 @@ export default function TableScore({ roundId }) {
 
   const columns = [
     {
-      field: "studentid",
+      field: "roundResultStudent.id",
       headerName: "Student ID",
       type: "number",
       width: 250,
       align: "left",
       headerAlign: "left",
       editable: false,
+      valueGetter: (params) => params.row.roundResultStudent?.id,
     },
-    { field: "name", headerName: "Name", width: 400, editable: false },
+    {
+      field: "roundResultStudent.fullName",
+      headerName: "Name",
+      width: 400,
+      editable: false,
+      valueGetter: (params) => params.row.roundResultStudent?.fullName,
+    },
 
     {
       field: "score",
@@ -232,7 +240,7 @@ export default function TableScore({ roundId }) {
   return (
     <Box
       sx={{
-        height: 500,
+        height: 450,
         width: "100%",
         "& .actions": {
           color: "text.secondary",
@@ -245,13 +253,22 @@ export default function TableScore({ roundId }) {
       <DataGrid
         rows={rows}
         columns={columns}
+        slots={{ toolbar: GridToolbar }}
+        // slotProps={{
+        //   toolbar: {
+        //     showQuickFilter: true,
+        //   },
+        // }}
+        disableColumnFilter
+        disableColumnSelector
+        disableDensitySelector
         editMode="row"
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         slotProps={{
-          toolbar: { setRows, setRowModesModel },
+          toolbar: { showQuickFilter: true, setRows, setRowModesModel },
         }}
         pageSize={10}
         initialState={{
