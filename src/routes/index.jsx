@@ -23,6 +23,7 @@ import Profile from "../features/admin/Profile/Profile";
 import MyCompetition from "../features/user/myCompetition/MyCompetition";
 import RoundJudge from "../features/teacher/round";
 import InputScore from "../features/teacher/score";
+import ScoreRound from "../features/admin/Score/Score";
 // import Rounds from "../features/admin/Rounds/Rounds";
 
 export const listRouter = [
@@ -57,6 +58,8 @@ export const AppRouter = () => {
         <Route path={appRoutes.ACOURSES} element={<Courses />} />
         <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
         <Route path={appRoutes.AREGISTER} element={<Register />} />
+        <Route path={appRoutes.ASCORE} element={<ScoreRound />} />
+
         <Route path="admin/profile" element={<Profile />} />
 
         <Route

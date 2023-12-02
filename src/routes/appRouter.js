@@ -14,6 +14,7 @@ export const appRoutes = {
   ACOMPETITIONS_DETAIL: "/admin/competitions/:id",
   AROUNDS: "/admin/rounds",
   AREGISTER: "/admin/register",
+  ASCORE: "/admin/scores",
   LOGIN: "/login",
   TROUND: "/teacher/rounds",
   TSCORE: "/teacher/scores/:roundId",

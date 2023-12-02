@@ -24,6 +24,7 @@ import ModalAddRound from "../../../components/admin/rounds/modalAddRound";
 import RoundTable from "../../../components/admin/rounds/tableCollapRound";
 import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 import {
+  addClassToCompetition,
   deleteClassCompetition,
   getAllClassCanJoinCompetitionUpdate,
   getAllClassJoinCompetition,
@@ -87,10 +88,13 @@ const CompetitionDetail = () => {
   } = useForm();
 
   const [rows, setRows] = useState([]);
+  // const queryClient = useQueryClient();
 
   const onSubmit = (data) => {
-    createExamFormMutation.mutate(data);
-    handleClose();
+    console.log(data);
+    addClassToCompetitionMutate.mutate({ ...data, id: id });
+    setOpenAddClass(false);
+    reset();
   };
 
   useQuery({
@@ -121,11 +125,11 @@ const CompetitionDetail = () => {
     },
   });
 
-  const createExamFormMutation = useMutation({
-    mutationFn: (data) => createExamForm(data),
+  const addClassToCompetitionMutate = useMutation({
+    mutationFn: (data) => addClassToCompetition(data),
     onSuccess: (data) => {
-      setRows((state) => [data.data, ...state]);
-      toast.success("Create successfully!");
+      queryClient.invalidateQueries(["classCompetition", id]);
+      toast.success("Add successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
@@ -226,7 +230,7 @@ const CompetitionDetail = () => {
   const deleteClassCompetitionMutation = useMutation({
     mutationFn: deleteClassCompetition,
     onSuccess: () => {
-      queryClient.invalidateQueries(["classesJoin", competition?.timeStart]);
+      queryClient.invalidateQueries(["classCompetition", id]);
       toast.success("Delete successfully!");
     },
     onError: (err) => {

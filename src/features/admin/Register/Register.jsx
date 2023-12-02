@@ -1,10 +1,9 @@
-import Select from "react-select";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import Table from "../../../components/Table/Table";
+import SelectRegister from "../../../components/admin/register/SelectRegister";
 import { getCompetitions } from "../../../services/competitionService";
 import { getRegisterByCompetition } from "../../../services/registerService";
-import SelectRegister from "../../../components/admin/register/SelectRegister";
 
 const Register = () => {
   const [rows, setRows] = useState([]);

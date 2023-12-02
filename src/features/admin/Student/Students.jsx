@@ -54,14 +54,14 @@ const Students = () => {
       headerName: "ID",
       width: 150,
     },
+
+    { field: "fullName", headerName: "fullName", width: 400 },
     {
       field: "accountStudent", // Thêm cột mới cho tên của courseClass
       headerName: "email ",
       width: 400,
       valueGetter: (params) => params.row.accountStudent.email,
     },
-
-    { field: "fullName", headerName: "fullName", width: 400 },
     // {
     //   field: "active",
     //   headerName: "Active",

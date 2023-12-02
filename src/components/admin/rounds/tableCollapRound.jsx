@@ -285,7 +285,7 @@ function Row(props) {
                   {judges?.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">
-                        {item.id}
+                        {item.employeeJudge.id}
                       </TableCell>
                       <TableCell>{item.employeeJudge.fullName}</TableCell>
                       <TableCell align="right">

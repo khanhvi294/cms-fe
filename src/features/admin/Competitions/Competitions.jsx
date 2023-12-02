@@ -438,7 +438,7 @@ const Competitions = () => {
 
               <TextField
                 id="outlined-min"
-                label="Number min"
+                label="Number min of students"
                 type="number"
                 size="small"
                 error={!!errors.minimumQuantity}
