@@ -125,17 +125,6 @@ const CompetitionDetail = () => {
     },
   });
 
-  const addClassToCompetitionMutate = useMutation({
-    mutationFn: (data) => addClassToCompetition(data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["classCompetition", id]);
-      toast.success("Add successfully!");
-    },
-    onError: (err) => {
-      toast.error(err.message);
-    },
-  });
-
   const createRoundMutation = useMutation({
     mutationFn: (data) => createRound(data),
     onSuccess: () => {
@@ -208,10 +197,7 @@ const CompetitionDetail = () => {
   const [openDeleteClass, setOpenDeleteClass] = useState(false);
   const [classDelete, setClassDelete] = useState(false);
   const queryClient = useQueryClient();
-  const onSubmitAddClass = (data) => {
-    createExamFormMutation.mutate(data);
-    handleClose();
-  };
+
   useQuery({
     queryKey: ["classCompetition", id],
     enabled: !!id,
@@ -220,17 +206,32 @@ const CompetitionDetail = () => {
       setRowsClass(data.data.data);
     },
   });
-
+  //ds class để chọn
   const { data: classesJoin } = useQuery({
     queryKey: ["classesJoin", competition?.timeStart],
     enabled: !!competition?.timeStart,
     queryFn: () => getAllClassCanJoinCompetitionUpdate(competition?.id),
   });
 
+  const addClassToCompetitionMutate = useMutation({
+    mutationFn: (data) => addClassToCompetition(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["classCompetition", id]);
+      queryClient.invalidateQueries(["classesJoin", competition?.timeStart]);
+
+      toast.success("Add successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
   const deleteClassCompetitionMutation = useMutation({
     mutationFn: deleteClassCompetition,
     onSuccess: () => {
       queryClient.invalidateQueries(["classCompetition", id]);
+      queryClient.invalidateQueries(["classesJoin", competition?.timeStart]);
+
       toast.success("Delete successfully!");
     },
     onError: (err) => {
@@ -272,17 +273,16 @@ const CompetitionDetail = () => {
             </div>
             <div className="w-[250px] flex flex-col gap-2">
               <div className="flex justify-between w-full">
+                <p className="font-bold">Rounds</p>
+                <p>{competition?.numberOfRound}</p>
+              </div>
+              <div className="flex justify-between w-full">
                 <p className="font-bold">Time Start</p>
                 <p>{competition?.timeStart}</p>
               </div>
               <div className="flex justify-between w-full">
                 <p className="font-bold">Time End</p>
                 <p>{competition?.timeEnd}</p>
-              </div>
-
-              <div className="flex justify-between w-full">
-                <p className="font-bold">Rounds</p>
-                <p>{competition?.numberOfRound}</p>
               </div>
             </div>
             <div className="w-[250px] flex flex-col gap-2">

@@ -16,11 +16,12 @@ function CustomToolbar() {
   );
 }
 
-const Table = ({ rows, columns }) => {
+const Table = ({ rows, columns, pageSize = 7 }) => {
   const [tableData, setTableData] = useState(rows);
   // const colData = (colArrayData) => {
   //   return colArrayData.map((item) => item.name).join(", ");
   // };
+  console.log(pageSize);
   useEffect(() => {
     setTableData(rows);
   }, [rows]);
@@ -33,10 +34,9 @@ const Table = ({ rows, columns }) => {
             className="!rounded-3xl "
             rows={tableData}
             columns={columns}
-            pageSize={7}
             initialState={{
               pagination: {
-                paginationModel: { page: 0, pageSize: 7 },
+                paginationModel: { page: 0, pageSize: pageSize },
               },
             }}
             // pageSizeOptions={[7, 10, 25, 50, 100]}

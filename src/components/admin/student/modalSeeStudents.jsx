@@ -109,10 +109,12 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
             <div className="flex justify-between">
               <Typography
                 id="modal-modal-title"
-                variant="h6"
+                variant="h5"
                 component="h2"
-                className="font-bold self-center"
-              ></Typography>
+                className="!font-bold self-center text-2xl"
+              >
+                List of students in the class
+              </Typography>
               <IconButton
                 edge="end"
                 color="inherit"
@@ -134,15 +136,7 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
               </IconButton>
             </div>
             <div>
-              <div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
-                <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  className="text-2xl font-semibold"
-                >
-                  List of students in the class
-                </Typography>
+              <div className="bg-white min-h-[150px]  rounded-2xl  p-4 gap-5 ">
                 <div className=" flex justify-between mt-4 w-[60%]">
                   <div className="w-[250px] flex flex-col gap-2">
                     <div className="flex justify-between w-full">
@@ -211,7 +205,7 @@ const ModalSeeStudent = ({ open, setOpen, classRoom }) => {
                     Add
                   </Button>
                 </div>
-                <Table columns={columns} rows={rows} />
+                <Table columns={columns} rows={rows} pageSize={5} />
               </div>
             </div>
           </Box>

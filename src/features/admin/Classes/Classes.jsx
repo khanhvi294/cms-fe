@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Box,
   Button,
   FormControl,
@@ -12,10 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { addDays, format } from "date-fns";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
+import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 import Table from "../../../components/Table/Table";
 import ModalSeeStudent from "../../../components/admin/student/modalSeeStudents";
 import {
@@ -25,8 +26,6 @@ import {
   updateClass,
 } from "../../../services/classService";
 import { getCourses } from "../../../services/courseService";
-import { addDays, format } from "date-fns";
-import ModalConfirmDelete from "../../../components/Modal/modalConfirmDelete";
 
 const Classes = () => {
   const [open, setOpen] = useState(false);

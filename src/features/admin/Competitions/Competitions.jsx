@@ -299,6 +299,7 @@ const Competitions = () => {
   });
 
   const onSubmit = (data) => {
+    console.log("clicckk");
     if (competitionEdit) {
       updateCompetitionMutation.mutate({ ...data, id: competitionEdit?.id });
     } else {
