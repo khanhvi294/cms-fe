@@ -18,4 +18,5 @@ export const appRoutes = {
   LOGIN: "/login",
   TROUND: "/teacher/rounds",
   TSCORE: "/teacher/scores/:roundId",
+  SCORE: "/scores",
 };

@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { ROLES } from "../../../configs/role";
 
 const ModalMoreInfo = ({ open, setOpen, user }) => {
   return (
@@ -155,7 +156,9 @@ const ModalMoreInfo = ({ open, setOpen, user }) => {
                   variant="outlined"
                   className="w-full bg-gray-100"
                   defaultValue={
-                    user?.accountEmployee?.role || user?.accountStudent?.role
+                    user?.accountEmployee?.role === ROLES.TEACHER
+                      ? "Teacher"
+                      : "Employee"
                   }
                   disabled
                   sx={{

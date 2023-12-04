@@ -8,6 +8,8 @@ const RoundApi = {
   updateRound: (round) => axiosClientPrivate.patch(`${url}`, round),
   deleteRound: (id) => axiosClientPrivate.delete(`${url}/${id}`),
   getRoundById: (id) => axiosClientPrivate.get(`${url}/${id}`),
+  getRoundAlreadyStartByCompetition: (competitionId) =>
+    axiosClientPrivate.get(`${url}/already/competition/${competitionId}`),
 };
 export const {
   createRound,
@@ -15,5 +17,6 @@ export const {
   deleteRound,
   updateRound,
   getRoundById,
+  getRoundAlreadyStartByCompetition,
 } = RoundApi;
 export default RoundApi;

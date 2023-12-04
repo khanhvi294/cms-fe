@@ -73,7 +73,7 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
         <Box className="bg-white w-[400px] min-h-[250px]  rounded-2xl ">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className=" flex flex-col h-full p-4 gap-6"
+            className=" flex flex-col h-full p-4 gap-8"
           >
             <Typography
               id="modal-modal-title"
@@ -104,7 +104,7 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
 
             <Button
               variant="contained"
-              className="self-end !normal-case !rounded-lg !bg-black"
+              className="self-end !normal-case !rounded-lg !bg-black mt-30"
               type="submit"
             >
               Save

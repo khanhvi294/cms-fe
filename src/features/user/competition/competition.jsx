@@ -191,14 +191,6 @@ const Competition = () => {
               {...a11yProps(1)}
               className=" !normal-case"
             />
-            <Tab
-              label="Item Three"
-              sx={{
-                bgcolor: value === 2 ? "#2ab7ca" : "",
-              }}
-              {...a11yProps(2)}
-              className=" !normal-case"
-            />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
@@ -235,7 +227,7 @@ const Competition = () => {
                 className="border rounded-md w-[250px] h-[300px] p-6 shadow-md bg-amber-100 "
               >
                 <p className="text-red-500 text-lg mb-5 mx-auto">
-                  Round {item?.name}
+                  {item?.name}
                 </p>
                 <div className="flex justify-between my-4 ">
                   <p className="font-semibold">exam form: </p>
@@ -253,9 +245,6 @@ const Competition = () => {
               </div>
             ))}
           </div>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Item Three
         </CustomTabPanel>
       </Box>
       {/*
