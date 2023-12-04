@@ -7,19 +7,35 @@ import {
   GridRowModes,
   GridToolbar,
 } from "@mui/x-data-grid";
-import { useQuery } from "react-query";
-import { getRoundResultByRound } from "../../../services/roundResultService";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  getRoundResultByRound,
+  updateRoundResult,
+} from "../../../services/roundResultService";
+import { toast } from "react-toastify";
 
 export default function TableScore({ roundId }) {
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState({});
-
+  const queryClient = useQueryClient();
   useQuery({
     queryKey: ["roundResult", roundId],
     enabled: !!roundId,
     queryFn: () => getRoundResultByRound(roundId),
     onSuccess: (data) => {
       setRows(data.data.data);
+    },
+  });
+
+  const inputScoreMutatiton = useMutation({
+    mutationFn: updateRoundResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["roundResult", roundId]);
+      toast.success("score entered successfully!");
+    },
+    onError: (err) => {
+      queryClient.invalidateQueries(["roundResult", roundId]);
+      toast.error(err.message);
     },
   });
 
@@ -51,6 +67,14 @@ export default function TableScore({ roundId }) {
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
+    const data = {
+      id: newRow.id,
+      score: newRow.score,
+      roundId: newRow.roundId,
+      studentId: newRow.roundResultStudent.id,
+    };
+
+    inputScoreMutatiton.mutate(data);
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
