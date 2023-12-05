@@ -41,7 +41,7 @@ const ModalSeeScore = ({ open, setOpen, roundResult }) => {
           id="modal-modal-title"
           variant="h6"
           component="h2"
-          className="font-bold "
+          className="!font-semibold "
         >
           Score detail
         </Typography>
