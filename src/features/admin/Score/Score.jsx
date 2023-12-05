@@ -7,13 +7,15 @@ import { getRoundAlreadyStartByCompetition } from "../../../services/roundServic
 import Table from "../../../components/Table/Table";
 import { getRoundResultByRound } from "../../../services/roundResultService";
 import { GridActionsCellItem } from "@mui/x-data-grid";
+import ModalSeeScore from "../../../components/score/ModalSeeScore";
 
 const ScoreRound = () => {
   const [selectedOptionCompe, setSelectedOptionCompe] = useState(null);
   const [selectedOptionRound, setSelectedOptionRound] = useState(null);
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
-
+  const [roundResult, setRoundResult] = useState(null);
+  console.log(roundResult);
   const columns = [
     {
       field: "roundResultStudent.id",
@@ -54,7 +56,11 @@ const ScoreRound = () => {
               viewBox="0 0 24 24"
               id="Eye"
               width={15}
-              onClick={() => {}}
+              onClick={() => {
+                setOpen(true);
+                console.log(params.row);
+                setRoundResult(params.row);
+              }}
             >
               <g
                 data-name="Layer 2"
@@ -167,6 +173,7 @@ const ScoreRound = () => {
         </div>
         <Table rows={rows} columns={columns} />
       </div>
+      <ModalSeeScore open={open} setOpen={setOpen} roundResult={roundResult} />
     </>
   );
 };
