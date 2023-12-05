@@ -14,12 +14,13 @@ import { getCompetitionsForStudent } from "../../../services/studentService";
 const CompetitionListFetch = () => {
   const [competitions, setCompetitions] = useState([]);
   const user = useSelector((state) => state.user?.data?.info);
+  console.log(user);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   useQuery({
     queryKey: ["competitions", user?.accountStudent?.id],
     queryFn: () => getCompetitionsForStudent(user?.accountStudent?.id),
-    enabled: !!user?.accountStudent?.id,
+    enabled: !!user?.id,
     onSuccess: (data) => {
       setCompetitions(data?.data);
     },

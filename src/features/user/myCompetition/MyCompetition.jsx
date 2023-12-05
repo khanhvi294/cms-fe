@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 const MyCompetition = () => {
   const user = useSelector((state) => state.user?.data?.info);
+  console.log(user);
   const queryClient = useQueryClient();
 
   const [competitions, setCompetitions] = useState([]);

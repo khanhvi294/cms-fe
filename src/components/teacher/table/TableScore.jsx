@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import * as React from "react";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -7,22 +6,26 @@ import {
   GridRowModes,
   GridToolbar,
 } from "@mui/x-data-grid";
+import * as React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 import {
-  getRoundResultByRound,
+  getRoundResultByRoundForTeacher,
   updateRoundResult,
 } from "../../../services/roundResultService";
-import { toast } from "react-toastify";
 
 export default function TableScore({ roundId }) {
   const [rows, setRows] = React.useState([]);
   const [rowModesModel, setRowModesModel] = React.useState({});
   const queryClient = useQueryClient();
+  const [newData, setNewData] = React.useState(null);
+
   useQuery({
-    queryKey: ["roundResult", roundId],
+    queryKey: ["roundResultTeacher", roundId],
     enabled: !!roundId,
-    queryFn: () => getRoundResultByRound(roundId),
+    queryFn: () => getRoundResultByRoundForTeacher(roundId),
     onSuccess: (data) => {
+      console.log(data.data);
       setRows(data.data.data);
     },
   });
@@ -30,11 +33,11 @@ export default function TableScore({ roundId }) {
   const inputScoreMutatiton = useMutation({
     mutationFn: updateRoundResult,
     onSuccess: () => {
-      queryClient.invalidateQueries(["roundResult", roundId]);
+      queryClient.invalidateQueries(["roundResultTeacher", roundId]);
       toast.success("score entered successfully!");
     },
     onError: (err) => {
-      queryClient.invalidateQueries(["roundResult", roundId]);
+      queryClient.invalidateQueries(["roundResultTeacher", roundId]);
       toast.error(err.message);
     },
   });
@@ -46,11 +49,34 @@ export default function TableScore({ roundId }) {
   };
 
   const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    // Đặt lại rowModesModel cho tất cả các dòng
+    const resetRowModesModel = Object.fromEntries(
+      Object.keys(rowModesModel).map((rowId) => [
+        rowId,
+        { mode: GridRowModes.View },
+      ])
+    );
+
+    setRowModesModel({
+      ...resetRowModesModel,
+      [id]: { mode: GridRowModes.Edit },
+    });
+    //  setRowModesModel({ [id]: { mode: GridRowModes.Edit } });
   };
 
   const handleSaveClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    // const data = {
+    //   id: newRow.id,
+    //   score: newRow.roundResultScore,
+    //   roundId: newRow.roundId,
+    //   studentId: newRow.roundResultStudent.id,
+    // };
+
+    // inputScoreMutatiton.mutate(data);
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View },
+    });
   };
 
   const handleCancelClick = (id) => () => {
@@ -67,20 +93,20 @@ export default function TableScore({ roundId }) {
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
-    const data = {
-      id: newRow.id,
-      score: newRow.score,
-      roundId: newRow.roundId,
-      studentId: newRow.roundResultStudent.id,
-    };
 
-    inputScoreMutatiton.mutate(data);
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
 
   const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel);
+    const isEditing = Object.values(newRowModesModel).some(
+      (rowMode) => rowMode.mode === GridRowModes.Edit
+    );
+
+    if (!isEditing) {
+      setRowModesModel(newRowModesModel);
+    }
+    // setRowModesModel(newRowModesModel);
   };
 
   const columns = [
@@ -103,13 +129,27 @@ export default function TableScore({ roundId }) {
     },
 
     {
-      field: "score",
+      field: "roundResultScore",
+
+      valueGetter: (params) => {
+        // Kiểm tra xem có mảng roundResultScore và có phần tử đầu tiên không
+        const scoreArray = params.row.roundResultScore;
+        if (Array.isArray(scoreArray) && scoreArray.length > 0) {
+          return scoreArray[0].score;
+        }
+        return ""; // Trả về chuỗi rỗng nếu không tìm thấy dữ liệu
+      },
       headerName: "Score",
       align: "left",
       headerAlign: "left",
       type: "number",
       width: 200,
       editable: true,
+      preProcessEditCellProps: (params) => {
+        const hasError = params.props.value === null;
+        console.log(params);
+        // console.log("edit", params);
+      },
     },
 
     {
@@ -118,8 +158,9 @@ export default function TableScore({ roundId }) {
       headerName: "Actions",
       width: 100,
       cellClassName: "actions",
-      getActions: ({ id }, index) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+      getActions: (params, index) => {
+        const isInEditMode =
+          rowModesModel[params.id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
           return [
@@ -144,7 +185,7 @@ export default function TableScore({ roundId }) {
               sx={{
                 color: "primary.main",
               }}
-              onClick={handleSaveClick(id)}
+              onClick={handleSaveClick(params.id)}
             />,
             <GridActionsCellItem
               key={index}
@@ -164,7 +205,7 @@ export default function TableScore({ roundId }) {
               }
               label="Cancel"
               className="textPrimary"
-              onClick={handleCancelClick(id)}
+              onClick={handleCancelClick(params.id)}
               color="inherit"
             />,
           ];
@@ -194,7 +235,7 @@ export default function TableScore({ roundId }) {
             }
             label="Edit"
             className="textPrimary"
-            onClick={handleEditClick(id)}
+            onClick={handleEditClick(params.id)}
             color="inherit"
           />,
         ];
@@ -202,6 +243,8 @@ export default function TableScore({ roundId }) {
     },
   ];
 
+  //test
+  console.log("okkk", rowModesModel);
   return (
     <Box
       sx={{
@@ -224,6 +267,7 @@ export default function TableScore({ roundId }) {
         //     showQuickFilter: true,
         //   },
         // }}
+
         disableColumnFilter
         disableColumnSelector
         disableDensitySelector
