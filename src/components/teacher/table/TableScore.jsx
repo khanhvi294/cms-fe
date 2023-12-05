@@ -50,17 +50,32 @@ export default function TableScore({ roundId }) {
 
   const handleEditClick = (id) => () => {
     // Đặt lại rowModesModel cho tất cả các dòng
+
+    // Đặt lại rowModesModel cho tất cả các dòng
     const resetRowModesModel = Object.fromEntries(
       Object.keys(rowModesModel).map((rowId) => [
         rowId,
-        { mode: GridRowModes.View },
+        { mode: GridRowModes.View, ignoreModifications: true },
       ])
     );
 
+    // Đặt chế độ chỉnh sửa cho dòng được chọn
     setRowModesModel({
       ...resetRowModesModel,
       [id]: { mode: GridRowModes.Edit },
     });
+
+    // const resetRowModesModel = Object.fromEntries(
+    //   Object.keys(rowModesModel).map((rowId) => [
+    //     rowId,
+    //     { mode: GridRowModes.View },
+    //   ])
+    // );
+
+    // setRowModesModel({
+    //   ...resetRowModesModel,
+    //   [id]: { mode: GridRowModes.Edit },
+    // });
     //  setRowModesModel({ [id]: { mode: GridRowModes.Edit } });
   };
 
@@ -93,7 +108,6 @@ export default function TableScore({ roundId }) {
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
-
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -244,7 +258,7 @@ export default function TableScore({ roundId }) {
   ];
 
   //test
-  console.log("okkk", rowModesModel);
+
   return (
     <Box
       sx={{

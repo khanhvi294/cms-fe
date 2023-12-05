@@ -1,13 +1,16 @@
+import { Button } from "@mui/material";
+import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
-import { getCompetitions } from "../../../services/competitionService";
-import SelectRegister from "../../../components/admin/register/SelectRegister";
-import { getRoundAlreadyStartByCompetition } from "../../../services/roundService";
 import Table from "../../../components/Table/Table";
-import { getRoundResultByRound } from "../../../services/roundResultService";
-import { GridActionsCellItem } from "@mui/x-data-grid";
+import SelectRegister from "../../../components/admin/register/SelectRegister";
+import ModalConfirmStudent from "../../../components/score/ModalConfirm";
 import ModalSeeScore from "../../../components/score/ModalSeeScore";
+import { getCompetitions } from "../../../services/competitionService";
+import { getRoundResultByRound } from "../../../services/roundResultService";
+import { getRoundAlreadyStartByCompetition } from "../../../services/roundService";
+import ModalInputMarkPoint from "../../../components/score/ModalInputMarkPoint";
 
 const ScoreRound = () => {
   const [selectedOptionCompe, setSelectedOptionCompe] = useState(null);
@@ -15,7 +18,9 @@ const ScoreRound = () => {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [roundResult, setRoundResult] = useState(null);
-  console.log(roundResult);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [openInput, setInput] = useState(false);
+
   const columns = [
     {
       field: "roundResultStudent.id",
@@ -171,9 +176,25 @@ const ScoreRound = () => {
             </div>
           </div>
         </div>
+        <div className="flex gap-2 justify-end items-center">
+          <Button
+            variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+            onClick={() => {
+              setOpenConfirm(true);
+            }}
+          >
+            Approve students
+          </Button>
+        </div>
         <Table rows={rows} columns={columns} />
       </div>
-      <ModalSeeScore open={open} setOpen={setOpen} roundResult={roundResult} />
+      {/* <ModalSeeScore open={open} setOpen={setOpen} roundResult={roundResult} />
+      <ModalInputMarkPoint
+        open={openInput}
+        setOpen={openInput}
+        setOpenConfirm={setOpenConfirm}
+      />
+      <ModalConfirmStudent open={openConfirm} setOpen={setOpenConfirm} /> */}
     </>
   );
 };
