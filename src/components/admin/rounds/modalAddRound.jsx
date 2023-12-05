@@ -44,13 +44,14 @@ const ModalAddRound = ({
     addMutate.mutate(round);
   };
   const handleSave = async (data) => {
+    handleCloseAddRound();
     try {
       const url = await uploadFile(fileExam);
       data.exam = url;
     } catch (error) {
       console.log(error);
     }
-    handleCloseAddRound();
+
     reset();
     onSubmitAddRound(data);
   };

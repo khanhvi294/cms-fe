@@ -17,9 +17,9 @@ const CompetitionListFetch = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   useQuery({
-    queryKey: ["competitions", user?.id],
-    queryFn: () => getCompetitionsForStudent(user?.id),
-    enabled: !!user?.id,
+    queryKey: ["competitions", user?.accountStudent?.id],
+    queryFn: () => getCompetitionsForStudent(user?.accountStudent?.id),
+    enabled: !!user?.accountStudent?.id,
     onSuccess: (data) => {
       setCompetitions(data?.data);
     },

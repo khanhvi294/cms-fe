@@ -10,9 +10,9 @@ const ClassListFetch = () => {
   const currentDay = new Date();
 
   useQuery({
-    queryKey: ["classes", user?.id],
-    enabled: !!user?.id,
-    queryFn: () => getAllClassesByStudent(user?.id),
+    queryKey: ["classes", user?.accountStudent?.id],
+    enabled: !!user?.accountStudent?.id,
+    queryFn: () => getAllClassesByStudent(user?.accountStudent?.id),
     onSuccess: (data) => {
       const classes = data.data?.data?.map((item) => item.ClassStudentClass);
 
