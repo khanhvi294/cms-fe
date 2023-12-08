@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -10,7 +10,7 @@ import ModalSeeScore from "../../../components/score/ModalSeeScore";
 import { getCompetitions } from "../../../services/competitionService";
 import { getRoundResultByRound } from "../../../services/roundResultService";
 import { getRoundAlreadyStartByCompetition } from "../../../services/roundService";
-import ModalInputMarkPoint from "../../../components/score/ModalInputMarkPoint";
+import ModalMarkPoint from "../../../components/score/ModalMarkPoint";
 
 const ScoreRound = () => {
   const [selectedOptionCompe, setSelectedOptionCompe] = useState(null);
@@ -18,8 +18,8 @@ const ScoreRound = () => {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [roundResult, setRoundResult] = useState(null);
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [openInput, setInput] = useState(false);
+
+  const [openInput, setOpenInput] = useState(false);
 
   const columns = [
     {
@@ -180,7 +180,7 @@ const ScoreRound = () => {
           <Button
             variant="contained flex-end !bg-[#000] !text-white !rounded-md"
             onClick={() => {
-              setOpenConfirm(true);
+              setOpenInput(true);
             }}
           >
             Approve students
@@ -188,13 +188,12 @@ const ScoreRound = () => {
         </div>
         <Table rows={rows} columns={columns} />
       </div>
-      {/* <ModalSeeScore open={open} setOpen={setOpen} roundResult={roundResult} />
-      <ModalInputMarkPoint
+      <ModalSeeScore open={open} setOpen={setOpen} roundResult={roundResult} />
+      <ModalMarkPoint
         open={openInput}
-        setOpen={openInput}
-        setOpenConfirm={setOpenConfirm}
+        setOpen={setOpenInput}
+        roundId={selectedOptionRound?.value}
       />
-      <ModalConfirmStudent open={openConfirm} setOpen={setOpenConfirm} /> */}
     </>
   );
 };

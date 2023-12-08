@@ -7,10 +7,13 @@ const RoundResultApi = {
   getRoundResultByRoundForTeacher: (roundId) =>
     axiosClientPrivate.get(`${url}/teacher/round/${roundId}`),
   updateRoundResult: (data) => axiosClientPrivate.patch(`${url}`, data),
+  checkStudentPassRound: (data) =>
+    axiosClientPrivate.post(`${url}/check`, data),
 };
 export const {
   getRoundResultByRound,
   updateRoundResult,
   getRoundResultByRoundForTeacher,
+  checkStudentPassRound,
 } = RoundResultApi;
 export default RoundResultApi;
