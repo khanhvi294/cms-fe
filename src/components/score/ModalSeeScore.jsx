@@ -10,7 +10,6 @@ const ModalSeeScore = ({ open, setOpen, roundResult }) => {
     enabled: !!roundResult?.id,
     queryFn: () => getScoreByRoundResult(roundResult?.id),
     onSuccess: (data) => {
-      console.log("voo", data.data);
       setScore(data.data.data);
     },
   });
