@@ -63,6 +63,7 @@ const ModalMarkPoint = ({ open, setOpen, roundId }) => {
         open={openConfirm}
         setOpen={setOpenConfirm}
         studentConfirm={studentConfirm}
+        roundId={roundId}
       />
     </>
   );

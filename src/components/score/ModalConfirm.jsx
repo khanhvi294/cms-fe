@@ -1,9 +1,11 @@
-import { Box, Modal } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "../Table/Table";
+import { useMutation } from "react-query";
+import { confirmStudentPassRound } from "../../services/roundResultService";
 
-const ModalConfirmStudent = ({ open, setOpen, studentConfirm }) => {
+const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
   const [rows, setRows] = useState(studentConfirm);
   const columns = [
     {
@@ -71,6 +73,15 @@ const ModalConfirmStudent = ({ open, setOpen, studentConfirm }) => {
       setRows(updatedData);
     }
   };
+  useEffect(() => {
+    setRows(studentConfirm);
+  }, [studentConfirm]);
+  const checkStudentPassMutation = useMutation({
+    mutationFn: confirmStudentPassRound,
+    onSuccess: (data) => {},
+    onError: (err) => {},
+  });
+
   return (
     <Modal
       open={open}
@@ -83,6 +94,17 @@ const ModalConfirmStudent = ({ open, setOpen, studentConfirm }) => {
     >
       <Box className="bg-white w-[1160px] h-[719px]  flex flex-col p-4 gap-5 rounded-xl">
         <Table columns={columns} rows={rows} />
+        <Button
+          onClick={() => {
+            const studentIds = rows.map((item) => item.roundResultStudent.id);
+            checkStudentPassMutation.mutate({
+              roundId,
+              studentIds: studentIds,
+            });
+          }}
+        >
+          Confirm
+        </Button>
       </Box>
     </Modal>
   );

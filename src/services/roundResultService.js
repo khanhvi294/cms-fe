@@ -9,11 +9,14 @@ const RoundResultApi = {
   updateRoundResult: (data) => axiosClientPrivate.patch(`${url}`, data),
   checkStudentPassRound: (data) =>
     axiosClientPrivate.post(`${url}/check`, data),
+  confirmStudentPassRound: (data) =>
+    axiosClientPrivate.post(`${url}/confirm`, data),
 };
 export const {
   getRoundResultByRound,
   updateRoundResult,
   getRoundResultByRoundForTeacher,
   checkStudentPassRound,
+  confirmStudentPassRound,
 } = RoundResultApi;
 export default RoundResultApi;
