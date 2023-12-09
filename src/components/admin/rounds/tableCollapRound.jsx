@@ -21,9 +21,11 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
+import { FlagIcon } from '../../icons';
 import IconButton from '@mui/material/IconButton';
 import ModalAddJudge from '../judges/modalAddJudge';
 import ModalConfirmDelete from '../../Modal/modalConfirmDelete';
+import { ModalRoundResult } from '../../../features/admin/Competitions/ModalRoundResult';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -37,6 +39,7 @@ import { getFileName } from '../../../utils/getFileName';
 import { toast } from 'react-toastify';
 import { uploadFile } from '../../../utils/cloundinaryFns';
 import { useForm } from 'react-hook-form';
+import { useModal } from '../../../hooks/use-modal';
 
 function Row(props) {
 	const { row } = props;
@@ -47,7 +50,14 @@ function Row(props) {
 	const [itemDelete, setItemDelete] = React.useState();
 	const [funcDelete, setFuncDelete] = React.useState(false);
 	const [openEditRound, setOpenEditRound] = React.useState(false);
+	const [currentRoundId, setCurrentRoundId] = React.useState(null);
+	const {
+		isOpen: isOpenResult,
+		close: closeResult,
+		open: openResult,
+	} = useModal(false);
 	const [fileExam, setFileExam] = React.useState();
+	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = React.useState(null);
 	const queryClient = useQueryClient();
 	const { id } = useParams();
@@ -250,6 +260,14 @@ function Row(props) {
 									className="color000000 svgShape"
 								></path>
 							</svg>
+						</IconButton>
+						<IconButton
+							onClick={() => {
+								setCurrentRoundId(row?.id);
+								openResult();
+							}}
+						>
+							<FlagIcon className="w-4 font-bold h-4" />
 						</IconButton>
 					</div>
 				</TableCell>
@@ -542,6 +560,14 @@ function Row(props) {
 					</form>
 				</Box>
 			</Modal>
+			<ModalRoundResult
+				isOpen={isOpenResult}
+				onClose={() => {
+					closeResult();
+					setCurrentRoundId(null);
+				}}
+				roundId={row?.id}
+			/>
 		</React.Fragment>
 	);
 }
