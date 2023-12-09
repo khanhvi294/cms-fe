@@ -1,4 +1,4 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import Table from "../Table/Table";
@@ -92,7 +92,15 @@ const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
       aria-describedby="modal-modal-description"
       className="flex items-center justify-center "
     >
-      <Box className="bg-white w-[1160px] h-[719px]  flex flex-col p-4 gap-5 rounded-xl">
+      <Box className="bg-white w-[1160px] h-[719px]  flex flex-col p-4 gap-7 rounded-xl">
+        <Typography
+          id="modal-modal-title"
+          variant="h6"
+          component="h2"
+          className="!font-bold !text-2xl "
+        >
+          Confirm
+        </Typography>
         <Table columns={columns} rows={rows} />
         <Button
           onClick={() => {
@@ -102,6 +110,8 @@ const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
               studentIds: studentIds,
             });
           }}
+          variant="contained"
+          className="!bg-black w-28 self-end "
         >
           Confirm
         </Button>

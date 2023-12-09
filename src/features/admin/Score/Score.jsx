@@ -183,7 +183,7 @@ const ScoreRound = () => {
               setOpenInput(true);
             }}
           >
-            Approve students
+            Approve
           </Button>
         </div>
         <Table rows={rows} columns={columns} />

@@ -34,6 +34,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { getExamForms } from "../../../services/examFormService";
+import { uploadFile } from "../../../utils/cloundinaryFns";
+import { set } from "date-fns";
 
 function Row(props) {
   const { row } = props;
@@ -45,7 +47,7 @@ function Row(props) {
   const [funcDelete, setFuncDelete] = React.useState(false);
   const [openEditRound, setOpenEditRound] = React.useState(false);
   const [fileExam, setFileExam] = React.useState();
-
+  const [error, setError] = React.useState(null);
   const queryClient = useQueryClient();
 
   const { id } = useParams();
@@ -93,7 +95,7 @@ function Row(props) {
     queryFn: getExamForms,
   });
   const updateRoundMutation = useMutation({
-    mutationFn: (data) => updateRound(data),
+    mutationFn: updateRound,
     onSuccess: () => {
       queryClient.invalidateQueries(["rounds", id]);
       setOpenEditRound(false);
@@ -103,7 +105,19 @@ function Row(props) {
       toast.error(err.message);
     },
   });
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    if (fileExam) {
+      try {
+        const url = await uploadFile(fileExam);
+        data.exam = url;
+      } catch (error) {
+        console.log(error);
+      }
+      setError(null);
+    } else {
+      setError("Exam is require");
+    }
+
     updateRoundMutation.mutate({
       ...data,
       id: row?.id,
@@ -417,6 +431,7 @@ function Row(props) {
                   required: "Time is required filed",
                 })}
               />
+              {/* xem chỗ này vi */}
               <div className="w-full ">
                 <label
                   className="block  text-sm mb-1 text-[#666666] w-full"
@@ -494,9 +509,7 @@ function Row(props) {
 
                   <input
                     className="block flex-1 h-10 !min-w-[40px] pl-1 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white  focus:outline-none"
-                    {...register("exam", {
-                      required: "Exam is required filed",
-                    })}
+                    {...register("exam")}
                     type="file"
                     onChange={(e) => setFileExam(e.target.files[0])}
                   />
