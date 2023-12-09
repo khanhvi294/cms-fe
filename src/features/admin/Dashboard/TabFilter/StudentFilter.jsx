@@ -18,8 +18,8 @@ const StudentFilter = () => {
         },
         {
             field: "createdAt", // Thêm cột mới cho tên của courseClass
-            headerName: "createdAt ",
-            width: 100,
+            headerName: "created Date",
+            width: 200,
             valueGetter: (params) => params.row.createdAt,
           },
         // {
