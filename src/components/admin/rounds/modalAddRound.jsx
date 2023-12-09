@@ -43,6 +43,7 @@ const ModalAddRound = ({
     round.competitionId = competition.id;
     addMutate.mutate(round);
   };
+
   const handleSave = async (data) => {
     handleCloseAddRound();
     try {

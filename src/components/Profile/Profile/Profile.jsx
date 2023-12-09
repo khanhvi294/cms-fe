@@ -7,14 +7,15 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
 import { format } from "date-fns";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import PhotoUpload from "../PhotoUpload";
 import { uploadImg } from "../../../utils/cloundinaryFns";
+import PhotoUpload from "../PhotoUpload";
 
 const ProfileUpdate = ({ user, updateInfo }) => {
   const today = new Date();
@@ -23,6 +24,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm();
   const [upLoadData, setUploadData] = useState({
     previewImg: user?.avatar,
@@ -30,7 +32,6 @@ const ProfileUpdate = ({ user, updateInfo }) => {
   });
 
   const handleSave = async (data) => {
-    console.log(data);
     if (upLoadData.file) {
       try {
         const url = await uploadImg(upLoadData.file);
@@ -42,22 +43,30 @@ const ProfileUpdate = ({ user, updateInfo }) => {
 
     updateInfo.mutate(data);
   };
+  const label = { inputProps: { "aria-label": "Switch demo" } };
   return (
     <div>
       <span className="text-2xl font-semibold">Profile</span>
-      <div className="flex gap-2 mt-4 justify-end">
-        <label className="relative h-6 w-12">
+      <div className="flex gap-2 mt-4 justify-end items-center">
+        <Switch
+          className="relative h-6 w-12"
+          {...label}
+          onChange={(e) => {
+            setEdit(e.target.checked);
+          }}
+        />
+        {/* <label className="relative h-6 w-12">
           <input
             type="checkbox"
             onChange={(e) => {
               setEdit(e.target.checked);
             }}
-            className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0"
+            className="custom_switch peer text-red-500 absolute z-10 h-full w-full cursor-pointer opacity-0"
             id="custom_switch_checkbox1"
           />
           <span className="outline_checkbox bg-icon block h-full rounded-full border-2 border-[#ebedf2] before:absolute before:bottom-1 before:left-1 before:h-4 before:w-4 before:rounded-full before:bg-[#ebedf2] before:bg-[url(/assets/images/close.svg)] before:bg-center before:bg-no-repeat before:transition-all before:duration-300 peer-checked:border-primary peer-checked:before:left-7 peer-checked:before:bg-primary peer-checked:before:bg-[url(/assets/images/checked.svg)] dark:border-white-dark dark:before:bg-white-dark"></span>
-        </label>
-        <span> Edit</span>
+        </label> */}
+        <span className="font-normal"> Edit</span>
       </div>
       <div className="flex gap-9 mt-10">
         <Box className="container flex h-[383px] w-[300px]   flex-col justify-around items-center rounded-2xl border bg-white p-8 shadow-xl">
@@ -130,6 +139,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
               variant="outlined"
               className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
               type="number"
+              disabled={!edit}
               defaultValue={user?.phone}
               error={!!errors.phone}
               helperText={errors.phone ? errors.phone.message : ``}
@@ -145,21 +155,12 @@ const ProfileUpdate = ({ user, updateInfo }) => {
               })}
             />
           </div>
-          {/* <TextField
-          id="outlined-basic"
-          size="small"
-          label="Email*"
-          variant="outlined"
-          className="w-full"
-          defaultValue={user?.email}
-          error={!!errors.email}
-          helperText={errors.email ? errors.email.message : ``}
-          {...register("email", { required: "email is required filed" })}
-        /> */}
+
           <div className="flex gap-5">
             <TextField
               id="outlined-basic"
               size="small"
+              disabled={!edit}
               label="address"
               variant="outlined"
               className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
@@ -173,6 +174,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
               size="small"
               label="CCCD*"
               type="number"
+              disabled={!edit}
               defaultValue={user?.cccd}
               variant="outlined"
               className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
@@ -198,6 +200,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
               size="small"
               label="DOB"
               type="date"
+              disabled={!edit}
               defaultValue={user?.dateOfBirth}
               InputLabelProps={{
                 shrink: true,
@@ -227,35 +230,39 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 value={false}
                 control={<Radio />}
                 label="Female"
+                disabled={!edit}
               />
               <FormControlLabel
                 {...register("gender")}
                 value={true}
                 control={<Radio />}
                 label="Male"
+                disabled={!edit}
               />
             </RadioGroup>
           </FormControl>
           <div className="flex justify-end gap-3">
-            <Button
+            {/* <Button
               variant="outlined"
               className="btn rounded-full normal-case "
               color="error"
               size="medium"
             >
               Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              className="btn ml-3 rounded-full normal-case"
-              size="medium"
-              color="success"
-              disableElevation
-              onClick={handleSubmit(handleSave)}
-            >
-              Save
-            </Button>
+            </Button> */}
+            {edit && (
+              <Button
+                type="submit"
+                variant="contained"
+                className="btn ml-3 rounded-full normal-case"
+                size="medium"
+                color="success"
+                disableElevation
+                onClick={handleSubmit(handleSave)}
+              >
+                Save
+              </Button>
+            )}
           </div>
         </div>
       </div>
