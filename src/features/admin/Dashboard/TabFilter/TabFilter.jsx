@@ -5,6 +5,11 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import StudentFilter from './StudentFilter';
+import TeacherFilter from './TeacherFilter';
+import EmployeeFilter from './EmployeeFilter';
+import CourseFilter from './CourseFilter';
+import ClassFilter from './ClassFilter';
+import CompetitionFilter from './CompetitionFilter';
 
 
 function CustomTabPanel(props) {
@@ -63,19 +68,19 @@ function CustomTabPanel(props) {
          <StudentFilter/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          <TeacherFilter />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          Item Three
+          <EmployeeFilter />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={3}>
-          Item One
+          <CourseFilter />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={4}>
-          Item Two
-        </CustomTabPanel>
+          <ClassFilter />
+          </CustomTabPanel>
         <CustomTabPanel value={value} index={5}>
-          Item Three
+          <CompetitionFilter />
         </CustomTabPanel>
       </Box>
     );
