@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Table from "../Table/Table";
 import { useMutation } from "react-query";
 import { confirmStudentPassRound } from "../../services/roundResultService";
+import { toast } from "react-toastify";
 
 const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
   const [rows, setRows] = useState(studentConfirm);
@@ -78,8 +79,12 @@ const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
   }, [studentConfirm]);
   const checkStudentPassMutation = useMutation({
     mutationFn: confirmStudentPassRound,
-    onSuccess: (data) => {},
-    onError: (err) => {},
+    onSuccess: (data) => {
+      toast.success("Confirm successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
   });
 
   return (
