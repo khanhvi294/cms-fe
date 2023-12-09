@@ -14,7 +14,7 @@ export const RedirectAfterLogin = () => {
   const user = useSelector((state) => state.user?.data?.info);
 
   if (user?.role === ROLES.EMPLOYEE) {
-    return <Navigate to={appRoutes.ACLASSES} />;
+    return <Navigate to={appRoutes.ADASHBOARD} />;
   }
 
   if (user?.role === ROLES.TEACHER) {

@@ -14,7 +14,7 @@ const AdminLayout = () => {
       <div className="flex h-full">
         {/* nav */}
         <Navbar />
-        <div className="flex-1 ">
+        <div className="flex-1   overflow-auto">
           <div className="h-16 bg-white px-5 border shadow-sm">
             <Header />
           </div>
