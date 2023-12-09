@@ -6,7 +6,13 @@ import { useMutation } from "react-query";
 import { confirmStudentPassRound } from "../../services/roundResultService";
 import { toast } from "react-toastify";
 
-const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
+const ModalConfirmStudent = ({
+  open,
+  setOpen,
+  studentConfirm,
+  roundId,
+  setOpenParent,
+}) => {
   const [rows, setRows] = useState(studentConfirm);
   const columns = [
     {
@@ -114,6 +120,8 @@ const ModalConfirmStudent = ({ open, setOpen, studentConfirm, roundId }) => {
               roundId,
               studentIds: studentIds,
             });
+            setOpen(false);
+            setOpenParent(false);
           }}
           variant="contained"
           className="!bg-black w-28 self-end "
