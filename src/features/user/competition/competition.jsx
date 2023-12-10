@@ -1,7 +1,9 @@
 import {
 	Box,
+	Button,
+	Chip,
+	Modal,
 	Tab,
-	Table,
 	TableBody,
 	TableContainer,
 	TableHead,
@@ -13,17 +15,20 @@ import {
 	getAllClassJoinCompetition,
 	getCompetitionById,
 } from '../../../services/competitionService';
+import { useMemo, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { STATUS_COMPETITION } from '../../../configs/competitionStatus';
+import Table from '../../../components/Table/Table';
 import Typography from '@mui/material/Typography';
+import { getRegisterByCompetition } from '../../../services/registerService';
 import { getRoundByCompetition } from '../../../services/roundService';
 import { getRoundResultByRound } from '../../../services/roundResultService';
 import { styled } from '@mui/material/styles';
+import { useModal } from '../../../hooks/use-modal';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 
 // const competition = {
 //   name: "Kiểm thử phần mềm",
@@ -112,6 +117,23 @@ const Competition = () => {
 		// },
 	});
 
+	const { data: participantData } = useQuery({
+		queryKey: ['participant', id],
+		enabled: !!id,
+		queryFn: () => getRegisterByCompetition(id),
+		// onSuccess: (data) => {
+		//   setRows(data.data.data);
+		// },
+	});
+
+	const participants = useMemo(() => {
+		if (!participantData?.data?.data) return [];
+
+		return participantData?.data?.data?.map((item) => {
+			return item?.studentRegister;
+		});
+	}, [participantData?.data]);
+
 	return (
 		<div>
 			<div>
@@ -195,6 +217,14 @@ const Competition = () => {
 							{...a11yProps(1)}
 							className=" !normal-case"
 						/>
+						<Tab
+							label="Participants"
+							sx={{
+								bgcolor: value === 2 ? '#2ab7ca' : '',
+							}}
+							{...a11yProps(2)}
+							className=" !normal-case"
+						/>
 					</Tabs>
 				</Box>
 				<CustomTabPanel value={value} index={0}>
@@ -231,6 +261,13 @@ const Competition = () => {
 						))}
 					</div>
 				</CustomTabPanel>
+				<CustomTabPanel value={value} index={2}>
+					<div className="flex flex-wrap gap-3">
+						{participants?.map((item, index) => (
+							<Participant key={index} participant={item} />
+						))}
+					</div>
+				</CustomTabPanel>
 			</Box>
 		</div>
 	);
@@ -239,6 +276,38 @@ const Competition = () => {
 export default Competition;
 
 const RoundDetail = ({ round }) => {
+	console.log(round);
+	const isApproved = round?.approved;
+	const { close, isOpen, open } = useModal();
+	const columns = [
+		{
+			field: 'roundResultStudent.id',
+			headerName: 'ID',
+			width: 200,
+			valueGetter: (params) => params.row.roundResultStudent.id,
+		},
+
+		{
+			field: 'roundResultStudent.fullName',
+			headerName: ' FullName',
+			width: 300,
+			valueGetter: (params) => params.row.roundResultStudent.fullName,
+		},
+		{
+			headerName: 'Status',
+			width: 160,
+			// chip
+			renderCell: (params) => {
+				const scorePoint = round?.scorePoint;
+				const score = params.row.score;
+				if (score >= scorePoint) {
+					return <Chip label="Pass" color="success" />;
+				} else {
+					return <Chip label="Fail" color="error" />;
+				}
+			},
+		},
+	];
 	return (
 		<div
 			key={round.id}
@@ -257,6 +326,53 @@ const RoundDetail = ({ round }) => {
 			<div className="flex justify-between my-4">
 				<p className="font-semibold">Date</p>
 				<p>{round?.timeStart}</p>
+			</div>
+			<Button
+				title={
+					isApproved
+						? ''
+						: 'This round has not been approved by the admin'
+				}
+				disabled={!isApproved}
+				variant="contained"
+				color="primary"
+				className="w-full"
+				onClick={open}
+			>
+				Result
+			</Button>
+			<Modal
+				open={isOpen}
+				onClose={close}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+				className="flex items-center justify-center "
+			>
+				<Box className="bg-white w-[720px] h-[620px]  flex flex-col p-4 gap-7 rounded-xl">
+					<Typography
+						id="modal-modal-title"
+						variant="h6"
+						component="h2"
+						className="!font-semibold "
+					>
+						Result
+					</Typography>
+					<Table columns={columns} rows={round.roundResultRound} />
+				</Box>
+			</Modal>
+		</div>
+	);
+};
+
+const Participant = ({ participant }) => {
+	return (
+		<div className="flex flex-col w-[300px] p-6 bg-amber-100 justify-between items-center shadow-md rounded-md py-3">
+			<div className="flex items-center gap-3">
+				<p>{participant?.fullName}</p>
+			</div>
+			<div className="flex items-center gap-3">
+				<p>{participant?.accountStudent?.email}</p>
+				<p>{participant?.phone}</p>
 			</div>
 		</div>
 	);

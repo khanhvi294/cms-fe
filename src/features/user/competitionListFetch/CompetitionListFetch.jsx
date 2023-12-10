@@ -150,9 +150,19 @@ const CompetitionListFetch = () => {
 										onClick={() =>
 											handleShowResult(competition.id)
 										}
-										className="!bg-[#ec4848] !text-white"
+										className="!bg-yellow-700 !text-white"
 									>
-										Results
+										My result
+									</Button>
+								)}
+								{status === 2 && (
+									<Button
+										onClick={() =>
+											handleShowResult(competition.id)
+										}
+										className="!bg-yellow-700 !text-white"
+									>
+										Final result
 									</Button>
 								)}
 							</div>
