@@ -59,8 +59,8 @@ const Header = () => {
       >
         <MenuItem
           onClick={() => {
-            handleClose;
             navigate("/admin/profile");
+            handleClose();
           }}
         >
           My account

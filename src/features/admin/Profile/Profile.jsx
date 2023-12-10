@@ -9,7 +9,7 @@ import { updateInfoEmployee } from "../../../services/employeeService";
 // import { uploadImg } from "../../../../utils/firebaseFns";
 
 const Profile = () => {
-  const user = useSelector((state) => state.user.data.info.accountEmployee);
+  const user = useSelector((state) => state.user.data.info);
 
   const dispatch = useDispatch();
 
@@ -28,7 +28,11 @@ const Profile = () => {
 
   return (
     <div>
-      <ProfileUpdate user={user} updateInfo={updateProfileMutation} />
+      <ProfileUpdate
+        user={user?.accountEmployee}
+        updateInfo={updateProfileMutation}
+        role={user?.role}
+      />
     </div>
   );
 };

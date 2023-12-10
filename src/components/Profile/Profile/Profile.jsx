@@ -16,8 +16,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { uploadImg } from "../../../utils/cloundinaryFns";
 import PhotoUpload from "../PhotoUpload";
+import { ROLES } from "../../../configs/role";
 
-const ProfileUpdate = ({ user, updateInfo }) => {
+const ProfileUpdate = ({ user, updateInfo, role }) => {
   const today = new Date();
   const [edit, setEdit] = useState(false);
   const {
@@ -48,6 +49,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
   };
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
+  console.log("hhh", user);
   return (
     <div>
       {console.log(user?.cccd)}
@@ -205,7 +207,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 value={user?.address}
               />
             )}
-            {user?.accountEmployee && (
+            {role !== ROLES.STUDENT && (
               <>
                 {edit ? (
                   <TextField

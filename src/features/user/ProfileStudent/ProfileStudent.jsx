@@ -8,7 +8,7 @@ import { updateProfileStudent } from "../../../services/studentService";
 import { useForm } from "react-hook-form";
 
 const ProfileStudent = () => {
-  const user = useSelector((state) => state.user.data.info.accountStudent);
+  const user = useSelector((state) => state.user.data.info);
 
   const { reset } = useForm();
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const ProfileStudent = () => {
   const updateProfileMutation = useMutation({
     mutationFn: updateProfileStudent,
     onSuccess: (data) => {
-      dispatch(setUser(data.data));
+      //  dispatch(setUser(data.data));
       queryClient.invalidateQueries(["user"]);
       toast.success("Update profile successfully");
     },
@@ -28,7 +28,11 @@ const ProfileStudent = () => {
   console.log(user);
   return (
     <div>
-      <ProfileUpdate user={user} updateInfo={updateProfileMutation} />
+      <ProfileUpdate
+        user={user?.accountStudent}
+        updateInfo={updateProfileMutation}
+        role={user?.role}
+      />
     </div>
   );
 };

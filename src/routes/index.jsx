@@ -28,6 +28,7 @@ import UserScore from "../features/user/Score/Score";
 import DashboardAdmin from "../features/admin/Dashboard/Dashboard";
 import { appRoutes } from "./appRouter";
 import ProfileStudent from "../features/user/ProfileStudent/ProfileStudent";
+import ProfileTeacher from "../features/teacher/profile/ProfileTeacher";
 
 // import Rounds from "../features/admin/Rounds/Rounds";
 
@@ -86,6 +87,7 @@ export const AppRouter = () => {
         <Route path="/demo" element={<Demo />} />
         <Route path={appRoutes.TROUND} element={<RoundJudge />} />
         <Route path={appRoutes.TSCORE} element={<InputScore />} />
+        <Route path="/teacher/profile" element={<ProfileTeacher />} />
       </Route>
     </Routes>
   );
