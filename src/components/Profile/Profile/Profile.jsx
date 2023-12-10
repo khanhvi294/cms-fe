@@ -42,6 +42,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
     } else data.avatar = user.avatar;
 
     updateInfo.mutate(data);
+    setEdit(false);
   };
   const label = { inputProps: { "aria-label": "Switch demo" } };
   return (
@@ -50,22 +51,14 @@ const ProfileUpdate = ({ user, updateInfo }) => {
       <div className="flex gap-2 mt-4 justify-end items-center">
         <Switch
           className="relative h-6 w-12"
+          checked={edit}
           {...label}
+          defaultValue={false}
           onChange={(e) => {
             setEdit(e.target.checked);
           }}
         />
-        {/* <label className="relative h-6 w-12">
-          <input
-            type="checkbox"
-            onChange={(e) => {
-              setEdit(e.target.checked);
-            }}
-            className="custom_switch peer text-red-500 absolute z-10 h-full w-full cursor-pointer opacity-0"
-            id="custom_switch_checkbox1"
-          />
-          <span className="outline_checkbox bg-icon block h-full rounded-full border-2 border-[#ebedf2] before:absolute before:bottom-1 before:left-1 before:h-4 before:w-4 before:rounded-full before:bg-[#ebedf2] before:bg-[url(/assets/images/close.svg)] before:bg-center before:bg-no-repeat before:transition-all before:duration-300 peer-checked:border-primary peer-checked:before:left-7 peer-checked:before:bg-primary peer-checked:before:bg-[url(/assets/images/checked.svg)] dark:border-white-dark dark:before:bg-white-dark"></span>
-        </label> */}
+
         <span className="font-normal"> Edit</span>
       </div>
       <div className="flex gap-9 mt-10">
@@ -118,104 +111,173 @@ const ProfileUpdate = ({ user, updateInfo }) => {
         </Box>
         <div className="flex flex-col justify-around rounded-2xl border bg-white p-8 shadow-xl w-[900px] gap-6">
           <div className="flex gap-5">
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="FullName*"
-              variant="outlined"
-              defaultValue={user?.fullName}
-              error={!!errors.fullName}
-              helperText={errors.fullName ? errors.fullName.message : ``}
-              disabled={!edit}
-              className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-              {...register("fullName", {
-                required: "FullName is required filed",
-              })}
-            />{" "}
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="Phone"
-              variant="outlined"
-              className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-              type="number"
-              disabled={!edit}
-              defaultValue={user?.phone}
-              error={!!errors.phone}
-              helperText={errors.phone ? errors.phone.message : ``}
-              {...register("phone", {
-                minLength: {
-                  value: 10,
-                  message: "Phone must be exactly 10 characters",
-                },
-                maxLength: {
-                  value: 10,
-                  message: "Phone must be exactly 10 characters",
-                },
-              })}
-            />
+            {edit ? (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="FullName*"
+                variant="outlined"
+                defaultValue={user?.fullName}
+                error={!!errors.fullName}
+                helperText={errors.fullName ? errors.fullName.message : ``}
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                {...register("fullName", {
+                  required: "FullName is required filed",
+                })}
+              />
+            ) : (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="FullName*"
+                variant="outlined"
+                defaultValue={user?.fullName}
+                disabled={!edit}
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+              />
+            )}
+            {edit ? (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Phone"
+                variant="outlined"
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                type="number"
+                defaultValue={user?.phone}
+                error={!!errors.phone}
+                helperText={errors.phone ? errors.phone.message : ``}
+                {...register("phone", {
+                  minLength: {
+                    value: 10,
+                    message: "Phone must be exactly 10 characters",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "Phone must be exactly 10 characters",
+                  },
+                })}
+              />
+            ) : (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="Phone"
+                variant="outlined"
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                type="number"
+                disabled={!edit}
+                defaultValue={user?.phone}
+                error={!!errors.phone}
+                helperText={errors.phone ? errors.phone.message : ``}
+              />
+            )}
           </div>
 
           <div className="flex gap-5">
-            <TextField
-              id="outlined-basic"
-              size="small"
-              disabled={!edit}
-              label="address"
-              variant="outlined"
-              className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-              defaultValue={user?.address}
-              error={!!errors.address}
-              helperText={errors.address ? errors.address.message : ``}
-              {...register("address")}
-            />
-            <TextField
-              id="outlined-basic"
-              size="small"
-              label="CCCD*"
-              type="number"
-              disabled={!edit}
-              defaultValue={user?.cccd}
-              variant="outlined"
-              className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-              error={!!errors.cccd}
-              helperText={errors.cccd ? errors.cccd.message : ``}
-              {...register("cccd", {
-                required: "CCCD is required filed",
-                minLength: {
-                  value: 12,
-                  message: "CCCD must be exactly 12 characters",
-                },
-                maxLength: {
-                  value: 12,
-                  message: "CCCD must be exactly 12 characters",
-                },
-              })}
-            />
+            {edit ? (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="address"
+                variant="outlined"
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                defaultValue={user?.address}
+                error={!!errors.address}
+                helperText={errors.address ? errors.address.message : ``}
+                {...register("address")}
+              />
+            ) : (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                disabled={!edit}
+                label="address"
+                variant="outlined"
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                defaultValue={user?.address}
+              />
+            )}
+            {edit ? (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="CCCD*"
+                type="number"
+                defaultValue={user?.cccd}
+                variant="outlined"
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                error={!!errors.cccd}
+                helperText={errors.cccd ? errors.cccd.message : ``}
+                {...register("cccd", {
+                  required: "CCCD is required filed",
+                  minLength: {
+                    value: 12,
+                    message: "CCCD must be exactly 12 characters",
+                  },
+                  maxLength: {
+                    value: 12,
+                    message: "CCCD must be exactly 12 characters",
+                  },
+                })}
+              />
+            ) : (
+              <TextField
+                id="outlined-basic"
+                size="small"
+                label="CCCD*"
+                type="number"
+                disabled={!edit}
+                defaultValue={user?.cccd}
+                variant="outlined"
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+              />
+            )}
           </div>
           <div className="flex gap-5">
-            <TextField
-              error={!!errors.dateOfBirth}
-              helperText={errors.dateOfBirth ? errors.dateOfBirth.message : ``}
-              size="small"
-              label="DOB"
-              type="date"
-              disabled={!edit}
-              defaultValue={user?.dateOfBirth}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
-              }}
-              // defaultValue={
-              //   classEdit ? classEdit.timeStart : formattedTomorrow
-              // }
-              className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-              {...register("dateOfBirth", {
-                required: "Date of birth is require",
-              })}
-            />
+            {edit ? (
+              <TextField
+                error={!!errors.dateOfBirth}
+                helperText={
+                  errors.dateOfBirth ? errors.dateOfBirth.message : ``
+                }
+                size="small"
+                label="DOB"
+                type="date"
+                defaultValue={user?.dateOfBirth}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
+                }}
+                // defaultValue={
+                //   classEdit ? classEdit.timeStart : formattedTomorrow
+                // }
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                {...register("dateOfBirth", {
+                  required: "Date of birth is require",
+                })}
+              />
+            ) : (
+              <TextField
+                size="small"
+                label="DOB"
+                type="date"
+                disabled={!edit}
+                defaultValue={user?.dateOfBirth}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  max: format(today, "yyyy-MM-dd"), // Set your desired maximum date
+                }}
+                // defaultValue={
+                //   classEdit ? classEdit.timeStart : formattedTomorrow
+                // }
+                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+              />
+            )}
           </div>
           <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
@@ -225,38 +287,46 @@ const ProfileUpdate = ({ user, updateInfo }) => {
               name="radio-buttons-group"
               row
             >
-              <FormControlLabel
-                {...register("gender")}
-                value={false}
-                control={<Radio />}
-                label="Female"
-                disabled={!edit}
-              />
-              <FormControlLabel
-                {...register("gender")}
-                value={true}
-                control={<Radio />}
-                label="Male"
-                disabled={!edit}
-              />
+              {edit ? (
+                <FormControlLabel
+                  {...register("gender")}
+                  value={false}
+                  control={<Radio />}
+                  label="Female"
+                />
+              ) : (
+                <FormControlLabel
+                  value={false}
+                  control={<Radio />}
+                  label="Female"
+                  disabled={!edit}
+                />
+              )}
+
+              {edit ? (
+                <FormControlLabel
+                  {...register("gender")}
+                  value={true}
+                  control={<Radio />}
+                  label="Male"
+                />
+              ) : (
+                <FormControlLabel
+                  value={true}
+                  control={<Radio />}
+                  label="Male"
+                  disabled={!edit}
+                />
+              )}
             </RadioGroup>
           </FormControl>
           <div className="flex justify-end gap-3">
-            {/* <Button
-              variant="outlined"
-              className="btn rounded-full normal-case "
-              color="error"
-              size="medium"
-            >
-              Cancel
-            </Button> */}
             {edit && (
               <Button
                 type="submit"
                 variant="contained"
-                className="btn ml-3 rounded-full normal-case"
+                className="btn ml-3 rounded-full normal-case !bg-black"
                 size="medium"
-                color="success"
                 disableElevation
                 onClick={handleSubmit(handleSave)}
               >

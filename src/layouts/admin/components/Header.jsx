@@ -12,11 +12,13 @@ const Header = () => {
   const userName = useSelector(
     (state) => state.user?.data?.info?.accountEmployee?.fullName
   );
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    navigate("/admin/profile");
     setAnchorEl(null);
   };
 

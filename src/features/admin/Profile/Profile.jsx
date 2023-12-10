@@ -32,11 +32,12 @@ const Profile = () => {
   const today = new Date();
 
   const dispatch = useDispatch();
+
   const updateProfileMutation = useMutation({
     mutationFn: updateInfoEmployee,
     onSuccess: (data) => {
-      console.log(data.data.data);
-      // dispatch(setUser(data.data.data));
+      console.log(data);
+      dispatch(setUser(data.data));
 
       toast.success("Update profile successfully");
     },
