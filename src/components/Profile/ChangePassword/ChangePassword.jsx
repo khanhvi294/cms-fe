@@ -1,69 +1,96 @@
-import React from "react";
+import { Alert, Button, TextField } from "@mui/material";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { changePassword } from "../../../services/authService";
+import { toast } from "react-toastify";
 
 const ChangePassword = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-
+  const [error, setError] = useState();
   const onSubmit = async (data) => {
-    const { password, repassword } = data;
-    if (password === repassword) {
-      //  changePassword({ expassword: data.expassword, password: data.password });
+    const { newPassword, reNewPassword } = data;
+    if (newPassword === reNewPassword) {
+      console.log(data);
+      changePasswordMutation.mutate({
+        password: data.password,
+        newPassword: data.newPassword,
+      });
     } else {
-      // setError('Mật khẩu không trùng!');
+      setError("Password is not match!");
     }
-    // setValuePass('password', '');
-    // setValuePass('expassword', '');
-    // setValuePass('repassword', '');
+    reset();
+    //  setValuePass('password', '');
+    //  setValuePass('expassword', '');
+    //  setValuePass('repassword', '');
   };
+  const changePasswordMutation = useMutation({
+    mutationFn: (data) => changePassword(data),
+    onSuccess: (data) => {
+      // queryClient.invalidateQueries(["judges", roundId]);
+      // queryClient.invalidateQueries(["teachers", roundId]);
+
+      toast.success("Change password successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
 
   return (
-    <form className="mx-auto mb-5 w-[90%] rounded-md bg-white p-4 dark:border-[#191e3a] dark:bg-black">
-      <h6 className="mb-5 text-lg font-bold">Thay đổi mật khẩu</h6>
+    <form className="mx-auto mb-5 rounded-md bg-white">
+      <h6 className="text-2xl font-semibold">Change password</h6>
 
-      <div className="mx-auto mt-12 flex  w-[80%] flex-col sm:flex-row">
+      <div className="mx-auto mt-12 flex  flex-col sm:flex-row">
         <div className=" flex w-[400px] flex-col gap-5">
           <div>
-            <label htmlFor="password">Mật khẩu</label>
-            <input
-              {...register("expassword", { required: true, minLength: 6 })}
-              id="password"
+            <TextField
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
+              className="w-full"
+              size="small"
               type="password"
-              className="form-input"
-              placeholder="Mật khẩu"
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Mật khẩu mới</label>
-            <input
               {...register("password", { required: true, minLength: 6 })}
-              id="password"
-              type="password"
-              className="form-input"
-              placeholder="Mật khẩu"
             />
           </div>
           <div>
-            <label htmlFor="password">Nhập lại mật khẩu</label>
-            <input
-              {...register("repassword", { required: true, minLength: 6 })}
+            <TextField
+              id="outlined-basic"
+              label="New Password"
+              size="small"
+              variant="outlined"
+              className="w-full"
+              {...register("newPassword", { required: true, minLength: 6 })}
               type="password"
-              className="form-input"
-              placeholder="Nhập lại mật khẩu"
             />
           </div>
-          {/* {error && <Alert severity="error">{error}</Alert>} */}
+          <div>
+            <TextField
+              id="outlined-basic"
+              label="RePassword"
+              size="small"
+              variant="outlined"
+              className="w-full"
+              {...register("reNewPassword", { required: true, minLength: 6 })}
+              type="password"
+            />
+          </div>
+          {error && <Alert severity="error">{error}</Alert>}
           <div className="mt-3 sm:col-span-2">
-            <button
+            <Button
+              variant="contained flex-end !bg-[#000] !text-white !rounded-md"
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary bg-black text-white !self-end"
               onClick={handleSubmit(onSubmit)}
             >
-              Lưu
-            </button>
+              Save
+            </Button>
           </div>
         </div>
       </div>
