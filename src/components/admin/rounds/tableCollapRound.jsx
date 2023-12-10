@@ -123,10 +123,11 @@ function Row(props) {
 		},
 	});
 	const onSubmit = async (data) => {
+		let fileUrl = row?.exam;
 		if (fileExam) {
 			try {
 				const url = await uploadFile(fileExam);
-				data.exam = url;
+				fileUrl = url;
 			} catch (error) {
 				console.log(error);
 			}
@@ -139,6 +140,7 @@ function Row(props) {
 			...data,
 			id: row?.id,
 			competitionId: row?.competitionId,
+			exam: fileUrl,
 		});
 		reset();
 	};
