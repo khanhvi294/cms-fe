@@ -18,7 +18,7 @@ export const RoundResult = ({ round }) => {
 
 	const roundResult = data?.data;
 
-	if (!roundResult) return null;
+	if (!roundResult || !round?.approved) return null;
 
 	const score = roundResult?.score;
 	const roundResultScore = roundResult?.roundResultScore;
@@ -36,7 +36,10 @@ export const RoundResult = ({ round }) => {
 			</div>
 			{roundResultScore?.map((item, index) => {
 				return (
-					<div key={index} className="justify-between flex h-12 p-3">
+					<div
+						key={index}
+						className="justify-between flex h-12 p-3 border-b last:border-0"
+					>
 						<span>{item?.scoreJudge?.employeeJudge?.fullName}</span>
 						<span>{item?.score}</span>
 					</div>
