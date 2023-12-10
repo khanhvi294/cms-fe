@@ -12,6 +12,7 @@ const Header = () => {
   const userName = useSelector(
     (state) => state.user?.data?.info?.accountEmployee?.fullName
   );
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,7 +57,14 @@ const Header = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem
+          onClick={() => {
+            navigate("/admin/profile");
+            handleClose();
+          }}
+        >
+          My account
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
