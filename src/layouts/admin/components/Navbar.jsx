@@ -8,6 +8,38 @@ const Navbar = () => {
 
   const navbarItems = [
     {
+      title: "Dashboard",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          id="list"
+          width={18}
+        >
+          <path
+            d="M30 2H4a2 2 0 0 0-2 2v26a2 2 0 0 0 2 2h26a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-5 22H9a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2zm0-6H9a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2zm0-6H9a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2z"
+            fill="#9ea8b4"
+            className="color000000 svgShape"
+          ></path>
+        </svg>
+      ),
+      iconActive: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          id="list"
+          width={18}
+        >
+          <path
+            d="M30 2H4a2 2 0 0 0-2 2v26a2 2 0 0 0 2 2h26a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-5 22H9a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2zm0-6H9a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2zm0-6H9a1 1 0 0 1 0-2h16a1 1 0 0 1 0 2z"
+            fill="#ffffff"
+            className="color000000 svgShape"
+          ></path>
+        </svg>
+      ),
+      path: appRoutes.ADASHBOARD
+    },
+    {
       title: "Courses",
       icon: (
         <svg

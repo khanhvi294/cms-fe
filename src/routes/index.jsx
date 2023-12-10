@@ -25,6 +25,7 @@ import Students from '../features/admin/Student/Students';
 import TeacherLayout from '../layouts/teacher/TeacherLayout';
 import UserLayout from '../layouts/user/UserLayout';
 import UserScore from '../features/user/Score/Score';
+import DashboardAdmin from '../features/admin/Dashboard/Dashboard';
 import { appRoutes } from './appRouter';
 
 // import Rounds from "../features/admin/Rounds/Rounds";
@@ -67,6 +68,7 @@ export const AppRouter = () => {
 				<Route path={appRoutes.AEMPLOYEES} element={<Employees />} />
 				<Route path={appRoutes.ACLASSES} element={<Classes />} />
 				<Route path={appRoutes.ACOURSES} element={<Courses />} />
+				<Route path={appRoutes.ADASHBOARD} element={<DashboardAdmin />} />
 				<Route
 					path={appRoutes.ACOMPETITIONS}
 					element={<Competitions />}

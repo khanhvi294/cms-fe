@@ -2,6 +2,7 @@ export const appRoutes = {
 	HOME: '/',
 	COMPETITIONS: '/competitions',
 	AEXAMFORMS: '/admin/examforms',
+	ADASHBOARD: '/admin/dashboard',
 	CLASSES: '/classes',
 	COMPETITION_DETAIL: '/competition/:id',
 	COMPETITION_RESULT: '/competitions/:id/result',
