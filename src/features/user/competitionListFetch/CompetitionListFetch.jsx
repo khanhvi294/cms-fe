@@ -24,7 +24,10 @@ const CompetitionListFetch = () => {
 		onError: (err) => console.log(err),
 	});
 
-	const competitions = competitionsData?.data || [];
+	const competitions = useMemo(
+		() => competitionsData?.data || [],
+		[competitionsData],
+	);
 
 	const registerCompetitionMutation = useMutation({
 		mutationFn: registerCompetition,
@@ -67,11 +70,36 @@ const CompetitionListFetch = () => {
 		navigate(`/competitions/${id}/result`);
 	};
 
+	const [currentStatus, setCurrentStatus] = useState(statusList[0]);
+	const [currentRegister, setCurrentRegister] = useState(registerList[0]);
+
+	const competitionsFilter = useMemo(() => {
+		let result = competitions;
+		if (currentStatus.value !== -1) {
+			result = result.filter(
+				(item) => item.status === currentStatus.value,
+			);
+		}
+		if (currentRegister.value !== -1) {
+			result = result.filter((item) => {
+				const isRegister = competitionIds?.includes(item.id);
+				if (currentRegister.value === 0) return isRegister;
+				return !isRegister;
+			});
+		}
+		return result;
+	}, [competitions, currentStatus, currentRegister, competitionIds]);
+
 	return (
 		<>
 			<p className="text-xl font-semibold mb-5">List competitions</p>
+			<Filter
+				onStatusChange={setCurrentStatus}
+				onRegisterChange={setCurrentRegister}
+			/>
+
 			<div className="flex flex-wrap gap-5">
-				{competitions.map((competition, index) => {
+				{competitionsFilter.map((competition, index) => {
 					const isRegister = competitionIds?.includes(competition.id);
 					const status = competition.status;
 					const canSeeResult =
@@ -196,4 +224,97 @@ const getChipPropsObject = (status) => {
 			break;
 	}
 	return { label, className };
+};
+
+const statusList = [
+	{
+		label: 'All',
+		value: -1,
+	},
+	{
+		label: 'Upcoming',
+		value: 0,
+	},
+	{
+		label: 'In progress',
+		value: 1,
+	},
+	{
+		label: 'Completed',
+		value: 2,
+	},
+	{
+		label: 'Canceled',
+		value: 3,
+	},
+];
+
+const registerList = [
+	{
+		label: 'All',
+		value: -1,
+	},
+	{
+		label: 'Registered',
+		value: 0,
+	},
+	{
+		label: 'Not registered',
+		value: 1,
+	},
+];
+
+const Filter = ({ onStatusChange, onRegisterChange }) => {
+	const [status, setStatus] = useState(statusList[0]);
+	const [register, setRegister] = useState(registerList[0]);
+
+	const handleStatusChange = (value) => {
+		setStatus(value);
+		onStatusChange(value);
+	};
+
+	const handleRegisterChange = (value) => {
+		setRegister(value);
+		onRegisterChange(value);
+	};
+
+	return (
+		<div className="flex gap-5 mb-4">
+			<div className="flex flex-col gap-2">
+				<p className="text-lg font-semibold">Status</p>
+
+				<div className="flex gap-2">
+					{statusList.map((item, index) => (
+						<Chip
+							key={index}
+							label={item.label}
+							onClick={() => handleStatusChange(item)}
+							className={`${
+								status.value === item.value
+									? '!bg-[#38c0e6] !text-white'
+									: '!bg-[#ddf3f9] !text-[#38c0e6]'
+							} !font-medium`}
+						/>
+					))}
+				</div>
+			</div>
+			<div className="flex flex-col gap-2">
+				<p className="text-lg font-semibold">Register</p>
+				<div className="flex gap-2">
+					{registerList.map((item, index) => (
+						<Chip
+							key={index}
+							label={item.label}
+							onClick={() => handleRegisterChange(item)}
+							className={`${
+								register.value === item.value
+									? '!bg-[#38c0e6] !text-white'
+									: '!bg-[#ddf3f9] !text-[#38c0e6]'
+							} !font-medium`}
+						/>
+					))}
+				</div>
+			</div>
+		</div>
+	);
 };
