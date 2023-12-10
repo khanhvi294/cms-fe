@@ -86,6 +86,8 @@ export default function TableScore({ roundId }) {
 			isNew: isNew,
 		};
 		inputScoreMutation.mutate(data);
+		setCurrentRowId(null);
+		setScore(null);
 		setRowModesModel({
 			...rowModesModel,
 			[id]: { mode: GridRowModes.View },
