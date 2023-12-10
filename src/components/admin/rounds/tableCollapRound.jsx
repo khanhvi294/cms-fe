@@ -20,10 +20,12 @@ import { deleteRound, updateRound } from '../../../services/roundService';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import Box from '@mui/material/Box';
+import { CheckIcon } from '../../icons/CheckIcon';
 import Collapse from '@mui/material/Collapse';
 import { FlagIcon } from '../../icons';
 import IconButton from '@mui/material/IconButton';
 import ModalAddJudge from '../judges/modalAddJudge';
+import ModalApprove from './ModelApprove';
 import ModalConfirmDelete from '../../Modal/modalConfirmDelete';
 import { ModalRoundResult } from '../../../features/admin/Competitions/ModalRoundResult';
 import Paper from '@mui/material/Paper';
@@ -50,13 +52,20 @@ function Row(props) {
 	const [itemDelete, setItemDelete] = React.useState();
 	const [funcDelete, setFuncDelete] = React.useState(false);
 	const [openEditRound, setOpenEditRound] = React.useState(false);
-	const [currentRoundId, setCurrentRoundId] = React.useState(null);
+
 	const {
 		isOpen: isOpenResult,
 		close: closeResult,
 		open: openResult,
 	} = useModal(false);
 	const [fileExam, setFileExam] = React.useState();
+
+	const {
+		isOpen: isOpenApprove,
+		close: closeApprove,
+		open: openApprove,
+	} = useModal(false);
+
 	// eslint-disable-next-line no-unused-vars
 	const [error, setError] = React.useState(null);
 	const queryClient = useQueryClient();
@@ -204,8 +213,8 @@ function Row(props) {
 						<Link to={row?.exam}>{getFileName(row?.exam)}</Link>
 					</div>
 				</TableCell>
-				<TableCell align="left">
-					<div className="flex justify-end gap-4">
+				<TableCell align="center">
+					<div className="flex justify-center">
 						<IconButton
 							onClick={() => {
 								setOpenEditRound(true);
@@ -263,13 +272,11 @@ function Row(props) {
 								></path>
 							</svg>
 						</IconButton>
-						<IconButton
-							onClick={() => {
-								setCurrentRoundId(row?.id);
-								openResult();
-							}}
-						>
-							<FlagIcon className="w-4 font-bold h-4" />
+						<IconButton onClick={openResult}>
+							<FlagIcon className="w-4 text-black h-4" />
+						</IconButton>
+						<IconButton onClick={openApprove}>
+							<CheckIcon className="w-4 h-4 text-black" />
 						</IconButton>
 					</div>
 				</TableCell>
@@ -564,12 +571,31 @@ function Row(props) {
 			</Modal>
 			<ModalRoundResult
 				isOpen={isOpenResult}
-				onClose={() => {
-					closeResult();
-					setCurrentRoundId(null);
-				}}
+				onClose={closeResult}
 				roundId={row?.id}
 			/>
+			<Modal
+				open={isOpenApprove}
+				onClose={closeApprove}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+				className="flex items-center justify-center "
+			>
+				<Box className="bg-white w-[1080px] min-h-[640px]  rounded-2xl p-5 ">
+					<Typography
+						id="modal-modal-title"
+						variant="h6"
+						component="h2"
+						className="font-bold self-center"
+					>
+						Approve
+					</Typography>
+					<ModalApprove
+						roundId={row?.id}
+						competitionId={row?.competitionId}
+					/>
+				</Box>
+			</Modal>
 		</React.Fragment>
 	);
 }
@@ -598,7 +624,7 @@ export default function RoundTable({ rows }) {
 						<TableCell className="!font-semibold" align="left">
 							EXAM
 						</TableCell>
-						<TableCell className="!font-semibold" align="left">
+						<TableCell className="!font-semibold" align="center">
 							ACTIONS
 						</TableCell>
 					</TableRow>
