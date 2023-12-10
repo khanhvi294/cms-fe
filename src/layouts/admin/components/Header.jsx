@@ -18,7 +18,6 @@ const Header = () => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    navigate("/admin/profile");
     setAnchorEl(null);
   };
 
@@ -58,7 +57,14 @@ const Header = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose;
+            navigate("/admin/profile");
+          }}
+        >
+          My account
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

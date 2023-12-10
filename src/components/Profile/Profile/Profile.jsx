@@ -25,6 +25,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
   const [upLoadData, setUploadData] = useState({
     previewImg: user?.avatar,
@@ -43,10 +44,13 @@ const ProfileUpdate = ({ user, updateInfo }) => {
 
     updateInfo.mutate(data);
     setEdit(false);
+    reset();
   };
+
   const label = { inputProps: { "aria-label": "Switch demo" } };
   return (
     <div>
+      {console.log(user?.cccd)}
       <span className="text-2xl font-semibold">Profile</span>
       <div className="flex gap-2 mt-4 justify-end items-center">
         <Switch
@@ -109,7 +113,10 @@ const ProfileUpdate = ({ user, updateInfo }) => {
             </div>
           </div>
         </Box>
-        <div className="flex flex-col justify-around rounded-2xl border bg-white p-8 shadow-xl w-[900px] gap-6">
+        <form
+          className="flex flex-col justify-around rounded-2xl border bg-white p-8 shadow-xl w-[900px] gap-6"
+          onSubmit={handleSubmit(handleSave)}
+        >
           <div className="flex gap-5">
             {edit ? (
               <TextField
@@ -131,7 +138,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 size="small"
                 label="FullName*"
                 variant="outlined"
-                defaultValue={user?.fullName}
+                value={user?.fullName}
                 disabled={!edit}
                 className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
               />
@@ -167,7 +174,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
                 type="number"
                 disabled={!edit}
-                defaultValue={user?.phone}
+                value={user?.phone}
                 error={!!errors.phone}
                 helperText={errors.phone ? errors.phone.message : ``}
               />
@@ -195,43 +202,47 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 label="address"
                 variant="outlined"
                 className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-                defaultValue={user?.address}
+                value={user?.address}
               />
             )}
-            {edit ? (
-              <TextField
-                id="outlined-basic"
-                size="small"
-                label="CCCD*"
-                type="number"
-                defaultValue={user?.cccd}
-                variant="outlined"
-                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-                error={!!errors.cccd}
-                helperText={errors.cccd ? errors.cccd.message : ``}
-                {...register("cccd", {
-                  required: "CCCD is required filed",
-                  minLength: {
-                    value: 12,
-                    message: "CCCD must be exactly 12 characters",
-                  },
-                  maxLength: {
-                    value: 12,
-                    message: "CCCD must be exactly 12 characters",
-                  },
-                })}
-              />
-            ) : (
-              <TextField
-                id="outlined-basic"
-                size="small"
-                label="CCCD*"
-                type="number"
-                disabled={!edit}
-                defaultValue={user?.cccd}
-                variant="outlined"
-                className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
-              />
+            {user?.accountEmployee && (
+              <>
+                {edit ? (
+                  <TextField
+                    id="outlined-basic"
+                    size="small"
+                    label="CCCD*"
+                    type="number"
+                    defaultValue={user?.cccd}
+                    variant="outlined"
+                    className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                    error={!!errors.cccd}
+                    helperText={errors.cccd ? errors.cccd.message : ``}
+                    {...register("cccd", {
+                      required: "CCCD is required filed",
+                      minLength: {
+                        value: 12,
+                        message: "CCCD must be exactly 12 characters",
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: "CCCD must be exactly 12 characters",
+                      },
+                    })}
+                  />
+                ) : (
+                  <TextField
+                    id="outlined-basic"
+                    size="small"
+                    label="CCCD*"
+                    type="number"
+                    disabled={!edit}
+                    value={user?.cccd}
+                    variant="outlined"
+                    className={`${!edit ? "bg-[#e9ecef]" : ""} w-full`}
+                  />
+                )}
+              </>
             )}
           </div>
           <div className="flex gap-5">
@@ -265,7 +276,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 label="DOB"
                 type="date"
                 disabled={!edit}
-                defaultValue={user?.dateOfBirth}
+                value={user?.dateOfBirth}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -283,7 +294,7 @@ const ProfileUpdate = ({ user, updateInfo }) => {
             <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue={!!user?.gender}
+              value={!!user?.gender}
               name="radio-buttons-group"
               row
             >
@@ -328,13 +339,12 @@ const ProfileUpdate = ({ user, updateInfo }) => {
                 className="btn ml-3 rounded-full normal-case !bg-black"
                 size="medium"
                 disableElevation
-                onClick={handleSubmit(handleSave)}
               >
                 Save
               </Button>
             )}
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

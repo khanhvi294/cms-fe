@@ -12,6 +12,8 @@ const studentApi = {
     axiosClientPrivate.get(`${url}/${id}/competitions`),
   deleteStudent: (id) => axiosClientPrivate.delete(`${url}/${id}`),
   updateStudent: (student) => axiosClientPrivate.patch(`${url}/byad`, student),
+  updateProfileStudent: (student) =>
+    axiosClientPrivate.patch(`${url}`, student),
 };
 export const {
   createStudent,
@@ -21,5 +23,6 @@ export const {
   getStudentAddClass,
   deleteStudent,
   updateStudent,
+  updateProfileStudent,
 } = studentApi;
 export default studentApi;
