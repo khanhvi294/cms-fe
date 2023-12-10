@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 
 export const RoundResult = ({ round }) => {
+	console.log(round);
 	const userId = useSelector(
 		(state) => state.user?.data?.info?.accountStudent?.id,
 	);
@@ -23,18 +24,22 @@ export const RoundResult = ({ round }) => {
 	const score = roundResult?.score;
 	const roundResultScore = roundResult?.roundResultScore;
 
+	const employeeJudges = round.roundJudge;
+
 	return (
-		<div className="rounded-md w-[250px] shadow-md bg-white">
+		<div className="rounded-md w-[320px] shadow-md bg-white">
 			<div className="relative flex items-center p-3 justify-between ">
 				<p className="text-blue-500 font-medium text-lg">
 					{round?.name}
 				</p>
-
-				<div className="flex justify-center border  rounded-full w-10 h-10  items-center">
-					<p>{score ? score : 'N/A'}</p>
+				<div className="flex items-center gap-2">
+					<span>Final score</span>
+					<div className="flex justify-center border  rounded-full w-10 h-10  items-center">
+						<p>{score ? score : 'N/A'}</p>
+					</div>
 				</div>
 			</div>
-			{roundResultScore?.map((item, index) => {
+			{/* {roundResultScore?.map((item, index) => {
 				return (
 					<div
 						key={index}
@@ -42,6 +47,22 @@ export const RoundResult = ({ round }) => {
 					>
 						<span>{item?.scoreJudge?.employeeJudge?.fullName}</span>
 						<span>{item?.score}</span>
+					</div>
+				);
+			})} */}
+			{employeeJudges?.map((item, index) => {
+				const score = roundResultScore?.find(
+					(score) =>
+						score?.scoreJudge?.employeeId ===
+						item?.employeeJudge?.id,
+				);
+				return (
+					<div
+						key={index}
+						className="justify-between flex h-12 p-3 border-b last:border-0"
+					>
+						<span>{item?.employeeJudge?.fullName}</span>
+						<span>{score?.score ? score?.score : 'N/A'} score</span>
 					</div>
 				);
 			})}
