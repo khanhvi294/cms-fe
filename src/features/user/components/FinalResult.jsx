@@ -13,12 +13,12 @@ export const FinalResult = ({ competition, rounds }) => {
 		);
 		if (!sortedStudents) return [];
 		const result = [];
-		let rank = 1;
+		let rank = 0;
 		let prevScore = -1;
 		for (let i = 0; i < sortedStudents.length; i++) {
 			const student = sortedStudents[i];
 			if (student.score !== prevScore) {
-				rank = i + 1;
+				rank += 1;
 			}
 			result.push({ ...student, rank });
 			prevScore = student.score;
