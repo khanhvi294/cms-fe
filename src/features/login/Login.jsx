@@ -20,7 +20,7 @@ import { login } from "../../services/authService";
 import { setAccessToken } from "../../redux/slices/userSlice";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -55,15 +55,15 @@ const Login = () => {
       console.log(data.data.token);
       dispatch(setAccessToken(data.data.token));
 
-      handleRedirect();
+      // handleRedirect();
     },
     onError: (err) => {
       toast.error(err.message);
     },
   });
-  // useEffect(() => {
-  //   handleRedirect;
-  // }, [roleUser]);
+  useEffect(() => {
+    handleRedirect();
+  }, [roleUser]);
   const handleLogin = (account) => {
     loginMutation.mutate(account);
   };
