@@ -12,7 +12,6 @@ import {
 	Typography,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import React, { useState } from 'react';
 import {
 	addClassToCompetition,
 	deleteClassCompetition,
@@ -26,6 +25,7 @@ import {
 } from '../../../services/roundService';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
+import { FinalResult } from '../../user/components/FinalResult';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import ModalAddRound from '../../../components/admin/rounds/modalAddRound';
 import ModalConfirmDelete from '../../../components/Modal/modalConfirmDelete';
@@ -33,13 +33,13 @@ import PropTypes from 'prop-types';
 import RoundTable from '../../../components/admin/rounds/tableCollapRound';
 import { STATUS_COMPETITION } from '../../../configs/competitionStatus';
 import Table from '../../../components/Table/Table';
-import { createExamForm } from '../../../services/examFormService';
 import { toast } from 'react-toastify';
+import { useModal } from '../../../hooks/use-modal';
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
-
 	return (
 		<div
 			role="tabpanel"
@@ -73,6 +73,12 @@ function a11yProps(index) {
 const CompetitionDetail = () => {
 	const { id } = useParams();
 	const [competition, setCompetition] = useState();
+	const {
+		close: closeFinal,
+		isOpen: isOpenFinal,
+		open: OpenFinal,
+	} = useModal();
+
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => {
@@ -256,12 +262,23 @@ const CompetitionDetail = () => {
 		<>
 			<div>
 				<div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
-					<p
-						id="modal-modal-title"
-						className="font-semibold self-center !text-xl"
-					>
-						Competition
-					</p>
+					<div className="flex justify-between">
+						<p
+							id="modal-modal-title"
+							className="font-semibold self-center !text-xl"
+						>
+							Competition
+						</p>
+						{competition?.status === 2 && (
+							<Button
+								onClick={OpenFinal}
+								color="error"
+								variant="contained"
+							>
+								Result
+							</Button>
+						)}
+					</div>
 					<div className=" flex justify-between mt-4">
 						<div className="w-[250px] flex flex-col gap-2">
 							<div className="flex justify-between w-full ">
@@ -560,6 +577,15 @@ const CompetitionDetail = () => {
 				deleteMutation={deleteClassCompetitionMutation}
 				deleteId={classDelete}
 			/>
+			<Modal
+				open={isOpenFinal}
+				onClose={closeFinal}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+				className="flex items-center justify-center "
+			>
+				<FinalResult competition={competition} rounds={rows} />
+			</Modal>
 		</>
 	);
 };

@@ -156,7 +156,14 @@ function Row(props) {
 
 	return (
 		<React.Fragment>
-			<TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+			<TableRow
+				className={
+					row?.approved
+						? 'bg-green-100 hover:bg-green-200'
+						: 'bg-white hover:bg-gray-100'
+				}
+				sx={{ '& > *': { borderBottom: 'unset' } }}
+			>
 				<TableCell>
 					<IconButton
 						aria-label="expand row"
@@ -275,9 +282,11 @@ function Row(props) {
 						<IconButton onClick={openResult}>
 							<FlagIcon className="w-4 text-black h-4" />
 						</IconButton>
-						<IconButton onClick={openApprove}>
-							<CheckIcon className="w-4 h-4 text-black" />
-						</IconButton>
+						{!row?.approved && (
+							<IconButton onClick={openApprove}>
+								<CheckIcon className="w-4 h-4 text-black" />
+							</IconButton>
+						)}
 					</div>
 				</TableCell>
 			</TableRow>
