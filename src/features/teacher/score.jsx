@@ -12,7 +12,6 @@ const InputScore = () => {
     enabled: !!roundId,
     queryFn: () => getRoundById(roundId),
     onSuccess: (data) => {
-      console.log("voo", data.data);
       setRound(data.data);
     },
   });
