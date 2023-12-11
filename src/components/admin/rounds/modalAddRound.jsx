@@ -118,7 +118,7 @@ const ModalAddRound = ({
               className="block  text-sm mb-1 text-[#666666] "
               // for="default_size"
             >
-              Exam
+              Exam*
             </label>
             <input
               className="block w-full h-10  pl-1 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white  focus:outline-none"

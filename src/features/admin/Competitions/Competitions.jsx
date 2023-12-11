@@ -500,7 +500,7 @@ const Competitions = () => {
                     defaultValue={[]}
                     render={({ field }) => (
                       <>
-                        {" "}
+                       
                         <Select label="Select Items" multiple {...field}>
                           {classesJoin?.data?.map((item) => (
                             <MenuItem key={item.id} value={item.id}>
