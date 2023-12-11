@@ -43,7 +43,7 @@ const Login = () => {
     if (roleUser === ROLES.STUDENT) {
       navigate("/");
     } else if (roleUser === ROLES.EMPLOYEE) {
-      navigate(appRoutes.ACOURSES);
+      navigate(appRoutes.ADASHBOARD);
     } else if (roleUser === ROLES.TEACHER) {
       navigate(appRoutes.TROUND);
     }

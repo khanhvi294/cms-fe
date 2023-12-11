@@ -64,7 +64,14 @@ const Header = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleClose();
+                navigate(appRoutes.TROUND);
+              }}
+            >
+              Round
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 navigate("/teacher/profile");

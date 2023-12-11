@@ -91,14 +91,22 @@ const ModalAddJudge = ({ open, setOpen, setJudges, roundId }) => {
                 name="employeeIds"
                 control={control}
                 defaultValue={[]}
+                rules={{ required: "Please select at least one judge." }}
                 render={({ field }) => (
-                  <Select label="Select Items" multiple {...field}>
-                    {teachers?.data?.data.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.id} | {item.fullName}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <>
+                    <Select label="Select Items" multiple {...field}>
+                      {teachers?.data?.data.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.id} | {item.fullName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors.employeeIds && (
+                      <Typography variant="caption" color="error">
+                        {errors.employeeIds.message}
+                      </Typography>
+                    )}
+                  </>
                 )}
               />
             </FormControl>

@@ -299,7 +299,6 @@ const Competitions = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("clicckk");
     if (competitionEdit) {
       updateCompetitionMutation.mutate({ ...data, id: competitionEdit?.id });
     } else {
@@ -497,15 +496,24 @@ const Competitions = () => {
                   <Controller
                     name="competitionClass"
                     control={control}
+                    rules={{ required: "Please select at least one class." }}
                     defaultValue={[]}
                     render={({ field }) => (
-                      <Select label="Select Items" multiple {...field}>
-                        {classesJoin?.data?.map((item) => (
-                          <MenuItem key={item.id} value={item.id}>
-                            {item.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
+                      <>
+                       
+                        <Select label="Select Items" multiple {...field}>
+                          {classesJoin?.data?.map((item) => (
+                            <MenuItem key={item.id} value={item.id}>
+                              {item.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {errors.competitionClass && (
+                          <Typography variant="caption" color="error">
+                            {errors.competitionClass.message}
+                          </Typography>
+                        )}
+                      </>
                     )}
                   />
                 </FormControl>
