@@ -4,7 +4,13 @@ import { useMutation } from "react-query";
 import { checkStudentPassRound } from "../../services/roundResultService";
 import ModalConfirmStudent from "./ModalConfirm";
 
-const ModalMarkPoint = ({ open, setOpen, roundId }) => {
+const ModalMarkPoint = ({
+  open,
+  setOpen,
+  roundId,
+  competitionId,
+  closeApprove,
+}) => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [score, setScore] = useState();
   const [studentConfirm, setStudentConfirm] = useState([]);
@@ -66,6 +72,8 @@ const ModalMarkPoint = ({ open, setOpen, roundId }) => {
         studentConfirm={studentConfirm}
         roundId={roundId}
         setOpenParent={setOpen}
+        competitionId={competitionId}
+        closeApprove={closeApprove}
       />
     </>
   );

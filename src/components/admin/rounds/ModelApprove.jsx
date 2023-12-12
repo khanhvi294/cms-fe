@@ -10,7 +10,7 @@ import { getRoundAlreadyStartByCompetition } from "../../../services/roundServic
 import { getRoundResultByRound } from "../../../services/roundResultService";
 import { useQuery } from "react-query";
 
-const ModalApprove = ({ competitionId, roundId }) => {
+const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [roundResult, setRoundResult] = useState(null);
@@ -170,6 +170,8 @@ const ModalApprove = ({ competitionId, roundId }) => {
         open={openInput}
         setOpen={setOpenInput}
         roundId={roundId}
+        competitionId={competitionId}
+        closeApprove={closeApprove}
       />
     </>
   );
