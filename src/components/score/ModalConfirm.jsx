@@ -92,6 +92,9 @@ const ModalConfirmStudent = ({
     mutationFn: confirmStudentPassRound,
     onSuccess: (data) => {
       queryClient.invalidateQueries(["rounds", competitionId]);
+      setTimeout(() => {
+        location.reload();
+      }, 5000);
       toast.success("Confirm successfully!");
     },
     onError: (err) => {

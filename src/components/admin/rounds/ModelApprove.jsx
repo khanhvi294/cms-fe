@@ -9,6 +9,7 @@ import { getCompetitionById } from "../../../services/competitionService";
 import { getRoundAlreadyStartByCompetition } from "../../../services/roundService";
 import { getRoundResultByRound } from "../../../services/roundResultService";
 import { useQuery } from "react-query";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
 const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
   const [rows, setRows] = useState([]);
@@ -131,21 +132,24 @@ const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
     );
     if (!currentRound) return false;
     if (currentRound?.approved) return false;
+    if (competition?.status !== STATUS_COMPETITION.STARTED) return false;
+    if (new Date(currentRound?.timeStart) > new Date()) return false;
 
-    let timeEnd = new Date();
-    const currentRoundIndex = rounds?.data?.data?.findIndex(
-      (item) => item.id === roundId
-    );
-    const nextRound = rounds?.data?.data?.[currentRoundIndex - 1]; // list round sort by timeStart desc
-    if (nextRound) {
-      timeEnd = new Date(nextRound?.timeStart);
-      timeEnd.setMinutes(timeEnd.getMinutes() - 30); // 30 minutes before next round start
-    } else {
-      timeEnd = new Date(competition?.timeEnd);
-    }
-    const isTimeEnd = new Date().getTime() > timeEnd.getTime();
-    console.log("ahahahah", isTimeEnd);
-    return !isTimeEnd;
+    // let timeEnd = new Date();
+    // const currentRoundIndex = rounds?.data?.data?.findIndex(
+    //   (item) => item.id === roundId
+    // );
+    // const nextRound = rounds?.data?.data?.[currentRoundIndex - 1]; // list round sort by timeStart desc
+    // if (nextRound) {
+    //   timeEnd = new Date(nextRound?.timeStart);
+    //   timeEnd.setMinutes(timeEnd.getMinutes() - 30); // 30 minutes before next round start
+    // } else {
+    //   timeEnd = new Date(competition?.timeEnd);
+    // }
+    // const isTimeEnd = new Date().getTime() > timeEnd.getTime();
+
+    // return !isTimeEnd;
+    return true;
   }, [competition?.timeEnd, roundId, rounds?.data?.data]);
 
   return (

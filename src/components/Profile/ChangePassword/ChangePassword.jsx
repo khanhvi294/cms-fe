@@ -43,7 +43,7 @@ const ChangePassword = () => {
   });
 
   return (
-    <form className="mx-auto mb-5 rounded-md bg-white">
+    <form className="mx-auto mb-5 rounded-md bg-white px-5">
       <h6 className="text-2xl font-semibold">Change password</h6>
 
       <div className="mx-auto mt-12 flex  flex-col sm:flex-row">
