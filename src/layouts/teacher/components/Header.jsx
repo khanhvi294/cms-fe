@@ -37,7 +37,7 @@ const Header = () => {
           onClick={handleClick}
           className="!bg-[#393938] flex gap-2"
         >
-          <Avatar alt="Hemy Sharp" src="/static/images/avatar/1.jpg" />
+          {/* <Avatar alt="Hemy Sharp" src="/static/images/avatar/1.jpg" /> */}
           <div>
             <p className="!normal-case">{userName}</p>
             <p className="!uppercase !text-xs">

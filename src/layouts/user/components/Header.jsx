@@ -78,10 +78,10 @@ const Header = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem
               onClick={() => {
-                handleClose(), navigate("/profile");
+                navigate("/profile");
+                handleClose();
               }}
             >
               My account
