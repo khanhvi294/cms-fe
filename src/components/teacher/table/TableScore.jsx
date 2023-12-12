@@ -85,6 +85,7 @@ export default function TableScore({ roundId }) {
       roundId: oldData.roundId,
       isNew: isNew,
     };
+
     inputScoreMutation.mutate(data);
     setCurrentRowId(null);
     setScore(null);

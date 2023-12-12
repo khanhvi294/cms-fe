@@ -62,9 +62,11 @@ const CompetitionResultPage = () => {
           </span>
         </div>
       </div>
-      {rounds.map((round) => {
-        return <RoundResult key={round.id} round={round} />;
-      })}
+      <div className="flex gap-4 flex-wrap">
+        {rounds.map((round) => {
+          return <RoundResult key={round.id} round={round} />;
+        })}
+      </div>
     </div>
   );
 };
