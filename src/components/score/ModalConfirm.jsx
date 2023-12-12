@@ -115,6 +115,7 @@ const ModalConfirmStudent = ({
 				</Typography>
 				<Table columns={columns} rows={rows} />
 				<Button
+					disabled={rows.length <= 0}
 					onClick={() => {
 						const studentIds = rows.map(
 							(item) => item.roundResultStudent.id,
