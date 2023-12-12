@@ -306,9 +306,13 @@ const Classes = () => {
 
   const onSubmit = (data) => {
     if (classEdit) {
-      updateClassMutation.mutate({ ...data, id: classEdit?.id });
+      updateClassMutation.mutate({
+        ...data,
+        name: data.name.trim(),
+        id: classEdit?.id,
+      });
     } else {
-      createClassMutation.mutate(data);
+      createClassMutation.mutate({ ...data, name: data.name.trim() });
     }
     handleClose();
   };
