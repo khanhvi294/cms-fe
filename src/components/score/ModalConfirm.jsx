@@ -127,8 +127,8 @@ const ModalConfirmStudent = ({
 						setOpen(false);
 						setOpenParent(false);
 					}}
-					variant="contained"
-					className="!bg-black w-28 self-end"
+					variant="contained flex-end !bg-[#000] !text-white !rounded-md"
+					className="disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					Confirm
 				</Button>
