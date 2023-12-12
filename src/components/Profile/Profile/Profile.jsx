@@ -49,7 +49,7 @@ const ProfileUpdate = ({ user, updateInfo, role }) => {
   };
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
-  console.log("hhh", user);
+
   return (
     <div>
       {console.log(user?.cccd)}
@@ -68,7 +68,7 @@ const ProfileUpdate = ({ user, updateInfo, role }) => {
         <span className="font-normal"> Edit</span>
       </div>
       <div className="flex gap-9 mt-10">
-        <Box className="container flex h-[383px] w-[300px]   flex-col justify-around items-center rounded-2xl border bg-white p-8 shadow-xl">
+        {/* <Box className="container flex h-[383px] w-[300px]   flex-col justify-around items-center rounded-2xl border bg-white p-8 shadow-xl">
           <Typography
             id="modal-modal-title"
             variant="h6"
@@ -90,7 +90,7 @@ const ProfileUpdate = ({ user, updateInfo, role }) => {
                       />
                     </PhotoUpload>
                   </div>
-                  {/* <p className="text-xl">{user?.fullName}</p> */}
+               
                 </div>
                 <div className="px-2.5 ">
                   <Button
@@ -99,7 +99,7 @@ const ProfileUpdate = ({ user, updateInfo, role }) => {
                     className="min-w-min px-0 text-xs font-normal text-lime-600 hover:bg-white"
                   >
                     <p>Upload</p>
-                    {/* <PhotoUpload onUpload={setUploadData}></PhotoUpload> */}
+                   
                   </Button>
 
                   <Button
@@ -114,7 +114,7 @@ const ProfileUpdate = ({ user, updateInfo, role }) => {
               </div>
             </div>
           </div>
-        </Box>
+        </Box> */}
         <form
           className="flex flex-col justify-around rounded-2xl border bg-white p-8 shadow-xl w-[900px] gap-6"
           onSubmit={handleSubmit(handleSave)}

@@ -30,14 +30,16 @@ const Header = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  if(!isLogin){
-    return  <div className=" h-[70px] sticky top-0 bg-[#000]">
-    <div className="w-[1289px] m-auto flex justify-end items-center h-full">
-      <Link to={appRoutes.LOGIN} className="">
-          <p className="text-white text-lg">Login</p>
-      </Link>
-       </div>
-       </div>
+  if (!isLogin) {
+    return (
+      <div className=" h-[70px] sticky top-0 bg-[#000]">
+        <div className="w-[1289px] m-auto flex justify-end items-center h-full">
+          <Link to={appRoutes.LOGIN} className="">
+            <p className="text-white text-lg">Login</p>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -49,7 +51,7 @@ const Header = () => {
           onClick={handleClick}
           className="!bg-[#393938] flex gap-2"
         >
-          <Avatar alt="Hemy Sharp" src="/static/images/avatar/1.jpg" />
+          {/* <Avatar alt="Hemy Sharp" src="/static/images/avatar/1.jpg" /> */}
           <div>
             <p className="!normal-case">{userName}</p>
             <p className="!uppercase !text-xs">

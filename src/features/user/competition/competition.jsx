@@ -226,14 +226,6 @@ const Competition = () => {
               {...a11yProps(2)}
               className=" !normal-case"
             />
-            <Tab
-              label="Results"
-              sx={{
-                bgcolor: value === 3 ? "#2ab7ca" : "",
-              }}
-              {...a11yProps(3)}
-              className=" !normal-case"
-            />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
@@ -276,9 +268,6 @@ const Competition = () => {
             ))}
           </div>
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={3}>
-          {/* result */}
-        </CustomTabPanel>
       </Box>
     </div>
   );
@@ -287,7 +276,6 @@ const Competition = () => {
 export default Competition;
 
 const RoundDetail = ({ round }) => {
-  console.log(round);
   const isApproved = round?.approved;
   const { close, isOpen, open } = useModal();
   const columns = [
