@@ -20,7 +20,7 @@ const ModalMarkPoint = ({
     onSuccess: (data) => {
       console.log(data);
       setStudentConfirm(data.data);
-      //  queryClient.invalidateQueries(["rounds", id]);
+      // queryClient.invalidateQueries(["rounds", id]);
       //  toast.success("Delete successfully!");
     },
     onError: (err) => {

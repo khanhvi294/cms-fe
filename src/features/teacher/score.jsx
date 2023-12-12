@@ -20,9 +20,15 @@ const InputScore = () => {
       <h2 className="text-2xl font-semibold text-zinc-950 mb-10">
         Input Score
       </h2>
+
       <div>
         <div className="flex gap-4 items-center mb-5">
-          <p className="text-lg font-semibold">Round</p>
+          <div className="flex gap-3">
+            <p className="font-medium">Competition</p>
+            <p>{round?.competitionRound?.name}</p>
+          </div>
+
+          <p className="font-semibold">Round</p>
           <div className="flex gap-3">
             <p className="font-medium">ID</p>
             <p>{round?.id}</p>
@@ -32,7 +38,7 @@ const InputScore = () => {
             <p>{round?.name}</p>
           </div>
         </div>
-        <TableScore roundId={roundId} />
+        <TableScore roundId={roundId} round={round} />
       </div>
     </div>
   );
