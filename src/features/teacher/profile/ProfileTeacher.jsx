@@ -84,7 +84,9 @@ const ProfileTeacher = () => {
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ChangePassword />
+        <div className="w-[80%] mx-auto mt-16">
+          <ChangePassword />
+        </div>
       </CustomTabPanel>
     </>
   );

@@ -391,67 +391,67 @@ const Navbar = () => {
       ),
       path: appRoutes.AREGISTER,
     },
-    {
-      title: "Score",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 128 128"
-          id="Score"
-          width={20}
-        >
-          <g
-            data-name="15 results"
-            fill="#9ea8b4"
-            className="color000000 svgShape"
-          >
-            <path
-              d="M102,6H26a5.006,5.006,0,0,0-5,5V117a5.006,5.006,0,0,0,5,5H72.33a2,2,0,0,0,1.3-.481l32.67-28A2,2,0,0,0,107,92V11A5.006,5.006,0,0,0,102,6ZM74.33,115.652V94H99.593ZM103,90H72.33a2,2,0,0,0-2,2v26H26a1,1,0,0,1-1-1V11a1,1,0,0,1,1-1h76a1,1,0,0,1,1,1Z"
-              fill="#9ea8b4"
-              className="color000000 svgShape"
-            ></path>
-            <path
-              d="M65 52H35a2 2 0 000 4H65a2 2 0 000-4zM65 62H35a2 2 0 000 4H65a2 2 0 000-4zM65 72H35a2 2 0 000 4H65a2 2 0 000-4zM65 82H35a2 2 0 000 4H65a2 2 0 000-4zM65.3 33.426l-.007-.014L58.748 19.555a2 2 0 00-1.809-1.146h0a2 2 0 00-1.808 1.154L48.679 33.381c-.01.021-.02.04-.028.06l-3.463 7.421a2 2 0 103.624 1.692L51.777 36.2H62.186l3.005 6.362a2 2 0 003.618-1.708zM53.644 32.2l3.306-7.085L60.3 32.2zM83 24a2 2 0 00-2-2H77V18a2 2 0 00-4 0v4H69a2 2 0 000 4h4v4a2 2 0 004 0V26h4A2 2 0 0083 24zM91 52H81a2 2 0 00-2 2V64a2 2 0 002 2H91a2 2 0 002-2V54A2 2 0 0091 52zM89 62H83V56h6zM91 72H81a2 2 0 00-2 2V84a2 2 0 002 2H91a2 2 0 002-2V74A2 2 0 0091 72zM89 82H83V76h6z"
-              fill="#9ea8b4"
-              className="color000000 svgShape"
-            ></path>
-          </g>
-        </svg>
-      ),
-      iconActive: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 128 128"
-          id="Score"
-          width={20}
-        >
-          <g
-            data-name="15 results"
-            fill="#ffffff"
-            className="color000000 svgShape"
-          >
-            <path
-              d="M102,6H26a5.006,5.006,0,0,0-5,5V117a5.006,5.006,0,0,0,5,5H72.33a2,2,0,0,0,1.3-.481l32.67-28A2,2,0,0,0,107,92V11A5.006,5.006,0,0,0,102,6ZM74.33,115.652V94H99.593ZM103,90H72.33a2,2,0,0,0-2,2v26H26a1,1,0,0,1-1-1V11a1,1,0,0,1,1-1h76a1,1,0,0,1,1,1Z"
-              fill="#ffffff"
-              className="color000000 svgShape"
-            ></path>
-            <path
-              d="M65 52H35a2 2 0 000 4H65a2 2 0 000-4zM65 62H35a2 2 0 000 4H65a2 2 0 000-4zM65 72H35a2 2 0 000 4H65a2 2 0 000-4zM65 82H35a2 2 0 000 4H65a2 2 0 000-4zM65.3 33.426l-.007-.014L58.748 19.555a2 2 0 00-1.809-1.146h0a2 2 0 00-1.808 1.154L48.679 33.381c-.01.021-.02.04-.028.06l-3.463 7.421a2 2 0 103.624 1.692L51.777 36.2H62.186l3.005 6.362a2 2 0 003.618-1.708zM53.644 32.2l3.306-7.085L60.3 32.2zM83 24a2 2 0 00-2-2H77V18a2 2 0 00-4 0v4H69a2 2 0 000 4h4v4a2 2 0 004 0V26h4A2 2 0 0083 24zM91 52H81a2 2 0 00-2 2V64a2 2 0 002 2H91a2 2 0 002-2V54A2 2 0 0091 52zM89 62H83V56h6zM91 72H81a2 2 0 00-2 2V84a2 2 0 002 2H91a2 2 0 002-2V74A2 2 0 0091 72zM89 82H83V76h6z"
-              fill="#ffffff"
-              className="color000000 svgShape"
-            ></path>
-          </g>
-        </svg>
-      ),
-      path: appRoutes.ASCORE,
-    },
+    // {
+    //   title: "Score",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       viewBox="0 0 128 128"
+    //       id="Score"
+    //       width={20}
+    //     >
+    //       <g
+    //         data-name="15 results"
+    //         fill="#9ea8b4"
+    //         className="color000000 svgShape"
+    //       >
+    //         <path
+    //           d="M102,6H26a5.006,5.006,0,0,0-5,5V117a5.006,5.006,0,0,0,5,5H72.33a2,2,0,0,0,1.3-.481l32.67-28A2,2,0,0,0,107,92V11A5.006,5.006,0,0,0,102,6ZM74.33,115.652V94H99.593ZM103,90H72.33a2,2,0,0,0-2,2v26H26a1,1,0,0,1-1-1V11a1,1,0,0,1,1-1h76a1,1,0,0,1,1,1Z"
+    //           fill="#9ea8b4"
+    //           className="color000000 svgShape"
+    //         ></path>
+    //         <path
+    //           d="M65 52H35a2 2 0 000 4H65a2 2 0 000-4zM65 62H35a2 2 0 000 4H65a2 2 0 000-4zM65 72H35a2 2 0 000 4H65a2 2 0 000-4zM65 82H35a2 2 0 000 4H65a2 2 0 000-4zM65.3 33.426l-.007-.014L58.748 19.555a2 2 0 00-1.809-1.146h0a2 2 0 00-1.808 1.154L48.679 33.381c-.01.021-.02.04-.028.06l-3.463 7.421a2 2 0 103.624 1.692L51.777 36.2H62.186l3.005 6.362a2 2 0 003.618-1.708zM53.644 32.2l3.306-7.085L60.3 32.2zM83 24a2 2 0 00-2-2H77V18a2 2 0 00-4 0v4H69a2 2 0 000 4h4v4a2 2 0 004 0V26h4A2 2 0 0083 24zM91 52H81a2 2 0 00-2 2V64a2 2 0 002 2H91a2 2 0 002-2V54A2 2 0 0091 52zM89 62H83V56h6zM91 72H81a2 2 0 00-2 2V84a2 2 0 002 2H91a2 2 0 002-2V74A2 2 0 0091 72zM89 82H83V76h6z"
+    //           fill="#9ea8b4"
+    //           className="color000000 svgShape"
+    //         ></path>
+    //       </g>
+    //     </svg>
+    //   ),
+    //   iconActive: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       viewBox="0 0 128 128"
+    //       id="Score"
+    //       width={20}
+    //     >
+    //       <g
+    //         data-name="15 results"
+    //         fill="#ffffff"
+    //         className="color000000 svgShape"
+    //       >
+    //         <path
+    //           d="M102,6H26a5.006,5.006,0,0,0-5,5V117a5.006,5.006,0,0,0,5,5H72.33a2,2,0,0,0,1.3-.481l32.67-28A2,2,0,0,0,107,92V11A5.006,5.006,0,0,0,102,6ZM74.33,115.652V94H99.593ZM103,90H72.33a2,2,0,0,0-2,2v26H26a1,1,0,0,1-1-1V11a1,1,0,0,1,1-1h76a1,1,0,0,1,1,1Z"
+    //           fill="#ffffff"
+    //           className="color000000 svgShape"
+    //         ></path>
+    //         <path
+    //           d="M65 52H35a2 2 0 000 4H65a2 2 0 000-4zM65 62H35a2 2 0 000 4H65a2 2 0 000-4zM65 72H35a2 2 0 000 4H65a2 2 0 000-4zM65 82H35a2 2 0 000 4H65a2 2 0 000-4zM65.3 33.426l-.007-.014L58.748 19.555a2 2 0 00-1.809-1.146h0a2 2 0 00-1.808 1.154L48.679 33.381c-.01.021-.02.04-.028.06l-3.463 7.421a2 2 0 103.624 1.692L51.777 36.2H62.186l3.005 6.362a2 2 0 003.618-1.708zM53.644 32.2l3.306-7.085L60.3 32.2zM83 24a2 2 0 00-2-2H77V18a2 2 0 00-4 0v4H69a2 2 0 000 4h4v4a2 2 0 004 0V26h4A2 2 0 0083 24zM91 52H81a2 2 0 00-2 2V64a2 2 0 002 2H91a2 2 0 002-2V54A2 2 0 0091 52zM89 62H83V56h6zM91 72H81a2 2 0 00-2 2V84a2 2 0 002 2H91a2 2 0 002-2V74A2 2 0 0091 72zM89 82H83V76h6z"
+    //           fill="#ffffff"
+    //           className="color000000 svgShape"
+    //         ></path>
+    //       </g>
+    //     </svg>
+    //   ),
+    //   path: appRoutes.ASCORE,
+    // },
   ];
   return (
     <div className="w-[280px] h-full bg-[#000] text-white ">
       <div>
         <img src={logo} alt="logo" className="" />
       </div>
-      <div className="flex w-full flex-col gap-3 justify-center text-center mt-2">
+      <div className="flex w-full flex-col gap-5 justify-center text-center mt-2">
         {navbarItems.map((item) => {
           const isActive = matchPath(item.path, pathname);
 
