@@ -74,6 +74,7 @@ const ModalMarkPoint = ({
         setOpenParent={setOpen}
         competitionId={competitionId}
         closeApprove={closeApprove}
+        score={score}
       />
     </>
   );

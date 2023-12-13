@@ -88,16 +88,24 @@ const ModalAddStudents = ({ open, setOpen, setStudents, classId }) => {
               <InputLabel id="demo-mutiple-name-label">Students</InputLabel>
               <Controller
                 name="employeeIds"
+                rules={{ required: "Please select at least one students." }}
                 control={control}
                 defaultValue={[]}
                 render={({ field }) => (
-                  <Select label="Select Items" multiple {...field}>
-                    {students?.data?.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.id} | {item.fullName}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <>
+                    <Select label="Select Items" multiple {...field}>
+                      {students?.data?.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.id} | {item.fullName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {errors.employeeIds && (
+                      <Typography variant="caption" color="error">
+                        {errors.employeeIds.message}
+                      </Typography>
+                    )}
+                  </>
                 )}
               />
             </FormControl>

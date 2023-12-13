@@ -22,7 +22,7 @@ export const Competition = ({
     navigate(`/competitions/${id}/result`);
   };
   const { close, isOpen, open } = useModal();
-
+  console.log(competition);
   const { data } = useQuery({
     queryKey: ["rounds", competition.id],
     enabled: !!competition.id,
@@ -30,6 +30,18 @@ export const Competition = ({
   });
 
   const rounds = data?.data?.data;
+  const competitionStartDate = new Date(competition.timeStart).setHours(
+    0,
+    0,
+    0,
+    0
+  );
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  const timeDifference = competitionStartDate - currentDate;
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  console.log(competition.name);
+  console.log("gtr", daysDifference);
 
   return (
     <div className="bg-white w-[416px] h-[350px] p-5 flex flex-col gap-8 drop-shadow-md rounded-lg">
@@ -38,7 +50,7 @@ export const Competition = ({
           <p className="font-semibold mb-3">{competition.name}</p>
           <Chip label={label} className={className} />
         </div>
-        {status === 0 && (
+        {status === 0 && daysDifference > 2 && (
           <>
             {isRegister ? (
               <Button

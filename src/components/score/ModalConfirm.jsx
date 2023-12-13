@@ -15,6 +15,7 @@ const ModalConfirmStudent = ({
   setOpenParent,
   competitionId,
   closeApprove,
+  score,
 }) => {
   const [rows, setRows] = useState(studentConfirm);
   const columns = [
@@ -94,7 +95,7 @@ const ModalConfirmStudent = ({
       queryClient.invalidateQueries(["rounds", competitionId]);
       setTimeout(() => {
         location.reload();
-      }, 5000);
+      }, 3000);
       toast.success("Confirm successfully!");
     },
     onError: (err) => {
@@ -129,6 +130,7 @@ const ModalConfirmStudent = ({
             checkStudentPassMutation.mutate({
               roundId,
               studentIds: studentIds,
+              scorePoint: score,
             });
             setOpen(false);
             setOpenParent(false);

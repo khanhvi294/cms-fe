@@ -14,11 +14,11 @@ const UserLayout = () => {
     <div className="flex flex-col h-screen bg-slate-100">
       {/* user */}
       <Header />
-      <div className="flex-1 overflow-scroll">
+      <div className="flex-1 overflow-auto">
         <div className="bg-white h-14 drop-shadow-md ">
           <HeaderMenu />
         </div>
-        <div className="w-[1289px] m-auto  h-[1000px]  py-5">
+        <div className="w-[1289px] m-auto   py-5">
           {isUser && <Outlet />}
           {userRole === ROLES.EMPLOYEE && (
             <Navigate to={appRoutes.ACLASSES} replace />

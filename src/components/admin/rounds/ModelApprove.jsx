@@ -133,7 +133,12 @@ const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
     if (!currentRound) return false;
     if (currentRound?.approved) return false;
     if (competition?.status !== STATUS_COMPETITION.STARTED) return false;
-    if (new Date(currentRound?.timeStart) > new Date()) return false;
+
+    if (
+      new Date(currentRound?.timeStart).setHours(0, 0, 0, 0) >
+      new Date().setHours(0, 0, 0, 0)
+    )
+      return false;
 
     // let timeEnd = new Date();
     // const currentRoundIndex = rounds?.data?.data?.findIndex(
