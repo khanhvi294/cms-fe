@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/slices/userSlice";
 import { appRoutes } from "../../../routes/appRouter";
-
+import logo2 from "../../../assets/logo2.jpg";
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
@@ -44,7 +44,10 @@ const Header = () => {
 
   return (
     <div className=" h-[70px] sticky top-0 bg-[#000]">
-      <div className="w-[1289px] m-auto flex justify-end h-full">
+      <div className="w-[1289px] m-auto flex justify-between h-full">
+        <div className="w-14 mt-2 ml-2">
+          <img src={logo2} alt="logo" className="" />
+        </div>
         <Button
           aria-describedby={id}
           variant="contained"

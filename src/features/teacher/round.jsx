@@ -11,14 +11,20 @@ const RoundJudge = () => {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user?.data?.info);
-
+  console.log(rows);
   const columns = [
     {
       field: "id",
       headerName: "ID",
-      width: 250,
+      width: 100,
     },
     { field: "name", headerName: "Name", width: 200 },
+    {
+      field: "competitionRound", // Thêm cột mới cho tên của courseClass
+      headerName: "Competition ",
+      width: 250,
+      valueGetter: (params) => params.row.competitionRound.name,
+    },
     {
       field: "examFormRound",
       headerName: "Exam Form",
