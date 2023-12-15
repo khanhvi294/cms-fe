@@ -133,6 +133,7 @@ const Courses = () => {
     mutationFn: (data) => createCourse(data),
     onSuccess: (data) => {
       setRows((state) => [data.data, ...state]);
+      handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {
@@ -145,6 +146,7 @@ const Courses = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["courses"]);
       // setRows((state) => [data.data, ...state]);
+      handleClose();
       toast.success("Update successfully!");
     },
     onError: (err) => {
@@ -157,6 +159,7 @@ const Courses = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries(["courses"]);
       // setRows((state) => [data.data, ...state]);
+
       toast.success("Delete successfully!");
     },
     onError: (err) => {
@@ -173,8 +176,6 @@ const Courses = () => {
     } else {
       createCourseMutation.mutate({ ...data, name: data.name.trim() });
     }
-
-    handleClose();
   };
   return (
     <>

@@ -121,7 +121,6 @@ const ExamForms = () => {
         id: examFormEdit.id,
       });
     } else createExamFormMutation.mutate({ ...data, name: data.name.trim() });
-    handleClose();
   };
 
   useQuery({
@@ -136,6 +135,7 @@ const ExamForms = () => {
     mutationFn: (data) => createExamForm(data),
     onSuccess: (data) => {
       setRows((state) => [data.data, ...state]);
+      handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {
@@ -147,6 +147,7 @@ const ExamForms = () => {
     mutationFn: updateExamForm,
     onSuccess: () => {
       queryClient.invalidateQueries(["exams"]);
+      handleClose();
       toast.success("Update successfully!");
     },
     onError: (err) => {

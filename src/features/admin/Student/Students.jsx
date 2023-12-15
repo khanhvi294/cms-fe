@@ -245,6 +245,7 @@ const Students = () => {
     mutationFn: (data) => createStudent(data),
     onSuccess: () => {
       toast.success("Create successfully!");
+      handleClose();
       queryClient.invalidateQueries(["students"]);
     },
     onError: (err) => {
@@ -259,8 +260,6 @@ const Students = () => {
     } else {
       createStudentMutation.mutate(newStudent);
     }
-
-    handleClose();
   };
 
   const queryClient = useQueryClient();
@@ -282,6 +281,7 @@ const Students = () => {
     mutationFn: updateStudent,
     onSuccess: () => {
       queryClient.invalidateQueries(["students"]);
+      handleClose();
       toast.success("Update successfully!");
     },
     onError: (err) => {

@@ -259,8 +259,6 @@ const Employees = () => {
       const newEmployee = handleCollectKeys(["email"], "accountEmployee", data);
       createEmployeeMutation.mutate(newEmployee);
     }
-
-    handleClose();
   };
   const handleCollectKeys = (keyArr, newKey, dataOri) => {
     // Tạo một đối tượng mới từ originalObject chỉ với các keys cần gom lại
@@ -279,7 +277,7 @@ const Employees = () => {
     mutationFn: (data) => createEmployee(data),
     onSuccess: () => {
       queryClient.invalidateQueries(["employees"]);
-
+      handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {
@@ -291,6 +289,7 @@ const Employees = () => {
     mutationFn: (data) => updateEmployee(data),
     onSuccess: () => {
       queryClient.invalidateQueries(["employees"]);
+      handleClose();
       toast.success("Update successfully!");
     },
     onError: (err) => {

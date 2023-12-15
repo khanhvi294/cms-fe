@@ -273,7 +273,7 @@ const Classes = () => {
     mutationFn: (data) => createClass(data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(["classes"]);
-
+      handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {
@@ -285,6 +285,7 @@ const Classes = () => {
     mutationFn: (data) => updateClass(data),
     onSuccess: () => {
       queryClient.invalidateQueries(["classes"]);
+      handleClose();
       toast.success("Update successfully!");
     },
     onError: (err) => {
@@ -314,7 +315,6 @@ const Classes = () => {
     } else {
       createClassMutation.mutate({ ...data, name: data.name.trim() });
     }
-    handleClose();
   };
 
   return (

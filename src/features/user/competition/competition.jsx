@@ -74,7 +74,6 @@ function a11yProps(index) {
 
 const Competition = () => {
   const { id } = useParams();
-  console.log(id);
   const [competition, setCompetition] = useState(null);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -105,26 +104,17 @@ const Competition = () => {
     queryKey: ["classes", id],
     enabled: !!id,
     queryFn: () => getAllClassJoinCompetition(id),
-    // onSuccess: (data) => {
-    //   console.log("class", data);
-    // },
   });
   const { data: rounds } = useQuery({
     queryKey: ["rounds", id],
     enabled: !!id,
     queryFn: () => getRoundByCompetition(id),
-    // onSuccess: (data) => {
-    //   setRows(data.data.data);
-    // },
   });
 
   const { data: participantData } = useQuery({
     queryKey: ["participant", id],
     enabled: !!id,
     queryFn: () => getRegisterByCompetition(id),
-    // onSuccess: (data) => {
-    //   setRows(data.data.data);
-    // },
   });
   console.log(participantData);
   const participants = useMemo(() => {

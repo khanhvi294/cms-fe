@@ -29,10 +29,12 @@ import {
   updateCompetition,
 } from "../../../services/competitionService";
 import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
+import ModalChangeStatus from "../../../components/admin/competitions/modalChangeStatus";
 
 const Competitions = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const [openStatus, setOpenStatus] = useState(false);
 
   const [openSee, setOpenSee] = useState(false);
   const [openAddRound, setOpenAddRound] = useState(false);
@@ -47,9 +49,8 @@ const Competitions = () => {
 
   const [rows, setRows] = useState([]);
   const [competitionSee, setCompetitionSee] = useState();
-  // const defaultValues = {
-  //   dob: new Date().toISOString().slice(0, 10),
-  // };
+  const [competitionStatus, setCompetitionStatus] = useState();
+
   const {
     register,
     handleSubmit,
@@ -136,6 +137,7 @@ const Competitions = () => {
       field: "actions",
       type: "actions",
       headerName: "Actions",
+      width: 150,
       getActions: (params) => {
         return [
           <GridActionsCellItem
@@ -211,52 +213,58 @@ const Competitions = () => {
             }
             label="Block"
           />,
-          // <GridActionsCellItem
-          //   icon={
-          //     <svg
-          //       xmlns="http://www.w3.org/2000/svg"
-          //       viewBox="0 0 24 24"
-          //       id="Lock"
-          //       width={15}
-          //     >
-          //       <path
-          //         d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
-          //         fill="#151515"
-          //         className="color000000 svgShape"
-          //       ></path>
-          //     </svg>
-          //   }
-          //   label="Block"
-          // />,
-          // <GridActionsCellItem
-          //   icon={
-          //     <svg
-          //       xmlns="http://www.w3.org/2000/svg"
-          //       id="Add"
-          //       x="0"
-          //       y="0"
-          //       version="1.1"
-          //       viewBox="0 0 29 29"
-          //       xml:space="preserve"
-          //       width={15}
-          //       onClick={() => {
-          //         setCompetitionSee(params.row);
-          //         handleOpenAddRound();
-          //       }}
-          //     >
-          //       <path
-          //         d="M14.5 2C7.596 2 2 7.596 2 14.5S7.596 27 14.5 27 27 21.404 27 14.5 21.404 2 14.5 2zM21 15.5h-5.5V21a1 1 0 1 1-2 0v-5.5H8a1 1 0 1 1 0-2h5.5V8a1 1 0 1 1 2 0v5.5H21a1 1 0 1 1 0 2z"
-          //         fill="#151515"
-          //         className="color000000 svgShape"
-          //       ></path>
-          //     </svg>
-          //   }
-          //   label="Block"
-          // />,
+          <GridActionsCellItem
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                id="Lock"
+                width={15}
+                onClick={() => {
+                  setOpenStatus(true);
+                  setCompetitionStatus(params.row);
+                }}
+              >
+                <path
+                  d="M12,13a1.49,1.49,0,0,0-1,2.61V17a1,1,0,0,0,2,0V15.61A1.49,1.49,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"
+                  fill="#151515"
+                  className="color000000 svgShape"
+                ></path>
+              </svg>
+            }
+            label="Block"
+          />,
+          <GridActionsCellItem
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                id="Add"
+                x="0"
+                y="0"
+                version="1.1"
+                viewBox="0 0 29 29"
+                xml:space="preserve"
+                width={15}
+                onClick={() => {
+                  setCompetitionSee(params.row);
+                  handleOpenAddRound();
+                }}
+              >
+                <path
+                  d="M14.5 2C7.596 2 2 7.596 2 14.5S7.596 27 14.5 27 27 21.404 27 14.5 21.404 2 14.5 2zM21 15.5h-5.5V21a1 1 0 1 1-2 0v-5.5H8a1 1 0 1 1 0-2h5.5V8a1 1 0 1 1 2 0v5.5H21a1 1 0 1 1 0 2z"
+                  fill="#151515"
+                  className="color000000 svgShape"
+                ></path>
+              </svg>
+            }
+            label="Block"
+          />,
         ];
       },
     },
   ];
+
+  console.log("object", competitionStatus);
 
   useEffect(() => {
     // Xử lý khi giá trị thay đổi
@@ -280,6 +288,7 @@ const Competitions = () => {
     mutationFn: (data) => createCompetition(data),
     onSuccess: (data) => {
       setRows((state) => [data.data, ...state]);
+      handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {
@@ -291,6 +300,7 @@ const Competitions = () => {
     mutationFn: (data) => updateCompetition(data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(["competitions"]);
+      handleClose();
       toast.success("Update successfully!");
     },
     onError: (err) => {
@@ -304,8 +314,6 @@ const Competitions = () => {
     } else {
       createCompetitionMutation.mutate(data);
     }
-
-    handleClose();
   };
 
   return (
@@ -500,7 +508,6 @@ const Competitions = () => {
                     defaultValue={[]}
                     render={({ field }) => (
                       <>
-                       
                         <Select label="Select Items" multiple {...field}>
                           {classesJoin?.data?.map((item) => (
                             <MenuItem key={item.id} value={item.id}>
@@ -542,6 +549,12 @@ const Competitions = () => {
         openAddRound={openAddRound}
         handleCloseAddRound={handleCloseAddRound}
         competition={competitionSee}
+      />
+      <ModalChangeStatus
+        open={openStatus}
+        setOpen={setOpenStatus}
+        status={competitionStatus?.status}
+        competitionId={competitionStatus?.id}
       />
     </>
   );
