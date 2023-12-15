@@ -23,7 +23,9 @@ const AdminLayout = () => {
             {userRole === ROLES.STUDENT && (
               <Navigate to={appRoutes.HOME} replace />
             )}
-            {userRole === ROLES.TEACHER && <Navigate to="/demo" replace />}
+            {userRole === ROLES.TEACHER && (
+              <Navigate to={appRoutes.TROUND} replace />
+            )}
           </div>
         </div>
       </div>

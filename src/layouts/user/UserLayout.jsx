@@ -21,9 +21,11 @@ const UserLayout = () => {
         <div className="w-[1289px] m-auto   py-5">
           {isUser && <Outlet />}
           {userRole === ROLES.EMPLOYEE && (
-            <Navigate to={appRoutes.ACLASSES} replace />
+            <Navigate to={appRoutes.ADASHBOARD} replace />
           )}
-          {userRole === ROLES.TEACHER && <Navigate to="/demo" replace />}
+          {userRole === ROLES.TEACHER && (
+            <Navigate to={appRoutes.TROUND} replace />
+          )}
         </div>
       </div>
     </div>

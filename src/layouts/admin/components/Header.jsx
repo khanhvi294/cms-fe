@@ -1,9 +1,9 @@
-import { Avatar, Button, IconButton, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { appRoutes } from "../../../routes/appRouter";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../../../redux/slices/userSlice";
+import { appRoutes } from "../../../routes/appRouter";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -12,7 +12,6 @@ const Header = () => {
   const userName = useSelector(
     (state) => state.user?.data?.info?.accountEmployee?.fullName
   );
-  const user = useSelector((state) => state.user.data.info.accountEmployee);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

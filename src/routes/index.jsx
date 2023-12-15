@@ -29,6 +29,7 @@ import DashboardAdmin from "../features/admin/Dashboard/Dashboard";
 import { appRoutes } from "./appRouter";
 import ProfileStudent from "../features/user/ProfileStudent/ProfileStudent";
 import ProfileTeacher from "../features/teacher/profile/ProfileTeacher";
+import ProtectedLayout from "../layouts/ProtectedLayout";
 
 // import Rounds from "../features/admin/Rounds/Rounds";
 
@@ -43,51 +44,53 @@ export const AppRouter = () => {
   return (
     <Routes>
       <Route path={appRoutes.LOGIN} element={<LoginPage />} />
-      <Route element={<UserLayout />}>
-        <Route path={appRoutes.HOME} element={<HomePage />} />
-        <Route path={appRoutes.MYCOMPETITION} element={<MyCompetition />} />
-        <Route path={appRoutes.SCORE} element={<UserScore />} />
+      <Route element={<ProtectedLayout />}>
+        <Route element={<UserLayout />}>
+          <Route path={appRoutes.HOME} element={<HomePage />} />
+          <Route path={appRoutes.MYCOMPETITION} element={<MyCompetition />} />
+          <Route path={appRoutes.SCORE} element={<UserScore />} />
 
-        <Route
-          path={appRoutes.COMPETITIONS}
-          element={<CompetitionListPage />}
-        />
-        <Route
-          path={appRoutes.COMPETITION_RESULT}
-          element={<CompetitionResultPage />}
-        />
-        <Route path={appRoutes.CLASSES} element={<ClassListPage />} />
-        <Route
-          path={appRoutes.COMPETITION_DETAIL}
-          element={<CompetitionPage />}
-        />
-        <Route path="/profile" element={<ProfileStudent />} />
-      </Route>
-      <Route element={<AdminLayout />}>
-        <Route path={appRoutes.ASTUDENTS} element={<Students />} />
-        <Route path={appRoutes.AEMPLOYEES} element={<Employees />} />
-        <Route path={appRoutes.ACLASSES} element={<Classes />} />
-        <Route path={appRoutes.ACOURSES} element={<Courses />} />
-        <Route path={appRoutes.ADASHBOARD} element={<DashboardAdmin />} />
-        <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
-        <Route path={appRoutes.AREGISTER} element={<Register />} />
-        <Route path={appRoutes.ASCORE} element={<ScoreRound />} />
+          <Route
+            path={appRoutes.COMPETITIONS}
+            element={<CompetitionListPage />}
+          />
+          <Route
+            path={appRoutes.COMPETITION_RESULT}
+            element={<CompetitionResultPage />}
+          />
+          <Route path={appRoutes.CLASSES} element={<ClassListPage />} />
+          <Route
+            path={appRoutes.COMPETITION_DETAIL}
+            element={<CompetitionPage />}
+          />
+          <Route path="/profile" element={<ProfileStudent />} />
+        </Route>
+        <Route element={<AdminLayout />}>
+          <Route path={appRoutes.ASTUDENTS} element={<Students />} />
+          <Route path={appRoutes.AEMPLOYEES} element={<Employees />} />
+          <Route path={appRoutes.ACLASSES} element={<Classes />} />
+          <Route path={appRoutes.ACOURSES} element={<Courses />} />
+          <Route path={appRoutes.ADASHBOARD} element={<DashboardAdmin />} />
+          <Route path={appRoutes.ACOMPETITIONS} element={<Competitions />} />
+          <Route path={appRoutes.AREGISTER} element={<Register />} />
+          <Route path={appRoutes.ASCORE} element={<ScoreRound />} />
 
-        <Route path="admin/profile" element={<Profile />} />
+          <Route path="admin/profile" element={<Profile />} />
 
-        <Route
-          path={appRoutes.ACOMPETITIONS_DETAIL}
-          element={<CompetitionDetail />}
-        />
-        <Route path="/admin/demo" element={<CollapsibleTable />} />
-        <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
-        {/* <Route path={appRoutes.AROUNDS} element={<Rounds />} /> */}
-      </Route>
-      <Route element={<TeacherLayout />}>
-        <Route path="/demo" element={<Demo />} />
-        <Route path={appRoutes.TROUND} element={<RoundJudge />} />
-        <Route path={appRoutes.TSCORE} element={<InputScore />} />
-        <Route path="/teacher/profile" element={<ProfileTeacher />} />
+          <Route
+            path={appRoutes.ACOMPETITIONS_DETAIL}
+            element={<CompetitionDetail />}
+          />
+          <Route path="/admin/demo" element={<CollapsibleTable />} />
+          <Route path={appRoutes.AEXAMFORMS} element={<ExamForms />} />
+          {/* <Route path={appRoutes.AROUNDS} element={<Rounds />} /> */}
+        </Route>
+        <Route element={<TeacherLayout />}>
+          <Route path="/demo" element={<Demo />} />
+          <Route path={appRoutes.TROUND} element={<RoundJudge />} />
+          <Route path={appRoutes.TSCORE} element={<InputScore />} />
+          <Route path="/teacher/profile" element={<ProfileTeacher />} />
+        </Route>
       </Route>
     </Routes>
   );
