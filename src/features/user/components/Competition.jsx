@@ -22,7 +22,6 @@ export const Competition = ({
     navigate(`/competitions/${id}/result`);
   };
   const { close, isOpen, open } = useModal();
-  console.log(competition);
   const { data } = useQuery({
     queryKey: ["rounds", competition.id],
     enabled: !!competition.id,
@@ -30,7 +29,6 @@ export const Competition = ({
   });
 
   const rounds = data?.data?.data;
-  console.log(competition);
   const competitionStartDate = new Date(competition?.timeStart).setHours(
     0,
     0,
@@ -48,6 +46,21 @@ export const Competition = ({
         <div>
           <p className="font-semibold mb-3">{competition.name}</p>
           <Chip label={label} className={className} />
+        </div>
+        <div className="flex gap-2">
+          {canSeeResult && (
+            <Button
+              onClick={() => handleShowResult(competition.id)}
+              className="!bg-yellow-700 !text-white"
+            >
+              My result
+            </Button>
+          )}
+          {status === 2 && (
+            <Button onClick={open} className="!bg-red-700 !text-white">
+              Final result
+            </Button>
+          )}
         </div>
         {status === 0 && (
           <>
@@ -68,21 +81,6 @@ export const Competition = ({
             )}
           </>
         )}
-        <div className="flex gap-2">
-          {canSeeResult && (
-            <Button
-              onClick={() => handleShowResult(competition.id)}
-              className="!bg-yellow-700 !text-white"
-            >
-              My result
-            </Button>
-          )}
-          {status === 2 && (
-            <Button onClick={open} className="!bg-red-700 !text-white">
-              Final result
-            </Button>
-          )}
-        </div>
       </div>
       <div className="flex justify-end">
         {/* <span className="text-gray-500 flex gap-1 items-center hover:underline">
