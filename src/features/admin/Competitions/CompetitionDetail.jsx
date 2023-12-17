@@ -35,8 +35,11 @@ import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 import Table from "../../../components/Table/Table";
 import { toast } from "react-toastify";
 import { useModal } from "../../../hooks/use-modal";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
+import { appRoutes } from "../../../routes/appRouter";
+import { getRegisterByCompetition } from "../../../services/registerService";
+import { formatDate } from "../../../utils/formatDate";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -123,6 +126,13 @@ const CompetitionDetail = () => {
     },
   });
 
+  const {data:dataRegisters} = useQuery({
+    queryKey: ['registers', id],
+    enabled: !!id,
+    queryFn: () => getRegisterByCompetition(id),
+  })
+
+
   useQuery({
     queryKey: ["classes", id],
     enabled: !!id,
@@ -136,13 +146,39 @@ const CompetitionDetail = () => {
     mutationFn: (data) => createRound(data),
     onSuccess: () => {
       queryClient.invalidateQueries(["rounds", id]);
-
+      handleClose();
       toast.success("Create successfully!");
     },
     onError: (err) => {
       toast.error(err.message);
     },
   });
+
+  const columnsRegisters = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 150,
+    },
+
+    { field: "fullName", headerName: "fullName", width: 300,
+    valueGetter: (params) => params.row.studentRegister.fullName,
+    
+  },
+    {
+      field: "accountStudent", // Thêm cột mới cho tên của courseClass
+      headerName: "email ",
+      width: 300,
+      valueGetter: (params) => params.row.studentRegister.accountStudent.email,
+    },
+    {
+        field: "createdAt", // Thêm cột mới cho tên của courseClass
+        headerName: "created Date",
+        width: 200,
+        valueGetter: (params) => formatDate(params.row.createdAt),
+      },
+   
+  ];
 
   // class
 
@@ -246,6 +282,8 @@ const CompetitionDetail = () => {
       toast.error(err.message);
     },
   });
+
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -255,6 +293,10 @@ const CompetitionDetail = () => {
   return (
     <>
       <div>
+        <Link to={appRoutes.ACOMPETITIONS} >
+          
+        <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" id="left-arrow"><path d="M1.293,12.707a1,1,0,0,1,0-1.414l5-5A1,1,0,0,1,7.707,7.707L4.414,11H22a1,1,0,0,1,0,2H4.414l3.293,3.293a1,1,0,1,1-1.414,1.414Z"></path></svg>
+          </Link>
         <div className="bg-white min-h-[200px]  rounded-2xl  p-4 gap-5 ">
           <div className="flex justify-between">
             <p
@@ -377,6 +419,11 @@ const CompetitionDetail = () => {
                   label="Classes"
                   {...a11yProps(1)}
                 />
+                 <Tab
+                  className=" !normal-case"
+                  label="Registers"
+                  {...a11yProps(2)}
+                />
               </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
@@ -473,6 +520,14 @@ const CompetitionDetail = () => {
               </div>
               <div>
                 <Table columns={columnsClass} rows={rowsClass} />
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+              <div className="flex gap-2 justify-between items-center mb-4">
+                <span className="text-xl font-semibold">Registers</span>
+              </div>
+              <div>
+                <Table columns={columnsRegisters} rows={dataRegisters?.data?.data} />
               </div>
             </CustomTabPanel>
           </Box>

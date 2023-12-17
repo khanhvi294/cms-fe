@@ -40,6 +40,8 @@ const ModalChangeStatus = ({ open, setOpen, status, competitionId }) => {
     },
     onError: (err) => {
       toast.error(err.message);
+      queryClient.invalidateQueries(["competitions"]);
+
     },
   });
 

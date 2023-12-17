@@ -38,7 +38,7 @@ const InputScore = () => {
             <p>{round?.name}</p>
           </div>
         </div>
-        <TableScore roundId={roundId} round={round} />
+        <TableScore roundId={roundId} round={round} competition={round?.competitionRound} />
       </div>
     </div>
   );

@@ -37,6 +37,7 @@ const ModalAddRound = ({
   });
   const [fileExam, setFileExam] = useState();
 
+
   const onSubmitAddRound = (data) => {
     const round = data;
 
@@ -57,7 +58,11 @@ const ModalAddRound = ({
     onSubmitAddRound(data);
   };
   return (
-    <Modal
+    <>
+    {
+      openAddRound ? (
+
+        <Modal
       open={openAddRound}
       onClose={() => {
         handleCloseAddRound();
@@ -178,6 +183,8 @@ const ModalAddRound = ({
             size="small"
             label="Time Start"
             type="date"
+            // InputProps={{inputProps: { min: competition?.timeStart} }}
+            // defaultValue={competition?.timeStart}
             defaultValue={new Date().toISOString().slice(0, 10)}
             className="w-full"
             {...register("timeStart", {
@@ -194,6 +201,10 @@ const ModalAddRound = ({
         </form>
       </Box>
     </Modal>
+      ) : ''
+    }
+    </>
+    
   );
 };
 

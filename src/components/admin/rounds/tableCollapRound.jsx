@@ -45,6 +45,7 @@ import { useModal } from "../../../hooks/use-modal";
 
 function Row(props) {
   const { row } = props;
+  // console.log("roww ", row, props)
   const [open, setOpen] = React.useState(false);
   const [openAddJudges, setOpenAddJudges] = React.useState(false);
   const [judges, setJudges] = React.useState([]);

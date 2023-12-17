@@ -15,8 +15,9 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 
-export default function TableScore({ roundId, round }) {
+export default function TableScore({ roundId, round, competition }) {
   const [rows, setRows] = React.useState([]);
   const [score, setScore] = React.useState(null);
   const [rowModesModel, setRowModesModel] = React.useState({});
@@ -225,7 +226,8 @@ export default function TableScore({ roundId, round }) {
             />,
           ];
         }
-        if (today >= new Date(round?.timeStart)) {
+        // if (today >= new Date(round?.timeStart)) {
+          if (competition.status == STATUS_COMPETITION.STARTED) {
           return [
             <GridActionsCellItem
               key={index}
