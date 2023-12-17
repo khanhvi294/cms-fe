@@ -21,14 +21,20 @@ import PropTypes from "prop-types";
 import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
 import Table from "../../../components/Table/Table";
 import Typography from "@mui/material/Typography";
-import { getRegisterByCompetition } from "../../../services/registerService";
+import {
+  getAllCompetitionByStudentId,
+  getRegisterByCompetition,
+  registerCompetition,
+  unRegisterCompetition,
+} from "../../../services/registerService";
 import { getRoundByCompetition } from "../../../services/roundService";
 import { getRoundResultByRound } from "../../../services/roundResultService";
 import { styled } from "@mui/material/styles";
 import { useModal } from "../../../hooks/use-modal";
 import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 // const competition = {
 //   name: "Kiểm thử phần mềm",
@@ -124,60 +130,136 @@ const Competition = () => {
       return item?.studentRegister;
     });
   }, [participantData?.data]);
+  const user = useSelector((state) => state.user?.data?.info);
+
+  const { data: competitionUser } = useQuery({
+    queryKey: ["competition", user?.id],
+    enabled: !!user?.id,
+    queryFn: getAllCompetitionByStudentId,
+  });
+
+  const competitionIds = useMemo(() => {
+    return competitionUser?.data?.data.map(
+      (item) => item.competitionRegister?.id
+    );
+  }, [competitionUser?.data?.data]);
+
+  const competitionStartDate = new Date(competition?.timeStart).setHours(
+    0,
+    0,
+    0,
+    0
+  );
+  const isRegister = competitionIds?.includes(competition.id);
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  const timeDifference = competitionStartDate - currentDate;
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  const queryClient = useQueryClient();
+  const registerCompetitionMutation = useMutation({
+    mutationFn: registerCompetition,
+    onSuccess: (data) => {
+      //setRows((state) => [data.data, ...state]);
+      queryClient.invalidateQueries(["competition", user?.id]);
+      toast.success("Register successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const unRegisterCompetitionMutation = useMutation({
+    mutationFn: unRegisterCompetition,
+    onSuccess: (data) => {
+      //setRows((state) => [data.data, ...state]);
+      queryClient.invalidateQueries(["competition", user?.id]);
+
+      toast.success("Unregister successfully!");
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
 
   return (
     <div>
       <div>
         <p className="font-semibold text-xl mb-3">Competition</p>
       </div>
-      <div className="bg-[#f9bc0d] flex p-5">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          data-name="Layer 1"
-          viewBox="0 0 24 24"
-          id="Championtrophy"
-          width={100}
-          className="px-3"
-        >
-          <path
-            d="M18 4V2H6v2a4 4 0 0 0 0 8h.38a6.18 6.18 0 0 0 1.41 2.21A4.07 4.07 0 0 1 9 17H6v3H5v2h14v-2h-1v-3h-3a4.07 4.07 0 0 1 1.2-2.79A6.18 6.18 0 0 0 17.62 12H18a4 4 0 0 0 0-8ZM6 10a2 2 0 0 1 0-4Zm4-4h4v2h-4Zm6 13v1H8v-1h8Zm2-9V6a2 2 0 0 1 0 4Z"
-            fill="#ffffff"
-            className="color000000 svgShape"
-          ></path>
-        </svg>
-        <div className="text-white ">
-          <div>
-            <p className="font-medium text-lg">{competition?.name}</p>
-            <p className="text-sm opacity-60">
-              {competition?.people} participants
-            </p>
-          </div>
-          <div className="flex gap-6 mt-4">
+      <div className="bg-[#f9bc0d] flex p-5 justify-between">
+        <div className="flex">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            data-name="Layer 1"
+            viewBox="0 0 24 24"
+            id="Championtrophy"
+            width={100}
+            className="px-3"
+          >
+            <path
+              d="M18 4V2H6v2a4 4 0 0 0 0 8h.38a6.18 6.18 0 0 0 1.41 2.21A4.07 4.07 0 0 1 9 17H6v3H5v2h14v-2h-1v-3h-3a4.07 4.07 0 0 1 1.2-2.79A6.18 6.18 0 0 0 17.62 12H18a4 4 0 0 0 0-8ZM6 10a2 2 0 0 1 0-4Zm4-4h4v2h-4Zm6 13v1H8v-1h8Zm2-9V6a2 2 0 0 1 0 4Z"
+              fill="#ffffff"
+              className="color000000 svgShape"
+            ></path>
+          </svg>
+          <div className="text-white ">
             <div>
-              <p>{competition?.timeStart}</p>
-              <p className="text-sm opacity-60">Start Time</p>
+              <p className="font-medium text-lg">{competition?.name}</p>
+              <p className="text-sm opacity-60">
+                {competition?.people} participants
+              </p>
             </div>
-            <div>
-              <p>{competition?.timeEnd}</p>
-              <p className="text-sm opacity-60">End Time</p>
-            </div>
-            <div>
-              {competition?.status === STATUS_COMPETITION.CREATED && (
-                <p>Upcoming</p>
-              )}
-              {competition?.status === STATUS_COMPETITION.STARTED && (
-                <p>In progress</p>
-              )}
-              {competition?.status === STATUS_COMPETITION.ENDED && (
-                <p>Completed</p>
-              )}
-              {competition?.status === STATUS_COMPETITION.CANCEL && (
-                <p>Canceled</p>
-              )}
-              <p className="text-sm opacity-60">Status</p>
+            <div className="flex gap-6 mt-4">
+              <div>
+                <p>{competition?.timeStart}</p>
+                <p className="text-sm opacity-60">Start Time</p>
+              </div>
+              <div>
+                <p>{competition?.timeEnd}</p>
+                <p className="text-sm opacity-60">End Time</p>
+              </div>
+              <div>
+                {competition?.status === STATUS_COMPETITION.CREATED && (
+                  <p>Upcoming</p>
+                )}
+                {competition?.status === STATUS_COMPETITION.STARTED && (
+                  <p>In progress</p>
+                )}
+                {competition?.status === STATUS_COMPETITION.ENDED && (
+                  <p>Completed</p>
+                )}
+                {competition?.status === STATUS_COMPETITION.CANCEL && (
+                  <p>Canceled</p>
+                )}
+                <p className="text-sm opacity-60">Status</p>
+              </div>
             </div>
           </div>
         </div>
+
+        {competition?.status === STATUS_COMPETITION.CREATED && (
+          <div>
+            {isRegister ? (
+              <Button
+                className="!bg-[#f09b5e] !text-white"
+                onClick={() =>
+                  unRegisterCompetitionMutation.mutate(competition.id)
+                }
+              >
+                UnRegister
+              </Button>
+            ) : (
+              <Button
+                className="!bg-[#44badc] !text-white"
+                onClick={() =>
+                  registerCompetitionMutation.mutate(competition.id)
+                }
+              >
+                Register
+              </Button>
+            )}
+          </div>
+        )}
       </div>
       <Box sx={{ width: "100%" }} className="bg-white mt-6">
         <Box className="px-6 pt-6">
