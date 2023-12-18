@@ -128,7 +128,7 @@ const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
     enabled: !!roundId,
     queryFn: () => getRoundResultByRound(roundId),
     onSuccess: (data) => {
-      setRows(data.data.data);
+      setRows(data?.data?.data);
     },
   });
 
