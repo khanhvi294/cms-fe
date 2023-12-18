@@ -227,7 +227,7 @@ export default function TableScore({ roundId, round, competition }) {
           ];
         }
         // if (today >= new Date(round?.timeStart)) {
-          if (competition.status == STATUS_COMPETITION.STARTED) {
+        if (competition.status == STATUS_COMPETITION.STARTED) {
           return [
             <GridActionsCellItem
               key={index}

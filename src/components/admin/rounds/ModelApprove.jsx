@@ -163,7 +163,7 @@ const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
       <div>
         <div className="flex gap-2 justify-end items-center">
           <Button
-            disabled={!canApprove}
+            //disabled={!canApprove}
             variant="contained flex-end !bg-[#000] !text-white !rounded-md"
             className="disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={() => {
