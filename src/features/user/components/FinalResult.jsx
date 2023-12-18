@@ -8,12 +8,14 @@ export const FinalResult = ({ competition, rounds }) => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState();
   const user = useSelector((state) => state.user.data.info);
+
   const topStudentsWithRank = useMemo(() => {
     if (!rounds) return [];
-    const lastRound = rounds[rounds?.length - 1];
+    const lastRound = rounds[0];
     const passedStudents = lastRound?.roundResultRound?.filter(
       (item) => item.score >= lastRound?.scorePoint
     );
+
     const sortedStudents = passedStudents?.sort((a, b) => b.score - a.score);
     if (!sortedStudents) return [];
     const result = [];
@@ -27,6 +29,7 @@ export const FinalResult = ({ competition, rounds }) => {
       result.push({ ...student, rank });
       prevScore = student.score;
     }
+    console.log(result);
 
     return result.filter((item) => item.rank <= competition.numOfPrizes);
   }, [competition?.numOfPrizes, rounds]);
