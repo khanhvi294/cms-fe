@@ -17,6 +17,7 @@ export const RoundResult = ({ round }) => {
   });
 
   const roundResult = data?.data;
+  console.log(roundResult);
 
   if (!roundResult || !round?.approved) return null;
 
@@ -24,7 +25,7 @@ export const RoundResult = ({ round }) => {
   const roundResultScore = roundResult?.roundResultScore;
 
   const employeeJudges = round.roundJudge;
-  console.log(round);
+
   return (
     <div className="rounded-md w-[320px] shadow-md bg-white">
       <div className="relative flex items-center p-3 justify-between ">

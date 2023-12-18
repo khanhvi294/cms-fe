@@ -6,7 +6,10 @@ import ModalMarkPoint from "../../../components/score/ModalMarkPoint";
 import ModalSeeScore from "../../../components/score/ModalSeeScore";
 import Table from "../../../components/Table/Table";
 import { getCompetitionById } from "../../../services/competitionService";
-import { getRoundAlreadyStartByCompetition } from "../../../services/roundService";
+import {
+  getRoundAlreadyStartByCompetition,
+  getRoundByCompetition,
+} from "../../../services/roundService";
 import { getRoundResultByRound } from "../../../services/roundResultService";
 import { useQuery } from "react-query";
 import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
@@ -112,9 +115,12 @@ const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
 
   //lấy vòng thi để chọn
   const { data: rounds } = useQuery({
-    queryKey: ["roundSelect", competitionId],
-    queryFn: () => getRoundAlreadyStartByCompetition(competitionId),
+    queryKey: ["rounds", competitionId],
     enabled: !!competitionId,
+    queryFn: () => getRoundByCompetition(competitionId),
+    onSuccess: (data) => {
+      setRows(data.data.data);
+    },
   });
   //lấy kết quả vòng thi
   useQuery({
@@ -130,7 +136,7 @@ const ModalApprove = ({ competitionId, roundId, closeApprove }) => {
     const currentRound = rounds?.data?.data?.find(
       (item) => item.id === roundId
     );
-    console.log("current roud ", currentRound, rounds);
+
     if (!currentRound) return false;
     if (currentRound?.approved) return false;
     if (competition?.status !== STATUS_COMPETITION.STARTED) return false;
