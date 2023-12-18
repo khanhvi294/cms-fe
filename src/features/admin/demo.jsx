@@ -1,5 +1,6 @@
 // src/components/CertificateGenerator.js (React)
 import React from "react";
+import Certificate from "../../components/Certificate/certificate";
 
 const CertificateGenerator = () => {
   const generateCertificate = async () => {
@@ -25,17 +26,7 @@ const CertificateGenerator = () => {
     }
   };
 
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Certificate Generator</h1>
-      <button
-        onClick={generateCertificate}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Generate and Print Certificate
-      </button>
-    </div>
-  );
+  return <Certificate />;
 };
 
 export default CertificateGenerator;
