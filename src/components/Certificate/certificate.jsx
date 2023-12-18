@@ -2,25 +2,36 @@ import jsPDF from "jspdf";
 import "./certificate.css";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
-const Certificate = () => {
+const Certificate = ({ name, nameCompetition, top }) => {
   const certificateRef = useRef(null);
   const handleDownloadPDF = async () => {
-    const certificateElement = certificateRef.current;
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+      putOnlyUsedFonts: true,
+    });
+
+    const certificateElement = document.querySelector(".certificate");
 
     if (certificateElement) {
       try {
         // Sử dụng html2canvas để chuyển đổi nội dung thành hình ảnh
         const canvas = await html2canvas(certificateElement);
 
-        // Tạo một đối tượng jsPDF
-        const pdf = new jsPDF({
-          orientation: "portrait",
-          unit: "mm",
-          format: "a4",
-        });
+        // Tính toán kích thước hợp lý để vẽ lên PDF
+        const pdfWidth = 210;
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-        // Lấy hình ảnh từ canvas và thêm vào PDF
-        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, 210, 297); // Kích thước A4
+        // Thêm hình ảnh vào PDF với kích thước tính toán
+        pdf.addImage(
+          canvas.toDataURL("image/png"),
+          "PNG",
+          0,
+          0,
+          pdfWidth,
+          pdfHeight
+        );
 
         // Tải xuống PDF
         pdf.save("certificate.pdf");
@@ -29,6 +40,7 @@ const Certificate = () => {
       }
     }
   };
+
   //   image
   //   const handleDownloadPDF = async () => {
   //     const certificateElement = certificateRef.current;
@@ -92,7 +104,7 @@ const Certificate = () => {
 
   return (
     <>
-      <div className="text-center mt-3">
+      <div className="text-center mt-1">
         <button className="btn btn-primary mr-2" onClick={handleDownloadPDF}>
           Download PDF
         </button>
@@ -111,10 +123,12 @@ const Certificate = () => {
               <strong>CODEGYM TRAINING CENTER</strong>
             </p>
             <h1>Certificate of Achievement</h1>
-            <p className="student-name mb-4">Matthew Taylor</p>
+            <p className="student-name mb-4">{name}</p>
             <div className="certificate-content">
               <div className="about-certificate mb-4">
-                <p>has achieved the [Top Position] in the [Competition Name]</p>
+                <p>
+                  has achieved the Top {top} in the {nameCompetition}
+                </p>
               </div>
 
               <div className="text-center mt-3">
@@ -123,7 +137,7 @@ const Certificate = () => {
                   commendable commitment to excellence in the field of coding.
                   Your remarkable skills, dedication, and innovative thinking
                   have set you apart, making you one of the top performers in
-                  this [Competition Name].
+                  this {nameCompetition}.
                 </p>
               </div>
             </div>

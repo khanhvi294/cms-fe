@@ -1,9 +1,11 @@
-body {
-    font-family: Roboto;
-}
 
 .certificate-container {
-    padding: 50px;
+    font-family: Roboto;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+
     width: 1024px;
 }
 .certificate {

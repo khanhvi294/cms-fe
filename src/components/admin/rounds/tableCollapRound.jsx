@@ -473,7 +473,7 @@ function Row(props) {
                   required: "Time is required filed",
                 })}
               />
-              {/* xem chỗ này vi */}
+
               <div className="w-full ">
                 <label
                   className="block  text-sm mb-1 text-[#666666] w-full"

@@ -37,15 +37,6 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FinalResult } from "../components/FinalResult";
 
-// const competition = {
-//   name: "Kiểm thử phần mềm",
-//   status: 2,
-//   timeStart: "01-11-2023",
-//   timeEnd: "11-11-2023",
-//   soVong: 2,
-//   people: 12,
-// };
-
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -353,9 +344,12 @@ const Competition = () => {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <div className="flex gap-20">
-              {rounds?.data?.data?.map((item, index) => (
-                <RoundDetail key={index} round={item} />
-              ))}
+              {rounds?.data?.data
+                ?.slice()
+                ?.reverse()
+                ?.map((item, index) => (
+                  <RoundDetail key={index} round={item} />
+                ))}
             </div>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
