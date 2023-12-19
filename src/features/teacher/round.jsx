@@ -2,16 +2,17 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Table from "../../components/Table/Table";
 import { getAllRoundByJudge } from "../../services/judgeService";
+import { getFileName } from "../../utils/getFileName";
 
 const RoundJudge = () => {
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user?.data?.info);
-  console.log(rows);
+
   const columns = [
     {
       field: "id",
@@ -25,14 +26,29 @@ const RoundJudge = () => {
       width: 250,
       valueGetter: (params) => params.row.competitionRound.name,
     },
+
     {
       field: "examFormRound",
       headerName: "Exam Form",
-      width: 250,
+      width: 200,
       valueGetter: (params) => params?.row?.examFormRound?.name,
     },
+    {
+      field: "exam",
+      headerName: "Exam",
+      width: 150,
+      renderCell: (params) => (
+        <div
+          className="truncate underline text-blue-800 cursor-pointer"
+          style={{ maxWidth: "100px" }}
+        >
+          <Link to={params.row?.exam}>{getFileName(params.row?.exam)}</Link>
+        </div>
+      ),
+      //valueGetter: (params) => params?.row?.exam,
+    },
 
-    { field: "timeStart", headerName: "time Start", width: 250 },
+    { field: "timeStart", headerName: "time Start", width: 150 },
 
     {
       field: "actions",
