@@ -1,26 +1,21 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Modal,
-  Tab,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tabs,
-} from "@mui/material";
+import { Box, Button, Chip, Modal, Tab, Tabs } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { useMemo, useState } from "react";
 import {
   getAllClassJoinCompetition,
   getCompetitionById,
 } from "../../../services/competitionService";
-import { useMemo, useState } from "react";
 
-import PropTypes from "prop-types";
-import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
-import Table from "../../../components/Table/Table";
 import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Table from "../../../components/Table/Table";
+import { STATUS_COMPETITION } from "../../../configs/competitionStatus";
+import { useModal } from "../../../hooks/use-modal";
 import {
   getAllCompetitionByStudentId,
   getRegisterByCompetition,
@@ -28,13 +23,6 @@ import {
   unRegisterCompetition,
 } from "../../../services/registerService";
 import { getRoundByCompetition } from "../../../services/roundService";
-import { getRoundResultByRound } from "../../../services/roundResultService";
-import { styled } from "@mui/material/styles";
-import { useModal } from "../../../hooks/use-modal";
-import { useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { FinalResult } from "../components/FinalResult";
 
 function CustomTabPanel(props) {

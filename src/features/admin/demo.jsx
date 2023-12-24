@@ -1,32 +1,71 @@
-// src/components/CertificateGenerator.js (React)
-import React from "react";
-import Certificate from "../../components/Certificate/certificate";
+import { Box, Button, Checkbox, FormControlLabel, Modal } from "@mui/material";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
+import { getAllRoundByJudge } from "../../services/judgeService";
 
-const CertificateGenerator = () => {
-  const generateCertificate = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:3001/generate-certificate"
-      );
-      console.log(response);
-      const blob = await response.blob();
+import { uploadFile } from "../../utils/cloundinaryFns";
 
-      // Tạo một liên kết để tải về file PDF
-      const downloadLink = document.createElement("a");
-      downloadLink.href = window.URL.createObjectURL(blob);
-      downloadLink.download = "certificate.pdf";
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+const Demo = () => {
+  const data = [
+    { id: 1, name: "Item 1" },
+    { id: 2, name: "Item 2" },
+    { id: 3, name: "Item 3" },
+    // ...Thêm các phần tử khác nếu cần
+  ];
 
-      // Mở hộp thoại in sau khi tải xong
-      window.print();
-    } catch (error) {
-      console.error("Error generating certificate:", error);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const handleCheckboxChange = (id) => {
+    const isChecked = checkedItems.includes(id);
+
+    if (isChecked) {
+      setCheckedItems((prev) => prev.filter((item) => item !== id));
+    } else {
+      setCheckedItems((prev) => [...prev, id]);
     }
   };
 
-  return <Certificate />;
+  const handleCheckAll = () => {
+    const allChecked = data.every((item) => checkedItems.includes(item.id));
+
+    if (allChecked) {
+      // Nếu tất cả các phần tử đã được chọn, bỏ chọn tất cả
+      setCheckedItems([]);
+    } else {
+      // Nếu có ít nhất một phần tử chưa được chọn, chọn tất cả
+      setCheckedItems(data.map((item) => item.id));
+    }
+  };
+
+  const getCheckedItems = () => {
+    console.log(
+      "Các phần tử đã chọn:",
+      checkedItems.map((id) => data.find((item) => item.id === id))
+    );
+  };
+  return (
+    <div>
+      {data.map((item) => (
+        <FormControlLabel
+          key={item.id}
+          control={
+            <Checkbox
+              checked={checkedItems.includes(item.id)}
+              onChange={() => handleCheckboxChange(item.id)}
+            />
+          }
+          label={item.name}
+        />
+      ))}
+      <Button variant="contained" onClick={handleCheckAll}>
+        {checkedItems.length === data.length ? "Bỏ chọn hết" : "Chọn hết"}
+      </Button>
+      <Button variant="contained" onClick={getCheckedItems}>
+        Lấy các phần tử đã chọn
+      </Button>
+    </div>
+  );
 };
 
-export default CertificateGenerator;
+export default Demo;
