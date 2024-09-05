@@ -25,8 +25,8 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("123123");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const roleUser = useSelector((state) => state.user?.data?.info?.role);
@@ -106,6 +106,7 @@ const Login = () => {
                 id="standard-adornment-password"
                 type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
