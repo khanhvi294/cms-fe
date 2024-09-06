@@ -175,6 +175,10 @@ const Login = () => {
           >
             Sign in
           </Button>
+
+          <p className="text-sm italic">
+           Because it hasn’t been used for a long time, the server automatically shuts down to save resources. Restarting will take some time
+            </p>
         </div>
       </div>
       <Modal
